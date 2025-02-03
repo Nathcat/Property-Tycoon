@@ -5,7 +5,7 @@ University of Sussex G4046 Software Engineering 2025 coursework
 We are undertaking this coursework as a team of six, consisting of:
 - [Rosalina Bowen](https://github.com/Rose-Bowen) - Team Manager, Report, Asset Design
 - [Nathan Baines](https://github.com/Nathcat) - Programming, AI, Git Admin
-- - [Tyler Gillet](https://github.com/lionbanana) - Programming, AI
+- [Tyler Gillet](https://github.com/lionbanana) - Programming, AI
 - [Brooke Reavell](https://github.com/brooke-ec) - Programming
 - [Jaiden Hewitt-Taylor](https://github.com/SpaceDuckie) - Testing
 - [Joseph Holland](https://github.com/josephholland07) - Testing, Client Communication
