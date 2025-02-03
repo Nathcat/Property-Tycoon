@@ -1,14 +1,14 @@
 # Property-Tycoon
 University of Sussex G4046 Software Engineering 2025 coursework
 
-## Team
+## Team and individual roles
 We are undertaking this coursework as a team of six, consisting of:
-- [Nathan Baines](https://github.com/Nathcat)
-- [Brooke Reavell](https://github.com/brooke-ec)
-- [Rosalina Bowen](https://github.com/Rose-Bowen)
-- [Jaiden Hewitt-Taylor](https://github.com/SpaceDuckie)
-- [Joseph Holland](https://github.com/josephholland07)
-- [Tyler Gillet](https://github.com/lionbanana)
+- [Nathan Baines](https://github.com/Nathcat) - Programming, AI, Git Admin 
+- [Brooke Reavell](https://github.com/brooke-ec) - Programming
+- [Rosalina Bowen](https://github.com/Rose-Bowen) - Team Manager, Report, Asset Design
+- [Jaiden Hewitt-Taylor](https://github.com/SpaceDuckie) - Testing
+- [Joseph Holland](https://github.com/josephholland07) - Testing, Client Communication
+- [Tyler Gillet](https://github.com/lionbanana) - Programming, AI
 
 ## Project setup
 This project is built with Unity 2022.3.39f1. To open the project, [download this editor version](https://unity.com/releases/editor/whats-new/2022.3.39),
