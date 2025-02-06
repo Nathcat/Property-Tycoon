@@ -21,11 +21,10 @@ For those contributing to this project, find details of how to make such contrib
 
 ## General rules
 - Make changes in a [new branch](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository).
-- When you have completed your changes (including testing where possible!) [create a pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request?tool=webui) and provide the following details:
+- When you have completed your changes [create a pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request?tool=webui) and provide the following details:
   - What changes you have made
-  - What tests you were able to perform
-  - If you weren't able to perform some / any tests, why was that?
   - [Link any related issues / pull requests](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue)
+  - Ensure to test new features / fixes locally, once you submit a pull request, it will be tested fully.
 - Request a review on your pull request before merging (note that merging to main is blocked _until_ a valid review is completed).
 
 ## Code style
