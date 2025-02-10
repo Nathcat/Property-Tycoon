@@ -1,5 +1,5 @@
 # Game Setup Files
-Property Tycoon allows you to provide two setup files, which will determine the state of the board, and which cards are available, and what actions and data are to be associated with those items.
+Property Tycoon allows you to provide two setup files, which will determine the state of the board,  which cards are available, what actions and data are to be associated with those items.
 
 The data files should be provided in CSV format.
 
