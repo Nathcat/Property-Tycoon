@@ -30,4 +30,5 @@ Rent should be handled under _Action_, using the <mark>Action String</mark> func
 The card data file contains information about each of the _pot luck_ and _opportunity knocks_ cards which may be drawn during the game. It should contain for the following informaton for every card.
 
 - Description: String
+- Group: Either "Pot Luck" or "Opportunity Knocks"
 - Action: <mark>Action String</mark>

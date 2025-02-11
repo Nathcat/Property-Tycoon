@@ -99,6 +99,7 @@ public class Action
                     case "PropertyRent": tokens.Add(new PropertyRent(symbols[i])); break;
                     case "UtilityRent": tokens.Add(new UtilityRent(symbols[i])); break;
                     case "StationRent": tokens.Add(new StationRent(symbols[i])); break;
+                    case "": break;
                     default: throw new SyntaxError("Command \"" + symbols[i] + "\" not recognised!");
                 }
             }
