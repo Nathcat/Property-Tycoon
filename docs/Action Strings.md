@@ -59,6 +59,13 @@ PayPerUpgrade [cashPerHouse: Integer] [cashPerHotel: Integer] ;
 
 Pay the bank an amount of cash dependent on the number of houses and hotels the player has.
 
+### `Collect`
+```
+Collect [cash: Integer] ;
+```
+
+Collect `cash` cash from each player.
+
 ### `Move`
 ```
 Move [relativity: "relative" or "absolute"] [value: Integer] ;
