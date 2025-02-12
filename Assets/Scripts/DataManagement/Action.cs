@@ -96,9 +96,18 @@ public class Action
                     case "Fine": tokens.Add(new Fine(symbols[i])); break;
                     case "Move": tokens.Add(new Move(symbols[i])); break;
                     case "PayOut": tokens.Add(new PayOut(symbols[i])); break;
+                    case "PayIn": tokens.Add(new PayIn(symbols[i])); break;
                     case "PropertyRent": tokens.Add(new PropertyRent(symbols[i])); break;
                     case "UtilityRent": tokens.Add(new UtilityRent(symbols[i])); break;
                     case "StationRent": tokens.Add(new StationRent(symbols[i])); break;
+                    case "Jail": tokens.Add(new Jail(symbols[i])); break;
+                    case "GoToJail": tokens.Add(new GoToJail(symbols[i])); break;
+                    case "TakePotLuck": tokens.Add(new TakePotLuck(symbols[i])); break;
+                    case "TakeOppoKnocks": tokens.Add(new TakeOppoKnocks(symbols[i])); break;
+                    case "CollectFreeParking": tokens.Add(new CollectFreeParking(symbols[i])); break;
+                    case "GetOutOfJail": tokens.Add(new GetOutOfJail(symbols[i])); break;
+                    case "PayPerUpgrade": tokens.Add(new PayPerUpgrade(symbols[i])); break;
+                    case "Collect": tokens.Add(new Collect(symbols[i])); break;
                     case "": break;
                     default: throw new SyntaxError("Command \"" + symbols[i] + "\" not recognised!");
                 }

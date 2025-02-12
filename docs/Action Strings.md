@@ -45,6 +45,20 @@ PayOut [cash: Integer] ;
 
 Pay the incident player `cash` cash from the bank.
 
+### `PayIn`
+```
+PayIn [cash: Integer] ;
+```
+
+Pay the bank `cash` cash from the incident player.
+
+### `PayPerUpgrade`
+```
+PayPerUpgrade [cashPerHouse: Integer] [cashPerHotel: Integer] ;
+```
+
+Pay the bank an amount of cash dependent on the number of houses and hotels the player has.
+
 ### `Move`
 ```
 Move [relativity: "relative" or "absolute"] [value: Integer] ;
@@ -80,3 +94,38 @@ StationRent ;
 - If the player who owns the station which was landed on owns 2 stations, the player who landed on this station must pay them £50
 - If the player who owns the station which was landed on owns 3 stations, the player who landed on this station must pay them £100
 - If the player who owns the station which was landed on owns 4 stations, the player who landed on this station must pay them £200
+
+### `Jail`
+```
+Jail ;
+```
+
+Calls the action required when the player is currently on the jail space.
+
+### `GoToJail`
+```
+GoToJail ;
+```
+
+Sends the player to jail.
+
+### `GetOutOfJail`
+```
+GetOutOfJail ;
+```
+
+This is primarily a card action meant for get out of jail free cards. It will specify that the user is able to get out of jail once if they wish to.
+
+### `TakePotLuck`
+```
+TakePotLuck ;
+```
+ 
+Take a pot luck card and play its' action.
+
+### `TakeOppoKnocks`
+```
+TakeOppoKnocks ;
+```
+
+Take and opportunity knocks card and play its' action.

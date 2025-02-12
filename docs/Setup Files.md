@@ -19,6 +19,8 @@ The optional columns should be filled with _null_, if there are unspecified for 
 
 _**Note that the file must contain a number of spaces which is a multiple of 4, and contain at least 4 spaces**_.
 
+Also note that the jail space is special, and should _always_ be named `Jail`.
+
 ### Specifying Rent
 Rent should be handled under _Action_, using the <mark>Action String</mark> functions for rent specific to that property type:
 
