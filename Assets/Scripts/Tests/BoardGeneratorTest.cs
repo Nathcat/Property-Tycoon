@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class BoardGeneratorTest : MonoBehaviour
@@ -10,47 +11,9 @@ public class BoardGeneratorTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BoardGenerator.GenerateBoard(transform, 11, 2, 1, normalSpace, cornerSpace, new Space[] {
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space(),
-            new Space()
-        });
+        List<Space> spaces = new List<Space>();
+        List<PropertyGroup> groups = new List<PropertyGroup>();
+        FileManager.ReadBoardCSV(Path.Combine(Application.dataPath, "board.csv"), spaces, groups);
+        BoardGenerator.GenerateBoard(transform, 11, 2, 1, normalSpace, cornerSpace, spaces.ToArray());
     }
 }
