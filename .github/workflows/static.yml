@@ -29,6 +29,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Doxygen build
+        uses: mattnotmitt/doxygen-action@v1.9.5
+        with:
+          doxyfile-path: 'docs/UserDoxyfile'
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Pages
