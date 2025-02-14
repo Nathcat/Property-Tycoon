@@ -15,11 +15,29 @@ And may _optionally_ have the following data:
  - Action: <mark>Action String</mark>
  - Cost: Integer
 
+Specifically the CSV file should be of this format:
+```
+Position, Name, Group, Cost, Action
+..., ..., ..., ..., ...
+```
+
 The optional columns should be filled with _null_, if there are unspecified for a given property.
 
 _**Note that the file must contain a number of spaces which is a multiple of 4, and contain at least 4 spaces**_.
 
 Also note that the jail space is special, and should _always_ be named `Jail`.
+
+### Property groups
+Property groups themselves should be named after a colour, or be named `Station`, or `Utilities`. The following colours are supported:
+
+- `Brown`
+- `Blue`
+- `Purple`
+- `Orange`
+- `Red`
+- `Yellow`
+- `Green`
+- `Deep blue`
 
 ### Specifying Rent
 Rent should be handled under _Action_, using the <mark>Action String</mark> functions for rent specific to that property type:
@@ -34,3 +52,9 @@ The card data file contains information about each of the _pot luck_ and _opport
 - Description: String
 - Group: Either "Pot Luck" or "Opportunity Knocks"
 - Action: <mark>Action String</mark>
+
+Specifically, the CSV file should be of this format:
+```
+Description, Group, Action
+..., ..., ...
+```
