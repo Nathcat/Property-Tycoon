@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 /// <summary>Base class of all board spaces</summary>
 public class Space
@@ -23,6 +22,4 @@ public class Space
 
 
     }
-
-    public Space() { }
 }

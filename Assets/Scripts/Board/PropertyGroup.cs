@@ -1,11 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 /// <summary>A group of properties</summary>
 public class PropertyGroup
 {
+    public static Color COLOR_BROWN = new Color(0.68627f, 0.39215f, 0f);
+    public static Color COLOR_BLUE = new Color(0.67451f, 0.99216f, 1f);
+    public static Color COLOR_PURPLE = new Color(0.78431f, 0f, 1f);
+    public static Color COLOR_ORANGE = new Color(1f, 0.70196f, 0f);
+    public static Color COLOR_RED = new Color(1f, 0f, 0f);
+    public static Color COLOR_YELLOW = new Color(1f, 1f, 0f);
+    public static Color COLOR_GREEN = new Color(0f, 1f, 0f);
+    public static Color COLOR_DEEPBLUE = new Color(0f, 0f, 1f);
+    public static Color COLOR_STATION = new Color(0.2f, 0.2f, 0.2f);
+    public static Color COLOR_UTILITIES = new Color(0.9f, 0.9f, 0.9f);
+
     public string name;
     private List<Space> properties;  // Change this to List<Property> once implemented
 
@@ -71,5 +83,27 @@ public class PropertyGroup
     public void AddProperty(Space p)
     {
         properties.Add(p);
+    }
+
+    /// <summary>
+    /// Get the colour to display on properties of this group. This is determined by the name of the group
+    /// </summary>
+    /// <returns>The colour associated with each name</returns>
+    public Color GetColor()
+    {
+        switch (name.ToLower())
+        {
+            case "brown": return COLOR_BROWN;
+            case "blue": return COLOR_BLUE;
+            case "purple": return COLOR_PURPLE;
+            case "orange": return COLOR_ORANGE;
+            case "red": return COLOR_RED;
+            case "yellow": return COLOR_YELLOW;
+            case "green": return COLOR_GREEN;
+            case "deep blue": return COLOR_DEEPBLUE;
+            case "station": return COLOR_STATION;
+            case "utilities": return COLOR_UTILITIES;
+            default: return Color.white;
+        }
     }
 }

@@ -66,7 +66,8 @@ public class BoardGenerator
                 o.transform.SetParent(parent, false);
             }
 
-            o.GetComponent<DisplayName>().Setup(spaces[I]);
+            o.GetComponent<SpaceController>().Setup(spaces[I]);
+
         }
     }
 
