@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using TMPro;
 
 /// <summary>Provides utility functions for generating the game board</summary>
 public class BoardGenerator
@@ -50,19 +51,22 @@ public class BoardGenerator
 
         int cornersPassed = 0;
         for (int I = 0; I < spaces.Length; I++) {
+            GameObject o;
             if ((I % (n + 1)) == 0) {
                 // This is a corner space
-                GameObject o = MonoBehaviour.Instantiate(cornerSpace, PCorner(LB, LS, I / n), RCorner(I / n)) ;
+                o = MonoBehaviour.Instantiate(cornerSpace, PCorner(LB, LS, I / n), RCorner(I / n)) ;
                 o.transform.SetParent(parent, false);
                 o.name = I.ToString() ;
                 cornersPassed++;
             }
             else {
                 // This is a normal space
-                GameObject o = MonoBehaviour.Instantiate(normalSpace, PSpace(LB, WS, I - cornersPassed, n), RSpace(I - cornersPassed, n));
+                o = MonoBehaviour.Instantiate(normalSpace, PSpace(LB, WS, I - cornersPassed, n), RSpace(I - cornersPassed, n));
                 o.name = I.ToString() ;
                 o.transform.SetParent(parent, false);
             }
+
+            o.GetComponent<DisplayName>().Setup(spaces[I]);
         }
     }
 
