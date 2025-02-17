@@ -14,6 +14,6 @@ public class BoardGeneratorTest : MonoBehaviour
         List<Space> spaces = new List<Space>();
         List<PropertyGroup> groups = new List<PropertyGroup>();
         FileManager.ReadBoardCSV(Path.Combine(Application.dataPath, "board.csv"), spaces, groups);
-        BoardGenerator.GenerateBoard(transform, 11, 2, 1, normalSpace, cornerSpace, spaces.ToArray());
+        BoardGenerator.GenerateBoard(transform, 2, 1, normalSpace, cornerSpace, spaces.ToArray());
     }
 }

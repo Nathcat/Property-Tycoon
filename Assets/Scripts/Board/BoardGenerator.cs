@@ -36,12 +36,13 @@ public class BoardGenerator
     /// <exception cref="BoardGenerator.InvalidSpaceCountException">
     ///     Thrown if the number of provided spaces is invalid
     /// </exception>
-    public static void GenerateBoard(Transform parent, double LB, double LS, double WS, GameObject normalSpace, GameObject cornerSpace, Space[] spaces) {
+    public static void GenerateBoard(Transform parent, double LS, double WS, GameObject normalSpace, GameObject cornerSpace, Space[] spaces) {
         // Ensure that the number of spaces is >= 4, and is a multiple of 4
         if (spaces.Length < 4 || (spaces.Length % 4) != 0) throw new InvalidSpaceCountException();
 
         // Prepare the set of corner spaces
-        int n = (spaces.Length / 4) - 1;  // The number of spaces per side excluding corners
+        int n = (spaces.Length / 4) - 1;   // The number of spaces per side excluding corners
+        double LB = GetBoardDimensions(spaces.Length);  // The length / width of the board, i.e. the number of spaces per side, including corners
         Space[] corners = new Space[] {
             spaces[0], 
             spaces[n+1],
@@ -69,6 +70,16 @@ public class BoardGenerator
             o.GetComponent<SpaceController>().Setup(spaces[I]);
 
         }
+    }
+
+    /// <summary>
+    /// Get the dimensions of the board, i.e. the length and width of the board. This is a single intenger because the board is a square.
+    /// </summary>
+    /// <param name="noOfSpaces">The total number of space on the board</param>
+    /// <returns>The length / width of the board</returns>
+    public static int GetBoardDimensions(int noOfSpaces)
+    {
+        return (noOfSpaces / 4) + 1;
     }
 
     /// <summary>Determine the position of corner i</summary>
