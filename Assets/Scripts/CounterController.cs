@@ -23,7 +23,7 @@ public class CounterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //PlayTurn();
+        
     }
     /// <summary>
     ///     When called, the method rolls two 6 sided dice, outputting both results, along with the sum of the values.
@@ -31,11 +31,11 @@ public class CounterController : MonoBehaviour
     public void PlayTurn()
     {
         int dice1 = rnd.Next(1, 7);
-        Console.WriteLine("Dice 1 rolled a ", dice1);
+        Debug.Log("Dice 1 rolled a " + dice1);
         int dice2 = rnd.Next(1, 7);
-        Console.WriteLine("Dice 2 rolled a ", dice1);
+        Debug.Log("Dice 2 rolled a " + dice1);
         int output = dice1 + dice2;
-        Console.WriteLine("for a total of ", output);
+        Debug.Log("for a total of " + output);
 
         /*
         TODO: Add a block that moves the counter the correct number of spaces along the board - requires branch 10 to be pulled.
