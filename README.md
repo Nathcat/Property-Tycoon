@@ -47,7 +47,7 @@ Multi-line comment
 */
 ```
 
-Documentation comments should be completed in [Sandcastle XML format](http://ewsoftware.github.io/XMLCommentsGuide/html/4268757F-CE8D-4E6D-8502-4F7F2E22DDA3.htm), for example:
+Documentation comments should be completed in [Doxygen XML format](https://www.doxygen.nl/manual/xmlcmds.html), for example:
 
 ```cs
 
