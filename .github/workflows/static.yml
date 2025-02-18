@@ -41,7 +41,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: ${GITHUB_WORKSPACE}/docs/UserPDF/html
+          path: ${GITHUB_WORKSPACE}/UserPDF/html
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
