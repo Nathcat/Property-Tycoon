@@ -32,7 +32,7 @@ jobs:
       - name: Doxygen build
         uses: mattnotmitt/doxygen-action@v1.9.5
         with:
-          doxyfile-path: 'docs/UserDoxyfile'
+          doxyfile-path: '${GITHUB_WORKSPACE}/docs/UserDoxyfile'
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Pages
@@ -41,7 +41,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: './docs/UserPDF/html'
+          path: '${GITHUB_WORKSPACE}/docs/UserPDF/html'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
