@@ -334,8 +334,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1617765198}
+  boardRadius: 5
   sideOffset: 1
-  hieghtOffset: 2
+  heightOffset: 2
   lengthOffset: 5
 --- !u!114 &97701161
 MonoBehaviour:
