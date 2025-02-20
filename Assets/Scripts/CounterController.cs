@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -11,7 +12,9 @@ public class CounterController : MonoBehaviour
 {
     /// <param name="portfolio"> The portfolio of the counter, containing any owned money and properties.</param>
     private Portfolio portfolio = new Portfolio();
+    private int position;
     private System.Random rnd = new System.Random();
+    private GameObject token;
 
     
     // Start is called before the first frame update
@@ -28,7 +31,7 @@ public class CounterController : MonoBehaviour
     /// <summary>
     ///     When called, the method rolls two 6 sided dice, outputting both results, along with the sum of the values.
     /// </summary>
-    public void PlayTurn()
+    public void PlayTurn(List<Space> board)
     {
         int dice1 = rnd.Next(1, 7);
         Debug.Log("Dice 1 rolled a " + dice1);
@@ -37,9 +40,16 @@ public class CounterController : MonoBehaviour
         int output = dice1 + dice2;
         Debug.Log("for a total of " + output);
 
-        /*
-        TODO: Add a block that moves the counter the correct number of spaces along the board - requires branch 10 to be pulled.
-        */
+        position = position + output;
+        if (position > board.Count)
+        {
+            position = position - board.Count;
+        }
+
+        Vector3 finalPos = GameObject.Find("Board").transform.GetChild(position).gameObject.transform.position;
+
+        token.gameObject.transform.position = finalPos;
+
     }
 
     
