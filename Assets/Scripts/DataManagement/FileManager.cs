@@ -95,7 +95,7 @@ public class FileManager
                 {
                     g = groups[elements[2]];
                 }
-                catch (KeyNotFoundException e)
+                catch (KeyNotFoundException)
                 {
                     g = new PropertyGroup(elements[2]);
                     groups[elements[2]] = g;
