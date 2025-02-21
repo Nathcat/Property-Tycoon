@@ -14,7 +14,7 @@ public class CounterController : MonoBehaviour
     private Portfolio portfolio = new Portfolio();
     private int position;
     private System.Random rnd = new System.Random();
-    public GameObject token;
+    
 
     
     // Start is called before the first frame update
@@ -54,7 +54,7 @@ public class CounterController : MonoBehaviour
         Vector3 finalPos = finalSpace.transform.position;
 
         //moves the counter to the new position
-        token.gameObject.transform.position = finalPos;
+        transform.position = finalPos;
 
     }
 

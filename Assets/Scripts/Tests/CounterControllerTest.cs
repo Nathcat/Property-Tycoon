@@ -27,8 +27,6 @@ public class CounterControllerTest : MonoBehaviour
         BoardGenerator.GenerateBoard(transform, 2, 1, normalSpace, cornerSpace, spaces.ToArray());
         Debug.Log("The board has " + spaces.Count + " spaces");
 
-        int i = 0;
-
         StartCoroutine(Delay());
             
         
