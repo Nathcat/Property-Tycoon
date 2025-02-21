@@ -13,7 +13,6 @@ public class CounterController : MonoBehaviour
     /// <param name="portfolio"> The portfolio of the counter, containing any owned money and properties.</param>
     private Portfolio portfolio = new Portfolio();
     private int position;
-    private System.Random rnd = new System.Random();
     
 
     
