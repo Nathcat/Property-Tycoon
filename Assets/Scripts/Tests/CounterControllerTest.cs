@@ -2,16 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-
+/// <summary>
+/// A class to test the ConterController in its most basic form
+/// </summary>
 public class CounterControllerTest : MonoBehaviour
 {
+    /// <param name="normalSpace"> Standard board space</param>
     public GameObject normalSpace;
+    /// <param name="cornerSpace"> Corner board space</param>
     public GameObject cornerSpace;
-    //public CounterController controller;
+    /// <param name="controller"> CounterController used for testing</param>
     public CounterController controller;
+    /// <param name="space"> List of spaces that make up the board</param>
     private List<Space> spaces = new List<Space>();
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start sets up the board, sets controller as the test counter's controller, and starts calling counter's PlayTurn method.
+    /// </summary>
     void Start()
     {
         controller = GameObject.Find("TestCounter").gameObject.GetComponent<CounterController>();
@@ -27,24 +34,26 @@ public class CounterControllerTest : MonoBehaviour
         
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Allows PlayTurn to be constantly called while the L/R arrow keys are held down - if for some reason you want to test that!
+    /// </summary>
     void Update()
     {
-        /*
+        
+        
         float horizontalInput = Input.GetAxis("Horizontal");
         if (horizontalInput != 0) 
         {
             controller.PlayTurn(spaces);
         }
-        */
+        
         
     }
 
-    public void DelayedPlayTurn()
-    {
-        
-    }
-    
+    /// <summary>
+    /// Calls controller's PlayTurn method, with a delay of 1s between each call.
+    /// </summary>
+    /// <returns>Returns the delay between turns</returns>
     public IEnumerator Delay()
     {
         controller.PlayTurn(spaces);

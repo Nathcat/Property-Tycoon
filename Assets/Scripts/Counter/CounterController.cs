@@ -33,13 +33,15 @@ public class CounterController : MonoBehaviour
     /// </summary>
     public void PlayTurn(List<Space> board)
     {
+        // Gets the first dice's value
         int dice1 = rnd.Next(1, 7);
-        //Debug.Log("Dice 1 rolled a " + dice1);
+        // Gets the second dice's value
         int dice2 = rnd.Next(1, 7);
-        //Debug.Log("Dice 2 rolled a " + dice1);
+        // Gets the total of both dice
         int output = dice1 + dice2;
         Debug.Log("for a total of " + output);
 
+        // checks that the counter's new position is within the board limits
         position = position + output;
         if (position > (board.Count)-1)
         {
@@ -47,13 +49,11 @@ public class CounterController : MonoBehaviour
         }
 
 
-        //Debug.Log("moves piece to " + position);
+        // finds the new position of the counter
         GameObject finalSpace = GameObject.Find("Board").transform.GetChild(position).gameObject;
-
         Vector3 finalPos = finalSpace.transform.position;
 
-        //Vector3 finalPos = GameObject.Find("Board").transform.GetChild(position).gameObject.transform.position;
-
+        //moves the counter to the new position
         token.gameObject.transform.position = finalPos;
 
     }
