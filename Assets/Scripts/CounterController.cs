@@ -14,7 +14,7 @@ public class CounterController : MonoBehaviour
     private Portfolio portfolio = new Portfolio();
     private int position;
     private System.Random rnd = new System.Random();
-    private GameObject token;
+    public GameObject token;
 
     
     // Start is called before the first frame update
@@ -34,19 +34,25 @@ public class CounterController : MonoBehaviour
     public void PlayTurn(List<Space> board)
     {
         int dice1 = rnd.Next(1, 7);
-        Debug.Log("Dice 1 rolled a " + dice1);
+        //Debug.Log("Dice 1 rolled a " + dice1);
         int dice2 = rnd.Next(1, 7);
-        Debug.Log("Dice 2 rolled a " + dice1);
+        //Debug.Log("Dice 2 rolled a " + dice1);
         int output = dice1 + dice2;
         Debug.Log("for a total of " + output);
 
         position = position + output;
-        if (position > board.Count)
+        if (position > (board.Count)-1)
         {
-            position = position - board.Count;
+            position = position%board.Count;
         }
 
-        Vector3 finalPos = GameObject.Find("Board").transform.GetChild(position).gameObject.transform.position;
+
+        //Debug.Log("moves piece to " + position);
+        GameObject finalSpace = GameObject.Find("Board").transform.GetChild(position).gameObject;
+
+        Vector3 finalPos = finalSpace.transform.position;
+
+        //Vector3 finalPos = GameObject.Find("Board").transform.GetChild(position).gameObject.transform.position;
 
         token.gameObject.transform.position = finalPos;
 
