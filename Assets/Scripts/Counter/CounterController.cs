@@ -33,9 +33,9 @@ public class CounterController : MonoBehaviour
     public void PlayTurn(List<Space> board)
     {
         // Gets the first dice's value
-        int dice1 = rnd.Next(1, 7);
+        int dice1 = Random.Range(1, 7);
         // Gets the second dice's value
-        int dice2 = rnd.Next(1, 7);
+        int dice2 = Random.Range(1, 7);
         // Gets the total of both dice
         int output = dice1 + dice2;
         Debug.Log("for a total of " + output);
