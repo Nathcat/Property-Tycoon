@@ -27,12 +27,20 @@ public class Space : MonoBehaviour
 
         //if the space is a property, give it an upgrade level, otherwise dont
         if(propertyGroup == null){
-            upgradelevel = -1;
+            this.upgradelevel = -1;
         }
         else{
-            upgradelevel = 0;
+            this.upgradelevel = 0;
         }
         
+    }
+
+    public void Upgrade()
+    {
+        if ((this.upgradelevel >= 0 && this.upgradelevel < 5))
+        {
+            this.upgradelevel++;
+        }
     }
 
 
