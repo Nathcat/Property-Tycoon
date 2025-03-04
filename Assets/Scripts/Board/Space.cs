@@ -27,7 +27,7 @@ public class Space : MonoBehaviour
 
         //if the space is a property, give it an upgrade level, otherwise dont
         if(propertyGroup == null){
-            upgradelevel = null;
+            upgradelevel = -1;
         }
         else{
             upgradelevel = 0;
