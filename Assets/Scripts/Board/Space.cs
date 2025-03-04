@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 /// <summary>Base class of all board spaces</summary>
-public class Space
+public class Space : MonoBehaviour
 {
     public int position;
     public string name;
     public PropertyGroup propertyGroup;
     public Action action;
     public int cost;
+
+    //also needs an upgrade level, if applicable
+    public int upgradelevel;
+
 
 
     public Space(int position, string name, PropertyGroup propertyGroup, Action action, int cost)
@@ -20,6 +25,19 @@ public class Space
         this.action = action;
         this.cost = cost;
 
-
+        //if the space is a property, give it an upgrade level, otherwise dont
+        if(propertyGroup == null){
+            upgradelevel = null;
+        }
+        else{
+            upgradelevel = 0;
+        }
+        
     }
+
+
+
+    public Space() { }
+
+
 }
