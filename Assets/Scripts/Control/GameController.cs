@@ -1,8 +1,8 @@
-using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using System.IO;
 using System.Linq;
+using UnityEngine.Events;
 
 /// <summary> Main script for controlling high level flow of the game. </summary>
 public class GameController : MonoBehaviour
@@ -21,6 +21,9 @@ public class GameController : MonoBehaviour
 
     /// <summary> The space prefab to instantiate at the four corners of the board. </summary>
     [SerializeField] private GameObject cornerSpace;
+
+    /// <summary> Event invoked when the next turn is started. </summary>
+    public readonly UnityEvent<CounterController> onNextTurn = new UnityEvent<CounterController>();
 
     /// <summary> List of all <see cref="CounterController"/> particiapting in the game. </summary>
     public CounterController[] counters { get; private set; }
@@ -64,12 +67,13 @@ public class GameController : MonoBehaviour
     public void NextTurn()
     {
         turnIndex = (turnIndex + 1) % counters.Length;
+        onNextTurn.Invoke(turnCounter);
         turnCounter.PlayTurn();
     }
 
     public void SetupBoard()
     {
-        // Cleanup old controllers
+        // Cleanup old counter controllers
         if (spaceControllers != null)
             foreach (SpaceController space in spaceControllers)
                 Destroy(space.gameObject);

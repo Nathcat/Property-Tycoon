@@ -12,17 +12,11 @@ public class CameraController : MonoBehaviour
     [SerializeField] private int sideOffset = 1;
     [SerializeField] private int heightOffset = 2;
     [SerializeField] private int lengthOffset = 5;
+
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //for testing purposes comment out when not in use
-        //UpdateCamera(target);
+        GameController.instance.onNextTurn.AddListener(c => UpdateCamera(c.gameObject));
     }
 
     //a method to move the camera to a target gameobject
