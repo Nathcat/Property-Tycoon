@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using System.IO;
+using System.Linq;
 
 /// <summary> Main script for controlling high level flow of the game. </summary>
 public class GameController : MonoBehaviour
@@ -55,7 +56,15 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         SetupBoard();
-        SetupCounters(new CounterController[] { Instantiate(counterPrefab), Instantiate(counterPrefab) } );
+
+        SetupCounters(new CounterController[6].Select(_ => Instantiate(counterPrefab)).ToArray());
+        turnCounter.PlayTurn();
+    }
+
+    public void NextTurn()
+    {
+        turnIndex = (turnIndex + 1) % counters.Length;
+        turnCounter.PlayTurn();
     }
 
     public void SetupBoard()

@@ -1,3 +1,5 @@
+// Disable as counters now require GameController
+#if false
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -61,3 +63,5 @@ public class CounterControllerTest : MonoBehaviour
         StartCoroutine(Delay());
     }
 }
+
+#endif

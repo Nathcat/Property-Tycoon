@@ -31,7 +31,7 @@ public class CounterController : MonoBehaviour
     /// <summary>
     ///     When called, the method rolls two 6 sided dice, outputting both results, along with the sum of the values.
     /// </summary>
-    public void PlayTurn(Space[] board)
+    public void PlayTurn()
     {
         // Gets the first dice's value
         int dice1 = Random.Range(1, 7);
@@ -43,12 +43,12 @@ public class CounterController : MonoBehaviour
 
         // checks that the counter's new position is within the board limits
         position = position + output;
-        if (position > (board.Length)-1)
-        {
-            position = position%board.Length;
-        }
+        if (position > (GameController.instance.spaces.Length)-1)
+            position = position%GameController.instance.spaces.Length;
 
         Move();
+
+        Utils.RunAfter(1, GameController.instance.NextTurn);
     }
 
     /// <summary> Move this counter to the space specified in <see cref="position"/> </summary>
