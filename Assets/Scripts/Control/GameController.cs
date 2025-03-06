@@ -22,10 +22,10 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject cornerSpace;
 
     /// <summary> List of all <see cref="CounterController"/> particiapting in the game. </summary>
-    public List<CounterController> counters { get; private set; }
+    public CounterController[] counters { get; private set; }
 
     /// <summary> Array of <see cref="Space"/> objects the board consists of. </summary>
-    public Space[] spaces { get; private set; }
+    public Space[] spaces { get { return board.spaces; } }
 
     /// <summary> The index in <see cref="counters"/> of the <see cref="CounterController"/> who currently has their turn. </summary>
     public int turnIndex { get; private set; }
@@ -37,7 +37,13 @@ public class GameController : MonoBehaviour
     public SpaceController[] spaceControllers { get; private set; }
 
     /// <summary> Array of <see cref="PropertyGroup"/>s on the board. </summary>
-    public PropertyGroup[] groups { get; private set; }
+    public PropertyGroup[] groups { get { return board.groups; } }
+
+    /// <summary> The configuration data of the currently loaded board. </summary>
+    private FileManager.BoardData board;
+
+    [Header("Testing")]
+    [SerializeField] private CounterController counterPrefab;
 
     private void Awake()
     {
@@ -48,20 +54,23 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        InitBoard();
+        SetupBoard();
+        SetupCounters(new CounterController[] { Instantiate(counterPrefab), Instantiate(counterPrefab) } );
     }
 
-    public void InitBoard()
+    public void SetupBoard()
     {
-        FileManager.BoardData board = FileManager.ReadBoardCSV(Path.Combine(Application.dataPath, "board.csv"));
-        spaces = board.spaces;
-        groups = board.groups;
-
+        // Cleanup old controllers
+        if (spaceControllers != null)
+            foreach (SpaceController space in spaceControllers)
+                Destroy(space.gameObject);
+        
+        board = FileManager.ReadBoardCSV(Path.Combine(Application.dataPath, "board.csv"));
         spaceControllers = BoardGenerator.GenerateBoard(transform, 2, 1, normalSpace, cornerSpace, spaces);
     }
 
-    public void InitPlayers()
+    public void SetupCounters(CounterController[] counters)
     {
-
+        this.counters = counters;
     }
 }

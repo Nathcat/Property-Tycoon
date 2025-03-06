@@ -7,16 +7,19 @@ using UnityEngine;
 /// </summary>
 public class CounterController : MonoBehaviour
 {
-    /// <param name="portfolio"> The portfolio of the counter, containing any owned money and properties.</param>
-    private Portfolio portfolio = new Portfolio();
-    private int position;
-    
+    /// <summary> The portfolio of the counter, containing any owned money and properties. </summary>
+    [HideInInspector] public readonly Portfolio portfolio = new Portfolio();
 
+    /// <summary> The index in <see cref="GameController.spaces"/> that this counter is currently on. </summary>
+    [HideInInspector] public int position { get; private set; }
+    
+    /// <summary> The index of this counter in <see cref="GameController.counters"/>. </summary>
+    public int order { get { return System.Array.IndexOf(GameController.instance.counters, this); } }
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        Move();
     }
 
     // Update is called once per frame
@@ -24,6 +27,7 @@ public class CounterController : MonoBehaviour
     {
         
     }
+
     /// <summary>
     ///     When called, the method rolls two 6 sided dice, outputting both results, along with the sum of the values.
     /// </summary>
@@ -44,15 +48,12 @@ public class CounterController : MonoBehaviour
             position = position%board.Length;
         }
 
-
-        // finds the new position of the counter
-        GameObject finalSpace = GameObject.Find("Board").transform.GetChild(position).gameObject;
-        Vector3 finalPos = finalSpace.transform.position;
-
-        //moves the counter to the new position
-        transform.position = finalPos;
-
+        Move();
     }
 
-    
+    /// <summary> Move this counter to the space specified in <see cref="position"/> </summary>
+    private void Move()
+    {
+        transform.position = GameController.instance.spaceControllers[position].waypoints[order].position;
+    }
 }
