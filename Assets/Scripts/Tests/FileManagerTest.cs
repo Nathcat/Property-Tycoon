@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 using System.IO;
 
 public class FileManagerTest : MonoBehaviour
@@ -29,16 +27,14 @@ public class FileManagerTest : MonoBehaviour
             opportunityKnocks[i].action.Run(null);
         }
 
-        List<Space> spaces = new List<Space>();
-        List<PropertyGroup> propertyGroups = new List<PropertyGroup>();
-        FileManager.ReadBoardCSV(boardPath, spaces, propertyGroups);
+        FileManager.BoardData data = FileManager.ReadBoardCSV(boardPath);
 
-        foreach (PropertyGroup g in propertyGroups)
+        foreach (PropertyGroup g in data.groups)
         {
             Debug.Log("PropertyGroup: " + g.name);
         }
 
-        foreach (Space s in spaces)
+        foreach (Space s in data.spaces)
         {
             string o = "Space: " + s.name;
             if (s.propertyGroup != null)
