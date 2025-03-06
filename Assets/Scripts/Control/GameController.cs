@@ -64,6 +64,7 @@ public class GameController : MonoBehaviour
         turnCounter.PlayTurn();
     }
 
+    /// <summary> Increment <see cref="turnIndex"/> and start the next turn.</summary>
     public void NextTurn()
     {
         turnIndex = (turnIndex + 1) % counters.Length;
@@ -71,6 +72,7 @@ public class GameController : MonoBehaviour
         turnCounter.PlayTurn();
     }
 
+    /// <summary> Parse board configuration and place spaces. </summary>
     public void SetupBoard()
     {
         // Cleanup old counter controllers
@@ -82,6 +84,10 @@ public class GameController : MonoBehaviour
         spaceControllers = BoardGenerator.GenerateBoard(transform, 2, 1, normalSpace, cornerSpace, spaces);
     }
 
+    /// <summary>
+    /// Register <paramref name="counters"/> to the game.
+    /// </summary>
+    /// <param name="counters">An array of the counters in this game.</param>
     public void SetupCounters(CounterController[] counters)
     {
         this.counters = counters;
