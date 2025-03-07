@@ -68,8 +68,8 @@ public class GameController : MonoBehaviour
     public void NextTurn()
     {
         turnIndex = (turnIndex + 1) % counters.Length;
-        onNextTurn.Invoke(turnCounter);
         turnCounter.PlayTurn();
+        onNextTurn.Invoke(turnCounter);
     }
 
     /// <summary> Parse board configuration and place spaces. </summary>
