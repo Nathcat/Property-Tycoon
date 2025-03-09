@@ -43,13 +43,23 @@ public class UIManager : MonoBehaviour
     //----------main menu----------
     public void BackButton() //This would be called by ALL back buttons on the main menu
     {
-        StartScreen.SetActive(true);
-        HelpAndRules.SetActive(false);
-        Rules.SetActive(false);
-        Help.SetActive(false);
-        Credits.SetActive(false);
-        ConfirmClose.SetActive(false);
-        Settings.SetActive(false);
+        if (scene = "MainMenu")
+        {
+            StartScreen.SetActive(true);
+            HelpAndRules.SetActive(false);
+            Rules.SetActive(false);
+            Help.SetActive(false);
+            Credits.SetActive(false);
+            ConfirmClose.SetActive(false);
+            Settings.SetActive(false);
+        }
+        /*else if (scene = "Gamescene")
+        {
+            HelpAndEscape.SetActive(true);
+            //HelpMenu.SetActive(false);
+            Rules.SetActive(false);
+            Help.SetActive(false);
+        }*/
     }
 
     public void MMStartButton()
@@ -97,17 +107,21 @@ public class UIManager : MonoBehaviour
 
     //----------game----------
 
-    public void PauseButton()
+    public void IGPauseButton()
     {
         //Stop all functions of the game
         HelpAndEscape.SetActive(true);
     }
-    public void BackButton()
+    public void PMBackButton()
     {
         HelpAndEscape.SetActive(false);
         //Start all functions of the game
     }
-    public void 
+    public void PMHelpButton()
+    {
+        HelpAndEscape.SetActive(false);
+        //HelpMenu.SetActive(true);
+    }
 
     public void SetPlayerTurnDullCard(int PlayerID)
     {
