@@ -15,14 +15,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject Help = null;
     [SerializeField] private GameObject Rules = null;
     [SerializeField] private GameObject HelpAndEscape = null;
+    [SerializeField] private Scene scene;
     //private TMP_Text text;
-    Scene scene = SceneManager.GetActiveScene();
 
 
     // Start is called before the first frame update
     void Start()
     {
-        if (scene.name = "MainMenu")
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.name == "MainMenu")
         {
             StartScreen.SetActive(true);
             Credits.SetActive(false);
@@ -45,7 +46,7 @@ public class UIManager : MonoBehaviour
     //----------main menu----------
     public void BackButton() //This would be called by ALL back buttons on the main menu
     {
-        if (scene.name = "MainMenu")
+        if (scene.name == "MainMenu")
         {
             StartScreen.SetActive(true);
             HelpAndRules.SetActive(false);
