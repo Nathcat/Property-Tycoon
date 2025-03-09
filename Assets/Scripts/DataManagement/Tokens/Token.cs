@@ -8,4 +8,8 @@ public class Token {
     public Token(string value) {
         this.value = value;
     }
+
+    public string getTokenAsString(){
+        return (string)this.value;
+    }
 }
