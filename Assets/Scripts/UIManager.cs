@@ -6,13 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private GameObject StartScreen;
-    [SerializeField] private GameObject Credits;
-    [SerializeField] private GameObject HelpAndRules;
-    [SerializeField] private GameObject ConfirmClose;
-    [SerializeField] private GameObject Settings;
-    [SerializeField] private GameObject Help;
-    [SerializeField] private GameObject Rules;
+    [SerializeField] private GameObject StartScreen = null;
+    [SerializeField] private GameObject Credits = null;
+    [SerializeField] private GameObject HelpAndRules = null;
+    [SerializeField] private GameObject ConfirmClose = null;
+    [SerializeField] private GameObject Settings = null;
+    [SerializeField] private GameObject Help = null;
+    [SerializeField] private GameObject Rules = null;
 
     // Start is called before the first frame update
     void Start()
