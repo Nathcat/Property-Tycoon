@@ -30,10 +30,15 @@ public class UIManager : MonoBehaviour
             HelpAndRules.SetActive(false);
             ConfirmClose.SetActive(false);
             Settings.SetActive(false);
+            Rules.SetActive(false);
+            Help.SetActive(false);
         }
         else if (Scene = GameScene)
         {
             HelpAndEscape.SetActive(false);
+            HelpAndRules.SetActive(false);
+            Rules.SetActive(false);
+            Help.SetActive(false);
         }
     }
 
