@@ -15,4 +15,21 @@ public class UIManager : MonoBehaviour
     {
         
     }
+
+    //----------main menu----------
+
+
+
+
+
+    //----------game----------
+
+
+
+
+
+    //----------game composition menu----------
+
+
+
 }
