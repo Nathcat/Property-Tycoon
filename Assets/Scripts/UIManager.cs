@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+
     [SerializeField] private GameObject StartScreen = null;
     [SerializeField] private GameObject Credits = null;
     [SerializeField] private GameObject HelpAndRules = null;
@@ -13,15 +14,26 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject Settings = null;
     [SerializeField] private GameObject Help = null;
     [SerializeField] private GameObject Rules = null;
+    [SerializeField] private GameObject HelpAndEscape = null;
+    //private TMP_Text text;
+    Scene scene = SceneManager.GetActiveScene();
+
 
     // Start is called before the first frame update
     void Start()
     {
-        StartScreen.SetActive(true);
-        Credits.SetActive(false);
-        HelpAndRules.SetActive(false);
-        ConfirmClose.SetActive(false);
-        Settings.SetActive(false);
+        if (scene = "MainMenu")
+        {
+            StartScreen.SetActive(true);
+            Credits.SetActive(false);
+            HelpAndRules.SetActive(false);
+            ConfirmClose.SetActive(false);
+            Settings.SetActive(false);
+        }
+        /*else if (scene = "Gamescene")
+        {
+
+        }*/
     }
 
     // Update is called once per frame
@@ -87,7 +99,38 @@ public class UIManager : MonoBehaviour
 
     //----------game----------
 
+    public void PauseButton()
+    {
+        //Stop all functions of the game
+        HelpAndEscape.SetActive(true);
+    }
+    public void BackButton()
+    {
+        HelpAndEscape.SetActive(false);
+        //Start all functions of the game
+    }
+    public void 
 
+    public void SetPlayerTurnDullCard(int PlayerID)
+    {
+        //We'd dull everyone's colours but the Player who's ID we have, maybe we dull all then lighten the right card
+        //Some array of colours saved, 6 for regular colours and 6 for dull
+
+        //gameObject.GetComponent<Renderer>().material.color = new Color(0f, 0f, 0f);
+
+    }
+    public void SetCurrentCardName(int PlayerID)
+    {
+        //Get the name from the game controller based upon ID
+    }
+    public void SetLeaderboard()
+    {
+        //text = this.gameObject.GetComponent<TextMeshPro>();
+        //text.text = "name1:score1\nname2:score2\nname3:score3\nname4:score4\nname5:score5\nname6:score6"
+
+        //Set the leaderboard name by getting the name from the player controller (For loop)
+        //Set the leaderboard money by getting the money from the player controller (For loop)
+    }
 
 
 
