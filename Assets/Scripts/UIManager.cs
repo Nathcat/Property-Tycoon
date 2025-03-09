@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject HelpAndEscape = null;
     [SerializeField] private Scene scene;
     [SerializeField] private string gamescene = "Tyler's Testing Scene";
+    [SerializeField] private Scene Scene;
+    [SerializeField] private string GameScene = "Tyler's Testing Scene";
 
     //private TMP_Text text;
 
@@ -24,19 +26,24 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Scene scene = SceneManager.GetActiveScene();
-        if (scene.name == "MainMenu")
+        Scene Scene = SceneManager.GetActiveScene();
+        if (Scene.name == "MainMenu")
         {
             StartScreen.SetActive(true);
             Credits.SetActive(false);
             HelpAndRules.SetActive(false);
             ConfirmClose.SetActive(false);
             Settings.SetActive(false);
+            Rules.SetActive(false);
+            Help.SetActive(false);
         }
-        /*else if (scene = gamescene)
+        else if (Scene = GameScene)
         {
-
-        }*/
+            HelpAndEscape.SetActive(false);
+            HelpAndRules.SetActive(false);
+            Rules.SetActive(false);
+            Help.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -48,7 +55,7 @@ public class UIManager : MonoBehaviour
     //----------main menu----------
     public void BackButton() //This would be called by ALL back buttons on the main menu
     {
-        if (scene.name == "MainMenu")
+        if (Scene.name == "MainMenu")
         {
             StartScreen.SetActive(true);
             HelpAndRules.SetActive(false);
@@ -58,7 +65,7 @@ public class UIManager : MonoBehaviour
             ConfirmClose.SetActive(false);
             Settings.SetActive(false);
         }
-        /*else if (scene = gamescene)
+        /*else if (Scene = GameScene)
         {
             HelpAndEscape.SetActive(true);
             //HelpMenu.SetActive(false);
@@ -69,7 +76,7 @@ public class UIManager : MonoBehaviour
 
     public void MMStartButton()
     {
-        SceneManager.LoadScene(gamescene);
+        SceneManager.LoadScene(GameScene);
     }
     public void MMSettingsButton()
     {
