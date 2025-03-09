@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject HelpAndRules;
     [SerializeField] private GameObject ConfirmClose;
     [SerializeField] private GameObject Settings;
+    [SerializeField] private GameObject Help;
+    [SerializeField] private GameObject Rules;
 
     // Start is called before the first frame update
     void Start()
