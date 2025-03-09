@@ -23,6 +23,17 @@ public class UIManager : MonoBehaviour
     }
 
     //----------main menu----------
+    void BackButton() //This would be called by ALL back buttons on the main menu
+    {
+        StartScreen.SetActive(true);
+        HelpAndRules().SetActive(false);
+        Rules().SetActive(false);
+        Help().SetActive(false);
+        Credits().SetActive(false);
+        ConfirmClose().SetActive(false);
+        SettingsButton().SetActive(false);
+    }
+
     void MMStartButton()
     {
         //SceneManager.LoadScene("MainGameScene");
@@ -36,6 +47,8 @@ public class UIManager : MonoBehaviour
     {
         StartScreen.SetActive(false);
         HelpAndRules().SetActive(true);
+        Help().SetActive(true);
+        Rules().SetActive(false);
     }
     void MMCreditsButton()
     {
@@ -48,6 +61,21 @@ public class UIManager : MonoBehaviour
         ConfirmClose().SetActive(true);
     }
 
+    void HMHelpButton()
+    {
+        Help().SetActive(true);
+        Rules().SetActive(false);
+    }
+    void HMRulesButton()
+    {
+        Rules().SetActive(true);
+        Help().SetActive(false);
+    }
+
+    void EMYesButton()
+    {
+        //Close the program, I think we should do a while true loop that eats all their RAM >:3
+    }
 
     //----------game----------
 
