@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
         Help.SetActive(false);
         Credits.SetActive(false);
         ConfirmClose.SetActive(false);
-        SettingsButton.SetActive(false);
+        Settings.SetActive(false);
     }
 
     void MMStartButton()
@@ -49,7 +49,7 @@ public class UIManager : MonoBehaviour
     void MMSettingsButton()
     {
         StartScreen.SetActive(false);
-        SettingsButton.SetActive(true);
+        Settings.SetActive(true);
     }
     void MMHelpButton()
     {
