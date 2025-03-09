@@ -1393,6 +1393,9 @@ MonoBehaviour:
   Settings: {fileID: 847956395}
   Help: {fileID: 2108434584}
   Rules: {fileID: 1303838750}
+  HelpAndEscape: {fileID: 0}
+  scene:
+    m_Handle: 0
 --- !u!114 &443972570
 MonoBehaviour:
   m_ObjectHideFlags: 0
