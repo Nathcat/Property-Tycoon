@@ -14,7 +14,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject Help;
     [SerializeField] private GameObject Rules;
     [SerializeField] private GameObject HelpAndEscape = null;
-    [SerializeField] private String gamescene = "Tyler's Testing Scene";
+    [SerializeField] private Scene scene;
+    [SerializeField] private string gamescene = "Tyler's Testing Scene";
+
     //private TMP_Text text;
 
     // Start is called before the first frame update
