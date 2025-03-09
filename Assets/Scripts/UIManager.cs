@@ -13,6 +13,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject Settings;
     [SerializeField] private GameObject Help;
     [SerializeField] private GameObject Rules;
+    [SerializeField] private GameObject HelpAndEscape;
+    private TMP_Text text;
 
     // Start is called before the first frame update
     void Start()
@@ -87,7 +89,38 @@ public class UIManager : MonoBehaviour
 
     //----------game----------
 
+    public void PauseButton()
+    {
+        //Stop all functions of the game
+        HelpAndEscape.SetActive(true);
+    }
+    public void BackButton()
+    {
+        HelpAndEscape.SetActive(true);
+        //Start all functions of the game
+    }
 
+
+    public void SetPlayerTurnDullCard(int PlayerID)
+    {
+        //We'd dull everyone's colours but the Player who's ID we have, maybe we dull all then lighten the right card
+        //Some array of colours saved, 6 for regular colours and 6 for dull
+
+        //gameObject.GetComponent<Renderer>().material.color = new Color(0f, 0f, 0f);
+
+    }
+    public void SetCurrentCardName(int PlayerID)
+    {
+        //Get the name from the game controller based upon ID
+    }
+    public void SetLeaderboard()
+    {
+        //text = this.gameObject.GetComponent<TextMeshPro>();
+        //text.text = "name1:score1\nname2:score2\nname3:score3\nname4:score4\nname5:score5\nname6:score6"
+
+        //Set the leaderboard name by getting the name from the player controller (For loop)
+        //Set the leaderboard money by getting the money from the player controller (For loop)
+    }
 
 
 
