@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManager;
 
 public class UIManager : MonoBehaviour
 {
@@ -18,10 +19,30 @@ public class UIManager : MonoBehaviour
     }
 
     //----------main menu----------
-
-
-
-
+    void MMStartButton()
+    {
+        //SceneManager.LoadScene("MainGameScene");
+    }
+    void MMSettingsButton()
+    {
+        StartScreen.SetActive(false);
+        SettingsButton().SetActive(true);
+    }
+    void MMHelpButton()
+    {
+        StartScreen.SetActive(false);
+        HelpAndRules().SetActive(true);
+    }
+    void MMCreditsButton()
+    {
+        StartScreen.SetActive(false);
+        Credits().SetActive(true);
+    }
+    void MMExitButton()
+    {
+        StartScreen.SetActive(false);
+        ConfirmClose().SetActive(true);
+    }
 
     //----------game----------
 
