@@ -6,15 +6,19 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private GameObject StartScreen;
-    [SerializeField] private GameObject Credits;
-    [SerializeField] private GameObject HelpAndRules;
-    [SerializeField] private GameObject ConfirmClose;
-    [SerializeField] private GameObject Settings;
-    [SerializeField] private GameObject Help;
-    [SerializeField] private GameObject Rules;
+
+    [SerializeField] private GameObject StartScreen = null;
+    [SerializeField] private GameObject Credits = null;
+    [SerializeField] private GameObject HelpAndRules = null;
+    [SerializeField] private GameObject HelpAndRules2 = null;
+    [SerializeField] private GameObject ConfirmClose = null;
+    [SerializeField] private GameObject Settings = null;
+    [SerializeField] private GameObject Help = null;
+    [SerializeField] private GameObject Rules = null;
     [SerializeField] private GameObject HelpAndEscape = null;
+    [SerializeField] private GameObject Dice = null;
     [SerializeField] private Scene Scene;
+    [SerializeField] private string CurrentScene = "";
     [SerializeField] private string GameScene = "Tyler's Testing Scene";
 
     //private TMP_Text text;
@@ -22,7 +26,8 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Scene Scene = SceneManager.GetActiveScene();
+        Scene = SceneManager.GetActiveScene();
+        CurrentScene = Scene.name;
         if (Scene.name == "MainMenu")
         {
             StartScreen.SetActive(true);
@@ -33,12 +38,13 @@ public class UIManager : MonoBehaviour
             Rules.SetActive(false);
             Help.SetActive(false);
         }
-        else if (Scene = GameScene)
+        else if (Scene.name == GameScene)
         {
             HelpAndEscape.SetActive(false);
             HelpAndRules.SetActive(false);
             Rules.SetActive(false);
             Help.SetActive(false);
+            Dice.SetActive(false);
         }
     }
 
@@ -54,20 +60,20 @@ public class UIManager : MonoBehaviour
         if (Scene.name == "MainMenu")
         {
             StartScreen.SetActive(true);
-            HelpAndRules.SetActive(false);
             Rules.SetActive(false);
             Help.SetActive(false);
             Credits.SetActive(false);
             ConfirmClose.SetActive(false);
             Settings.SetActive(false);
         }
-        /*else if (Scene = GameScene)
+        else if (Scene.name == GameScene)
         {
             HelpAndEscape.SetActive(true);
+            HelpAndRules.SetActive(true);
             //HelpMenu.SetActive(false);
             Rules.SetActive(false);
             Help.SetActive(false);
-        }*/
+        }
     }
 
     public void MMStartButton()
@@ -127,8 +133,9 @@ public class UIManager : MonoBehaviour
     }
     public void PMHelpButton()
     {
+        HelpAndRules.SetActive(true);
         HelpAndEscape.SetActive(false);
-        //HelpMenu.SetActive(true);
+        Help.SetActive(true);
     }
     public void PMExitButton()
     {
