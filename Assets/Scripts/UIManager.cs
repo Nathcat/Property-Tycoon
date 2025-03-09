@@ -13,17 +13,25 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject Settings;
     [SerializeField] private GameObject Help;
     [SerializeField] private GameObject Rules;
-    [SerializeField] private GameObject HelpAndEscape;
-    private TMP_Text text;
+    [SerializeField] private GameObject HelpAndEscape = null;
+    //private TMP_Text text;
+    Scene scene = SceneManager.GetActiveScene();
 
     // Start is called before the first frame update
     void Start()
     {
-        StartScreen.SetActive(true);
-        Credits.SetActive(false);
-        HelpAndRules.SetActive(false);
-        ConfirmClose.SetActive(false);
-        Settings.SetActive(false);
+        if (scene = "MainMenu")
+        {
+            StartScreen.SetActive(true);
+            Credits.SetActive(false);
+            HelpAndRules.SetActive(false);
+            ConfirmClose.SetActive(false);
+            Settings.SetActive(false);
+        }
+        /*else if (scene = "Gamescene")
+        {
+
+        }*/
     }
 
     // Update is called once per frame
@@ -96,10 +104,10 @@ public class UIManager : MonoBehaviour
     }
     public void BackButton()
     {
-        HelpAndEscape.SetActive(true);
+        HelpAndEscape.SetActive(false);
         //Start all functions of the game
     }
-
+    public void 
 
     public void SetPlayerTurnDullCard(int PlayerID)
     {
