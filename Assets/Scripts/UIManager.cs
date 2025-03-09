@@ -33,10 +33,10 @@ public class UIManager : MonoBehaviour
             ConfirmClose.SetActive(false);
             Settings.SetActive(false);
         }
-        /*else if (Scene = GameScene)
+        else if (Scene = GameScene)
         {
-
-        }*/
+            HelpAndEscape.SetActive(false);
+        }
     }
 
     // Update is called once per frame
