@@ -15,8 +15,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject Help = null;
     [SerializeField] private GameObject Rules = null;
     [SerializeField] private GameObject HelpAndEscape = null;
-    [SerializeField] private Scene scene;
-    [SerializeField] private string gamescene = "Tyler's Testing Scene";
     [SerializeField] private Scene Scene;
     [SerializeField] private string GameScene = "Tyler's Testing Scene";
 
