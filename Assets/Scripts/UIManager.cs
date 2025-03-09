@@ -7,6 +7,10 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject StartScreen;
+    [SerializeField] private GameObject Credits;
+    [SerializeField] private GameObject HelpAndRules;
+    [SerializeField] private GameObject ConfirmClose;
+    [SerializeField] private GameObject Settings;
 
     // Start is called before the first frame update
     void Start()
@@ -28,12 +32,12 @@ public class UIManager : MonoBehaviour
     void BackButton() //This would be called by ALL back buttons on the main menu
     {
         StartScreen.SetActive(true);
-        HelpAndRules().SetActive(false);
-        Rules().SetActive(false);
-        Help().SetActive(false);
-        Credits().SetActive(false);
-        ConfirmClose().SetActive(false);
-        SettingsButton().SetActive(false);
+        HelpAndRules.SetActive(false);
+        Rules.SetActive(false);
+        Help.SetActive(false);
+        Credits.SetActive(false);
+        ConfirmClose.SetActive(false);
+        SettingsButton.SetActive(false);
     }
 
     void MMStartButton()
@@ -43,35 +47,35 @@ public class UIManager : MonoBehaviour
     void MMSettingsButton()
     {
         StartScreen.SetActive(false);
-        SettingsButton().SetActive(true);
+        SettingsButton.SetActive(true);
     }
     void MMHelpButton()
     {
         StartScreen.SetActive(false);
-        HelpAndRules().SetActive(true);
-        Help().SetActive(true);
-        Rules().SetActive(false);
+        HelpAndRules.SetActive(true);
+        Help.SetActive(true);
+        Rules.SetActive(false);
     }
     void MMCreditsButton()
     {
         StartScreen.SetActive(false);
-        Credits().SetActive(true);
+        Credits.SetActive(true);
     }
     void MMExitButton()
     {
         StartScreen.SetActive(false);
-        ConfirmClose().SetActive(true);
+        ConfirmClose.SetActive(true);
     }
 
     void HMHelpButton()
     {
-        Help().SetActive(true);
-        Rules().SetActive(false);
+        Help.SetActive(true);
+        Rules.SetActive(false);
     }
     void HMRulesButton()
     {
-        Rules().SetActive(true);
-        Help().SetActive(false);
+        Rules.SetActive(true);
+        Help.SetActive(false);
     }
 
     void EMYesButton()
