@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject Rules = null;
     [SerializeField] private GameObject HelpAndEscape = null;
     [SerializeField] private Scene scene;
+    [SerializeField] private String gamescene = "Tyler's Testing Scene";
+
     //private TMP_Text text;
 
 
@@ -31,7 +33,7 @@ public class UIManager : MonoBehaviour
             ConfirmClose.SetActive(false);
             Settings.SetActive(false);
         }
-        /*else if (scene = "Gamescene")
+        /*else if (scene = gamescene)
         {
 
         }*/
@@ -56,7 +58,7 @@ public class UIManager : MonoBehaviour
             ConfirmClose.SetActive(false);
             Settings.SetActive(false);
         }
-        /*else if (scene = "Gamescene")
+        /*else if (scene = gamescene)
         {
             HelpAndEscape.SetActive(true);
             //HelpMenu.SetActive(false);
@@ -67,7 +69,7 @@ public class UIManager : MonoBehaviour
 
     public void MMStartButton()
     {
-        //SceneManager.LoadScene("MainGameScene");
+        SceneManager.LoadScene(gamescene);
     }
     public void MMSettingsButton()
     {
@@ -124,6 +126,10 @@ public class UIManager : MonoBehaviour
     {
         HelpAndEscape.SetActive(false);
         //HelpMenu.SetActive(true);
+    }
+    public void PMExitButton()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void SetPlayerTurnDullCard(int PlayerID)
