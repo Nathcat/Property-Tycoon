@@ -36,6 +36,11 @@ public class Action
         this.originalString = commandString;
     }
 
+
+    /// <summary>
+    /// Returns the command string.
+    /// </summary>
+    /// <returns>The command string</returns>
     public String[] getCommandStringLexed(){
         Debug.Log(this.commandStringLexed);
         String[] lexedoutput = new String[commandStringLexed.Length];
