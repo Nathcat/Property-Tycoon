@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (scene = "MainMenu")
+        if (scene.name = "MainMenu")
         {
             StartScreen.SetActive(true);
             Credits.SetActive(false);
@@ -43,7 +43,7 @@ public class UIManager : MonoBehaviour
     //----------main menu----------
     public void BackButton() //This would be called by ALL back buttons on the main menu
     {
-        if (scene = "MainMenu")
+        if (scene.name = "MainMenu")
         {
             StartScreen.SetActive(true);
             HelpAndRules.SetActive(false);
