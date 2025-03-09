@@ -3148,6 +3148,7 @@ GameObject:
   - component: {fileID: 1222265343}
   - component: {fileID: 1222265342}
   - component: {fileID: 1222265341}
+  - component: {fileID: 1222265344}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -3205,6 +3206,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1222265344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222265340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1caf8e4ea829fe248bc9c749e2fe4fb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartScreen: {fileID: 0}
+  Credits: {fileID: 0}
+  HelpAndRules: {fileID: 0}
+  ConfirmClose: {fileID: 0}
+  Settings: {fileID: 0}
+  Help: {fileID: 0}
+  Rules: {fileID: 0}
+  HelpAndEscape: {fileID: 614872977}
+  scene:
+    m_Handle: 0
+  gamescene: Tyler's Testing Scene
 --- !u!1 &1233032052
 GameObject:
   m_ObjectHideFlags: 0
