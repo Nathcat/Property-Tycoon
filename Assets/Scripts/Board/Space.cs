@@ -15,6 +15,10 @@ public class Space : MonoBehaviour
     //also needs an upgrade level, if applicable
     public int upgradelevel;
 
+    public string[] lexedstring;
+
+    
+
 
 
     public Space(int position, string name, PropertyGroup propertyGroup, Action action, int cost)

@@ -1,14 +1,21 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
+using System.Runtime.InteropServices;
 
 /// <summary>
 /// Abstracts the use of action strings from the setup files.
 /// </summary>
 public class Action
 {
+
+
+
+
 
     public class SyntaxError : Exception {
         public SyntaxError(string m) : base(m) {}
@@ -27,6 +34,16 @@ public class Action
     public Action(string commandString) {
         this.commandStringLexed = Lex(commandString);
         this.originalString = commandString;
+    }
+
+    public String[] getCommandStringLexed(){
+        Debug.Log(this.commandStringLexed);
+        String[] lexedoutput = new String[commandStringLexed.Length];
+        for (int i = 0; i < commandStringLexed.Length; i++){
+            Debug.Log(i);
+            lexedoutput[i] = commandStringLexed[i].getTokenAsString();
+        } 
+        return lexedoutput;
     }
 
     /// <summary>
