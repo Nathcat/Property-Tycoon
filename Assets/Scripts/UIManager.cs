@@ -9,7 +9,11 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartScreen.SetActive(true);
+        Credits.SetActive(false);
+        HelpAndRules.SetActive(false);
+        ConfirmClose.SetActive(false);
+        Settings.SetActive(false);
     }
 
     // Update is called once per frame
@@ -43,6 +47,7 @@ public class UIManager : MonoBehaviour
         StartScreen.SetActive(false);
         ConfirmClose().SetActive(true);
     }
+
 
     //----------game----------
 
