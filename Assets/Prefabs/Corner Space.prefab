@@ -622,5 +622,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   output: {fileID: 4330773345730981737}
+  waypoints:
+  - {fileID: 7417224239515520468}
+  - {fileID: 7356647080339455852}
+  - {fileID: 3052010611556786593}
+  - {fileID: 520716185298729391}
+  - {fileID: 663934318376629218}
+  - {fileID: 144742859378936529}
   counterExample: {fileID: 5031287791979958118, guid: bdff17096ce64144fac53a63b7bd1ed3,
     type: 3}

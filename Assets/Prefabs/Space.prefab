@@ -52,8 +52,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   output: {fileID: 4067279397620815207}
-  counterExample: {fileID: 5031287791979958118, guid: bdff17096ce64144fac53a63b7bd1ed3,
-    type: 3}
+  waypoints:
+  - {fileID: 8973430359567849817}
+  - {fileID: 7907663231304614064}
+  - {fileID: 6534407922693991239}
+  - {fileID: 1545732571322596399}
+  - {fileID: 107088547880939059}
+  - {fileID: 7649689047938271720}
 --- !u!1 &888235332665595913
 GameObject:
   m_ObjectHideFlags: 0

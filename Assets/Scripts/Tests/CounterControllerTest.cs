@@ -1,3 +1,5 @@
+// Disable as counters now require GameController
+#if false
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -14,7 +16,7 @@ public class CounterControllerTest : MonoBehaviour
     /// <param name="controller"> CounterController used for testing</param>
     public CounterController controller;
     /// <param name="space"> List of spaces that make up the board</param>
-    private List<Space> spaces = new List<Space>();
+    private Space[] spaces;
 
     /// <summary>
     /// Start sets up the board, sets controller as the test counter's controller, and starts calling counter's PlayTurn method.
@@ -23,9 +25,11 @@ public class CounterControllerTest : MonoBehaviour
     {
         controller = GameObject.Find("TestCounter").gameObject.GetComponent<CounterController>();
         List<PropertyGroup> groups = new List<PropertyGroup>();
-        FileManager.ReadBoardCSV(Path.Combine(Application.dataPath, "board.csv"), spaces, groups);
-        BoardGenerator.GenerateBoard(transform, 2, 1, normalSpace, cornerSpace, spaces.ToArray());
-        Debug.Log("The board has " + spaces.Count + " spaces");
+        FileManager.BoardData data = FileManager.ReadBoardCSV(Path.Combine(Application.dataPath, "board.csv"));
+        spaces = data.spaces;
+
+        BoardGenerator.GenerateBoard(transform, 2, 1, normalSpace, cornerSpace, spaces);
+        Debug.Log("The board has " + spaces.Length + " spaces");
 
         StartCoroutine(Delay());
             
@@ -59,3 +63,5 @@ public class CounterControllerTest : MonoBehaviour
         StartCoroutine(Delay());
     }
 }
+
+#endif

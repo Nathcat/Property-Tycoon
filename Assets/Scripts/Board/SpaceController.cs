@@ -5,11 +5,9 @@ using TMPro;
 
 public class SpaceController : MonoBehaviour
 {
-
     public TextMeshProUGUI output;
+    public Transform[] waypoints;
     public Space space;
-
-    public GameObject counterExample;
 
     public void Setup(Space space) {
         this.space = space;

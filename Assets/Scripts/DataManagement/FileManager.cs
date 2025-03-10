@@ -5,6 +5,7 @@ using System.IO;
 using System;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
+using System.Linq;
 
 /// <summary>
 /// Utility class which provides methods for reading the required setup files.
@@ -56,10 +57,11 @@ public class FileManager
     }
 
     /// <summary>
-    /// Read the CSV file containing information about the spaces on the board
+    /// Parse the given CSV file containing information about the spaces on the board
     /// </summary>
     /// <param name="path">The path to the CSV file</param>
-    public static void ReadBoardCSV(string path, List<Space> spaces, List<PropertyGroup> propertyGroups)
+    /// <returns>The resultant <see cref="BoardData"/> read from the CSV at <paramref name="path"/>.</returns>
+    public static BoardData ReadBoardCSV(string path)
     {
         string[] content = new string[0];
 
@@ -69,6 +71,7 @@ public class FileManager
         }
 
         Dictionary<string, PropertyGroup> groups = new Dictionary<string, PropertyGroup>();
+        List<Space> spaces = new List<Space>();
 
         // Skip over the first line, since this specifies the headers of the CSV.
         for (int i = 1; i < content.Length; i++)
@@ -95,7 +98,7 @@ public class FileManager
                 {
                     g = groups[elements[2]];
                 }
-                catch (KeyNotFoundException e)
+                catch (KeyNotFoundException)
                 {
                     g = new PropertyGroup(elements[2]);
                     groups[elements[2]] = g;
@@ -114,10 +117,13 @@ public class FileManager
             if (g != null) g.AddProperty(s);
         }
 
-        // Add all the parsed property groups to the given list
-        foreach(KeyValuePair<string, PropertyGroup> entry in groups)
-        {
-            propertyGroups.Add(entry.Value);
-        }
+        return new BoardData(spaces.ToArray(), groups.Values.ToArray());
     }
+
+    /// <summary>
+    /// Container for holding the result of <see cref="ReadBoardCSV(string)"/>
+    /// </summary>
+    /// <param name="spaces">Array of <see cref="Space"/> objects read from the board.</param>
+    /// <param name="groups">Array of <see cref="PropertyGroup"/> objects read from the board.</param>
+    public record BoardData(Space[] spaces, PropertyGroup[] groups);
 }

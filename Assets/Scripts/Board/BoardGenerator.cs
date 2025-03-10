@@ -36,7 +36,10 @@ public class BoardGenerator
     /// <exception cref="BoardGenerator.InvalidSpaceCountException">
     ///     Thrown if the number of provided spaces is invalid
     /// </exception>
-    public static void GenerateBoard(Transform parent, double LS, double WS, GameObject normalSpace, GameObject cornerSpace, Space[] spaces) {
+    /// <returns>
+    ///     An array of the created <see cref="SpaceController"/>s, in the same order as <paramref name="spaces"/>.
+    /// </returns>
+    public static SpaceController[] GenerateBoard(Transform parent, double LS, double WS, GameObject normalSpace, GameObject cornerSpace, Space[] spaces) {
         // Ensure that the number of spaces is >= 4, and is a multiple of 4
         if (spaces.Length < 4 || (spaces.Length % 4) != 0) throw new InvalidSpaceCountException();
 
@@ -49,6 +52,8 @@ public class BoardGenerator
             spaces[2 * (n+1)], 
             spaces[3 * (n+1)]
         };
+
+        List<SpaceController> controllers = new List<SpaceController>();
 
         int cornersPassed = 0;
         for (int I = 0; I < spaces.Length; I++) {
@@ -67,9 +72,12 @@ public class BoardGenerator
                 o.transform.SetParent(parent, false);
             }
 
-            o.GetComponent<SpaceController>().Setup(spaces[I]);
-
+            SpaceController c = o.GetComponent<SpaceController>();
+            c.Setup(spaces[I]);
+            controllers.Add(c);
         }
+
+        return controllers.ToArray();
     }
 
     /// <summary>
