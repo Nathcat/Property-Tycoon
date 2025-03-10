@@ -45,7 +45,7 @@ public class BoardGenerator
 
         // Prepare the set of corner spaces
         int n = (spaces.Length / 4) - 1;   // The number of spaces per side excluding corners
-        double LB = GetBoardDimensions(spaces.Length);  // The length / width of the board, i.e. the number of spaces per side, including corners
+        double LB = (spaces.Length / 4) + 1;  // The length / width of the board, i.e. the number of spaces per side, including corners
         Space[] corners = new Space[] {
             spaces[0], 
             spaces[n+1],
@@ -85,9 +85,9 @@ public class BoardGenerator
     /// </summary>
     /// <param name="noOfSpaces">The total number of space on the board</param>
     /// <returns>The length / width of the board</returns>
-    public static int GetBoardDimensions(int noOfSpaces)
+    public static float GetBoardDimensions(int noOfSpaces)
     {
-        return (noOfSpaces / 4) + 1;
+        return (noOfSpaces / 4f) + 3f;
     }
 
     /// <summary>Determine the position of corner i</summary>

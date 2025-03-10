@@ -6,6 +6,7 @@ public class BoardGeneratorTest : MonoBehaviour
 {
     public GameObject normalSpace;
     public GameObject cornerSpace;
+    public CameraController cameraController;
 
     void Start()
     {
