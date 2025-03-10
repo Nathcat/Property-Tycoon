@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using Unity.VisualScripting;
+using System.Runtime.CompilerServices;
 
 /// <summary>Base class of all board spaces</summary>
-public class Space : MonoBehaviour
+public class Space
 {
     public int position;
     public string name;
@@ -17,6 +19,7 @@ public class Space : MonoBehaviour
     public int upgradelevel;
 
     public int[] rentArray;
+    private Boolean foundrent;
 
     
 
@@ -24,10 +27,23 @@ public class Space : MonoBehaviour
 
     public Space(int position, string name, PropertyGroup propertyGroup, Action action, int cost)
     {
+
+        // HI NATHAN !!!!!!!!!! this, rentarray, and foundrent are gonna need to get moved
         this.rentArray = new int[action.getCommandStringLexed().Length - 1];
-        for (int i = 1; i < this.rentArray.Length; i++)
+        this.foundrent = false;
+        for (int i = 0; i < this.rentArray.Length; i++)
         {
-            this.rentArray[i-1] = Int32.Parse(action.getCommandStringLexed()[i]);
+
+            if(this.foundrent == true){
+                try{
+                    this.rentArray[i-1] = Int32.Parse(action.getCommandStringLexed()[i]);
+            } catch (Exception e){
+            Console.WriteLine("error when parsing the lexed command string! \n");
+            }
+            if(action.getCommandStringLexed()[i] == ("PropertyRent")){
+                this.foundrent = true;
+            }
+            }
         }
         this.position = position;
         this.name = name;
