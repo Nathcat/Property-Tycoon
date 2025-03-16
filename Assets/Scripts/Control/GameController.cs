@@ -3,6 +3,7 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
 /// <summary> Main script for controlling high level flow of the game. </summary>
 public class GameController : MonoBehaviour
@@ -46,6 +47,17 @@ public class GameController : MonoBehaviour
     /// <summary> The configuration data of the currently loaded board. </summary>
     private FileManager.BoardData board;
 
+    /// <summary> The card deck for the Opportunity Knocks cards. </summary>
+    public List<Card> opportunityDeck;
+
+    /// <summary> The card deck for the Pot Luck cards. </summary>
+    public List<Card> luckDeck;
+
+    /// <summary> Random used for shuffling the card decks. </summary>
+    public System.Random rnd;
+
+
+
     [Header("Testing")]
     [SerializeField] private CounterController counterPrefab;
 
@@ -59,7 +71,7 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         SetupBoard();
-
+        SetupCards();
         SetupCounters(new CounterController[6].Select(_ => Instantiate(counterPrefab)).ToArray());
         turnCounter.PlayTurn();
     }
@@ -83,6 +95,76 @@ public class GameController : MonoBehaviour
         board = FileManager.ReadBoardCSV(Path.Combine(Application.dataPath, "board.csv"));
         spaceControllers = BoardGenerator.GenerateBoard(transform, 2, 1, normalSpace, cornerSpace, spaces);
     }
+
+    /// <summary> Put the card information from the csv file into the relevant card decks, and shuffle both decks. </summary>
+    public void SetupCards()
+    {
+        FileManager.ReadCardCSV(Path.Combine(Application.dataPath, "card.csv"), luckDeck, opportunityDeck);
+        rnd = new System.Random();
+        //shuffle the pot luck cards
+        Shuffle(luckDeck);
+        //shuffle the opportunity knocks cards
+        Shuffle(opportunityDeck);
+    }
+
+    /// <summary> Shuffle the given card deck using a BogoSort style method. </summary>
+    /// <param name="cards"> The card deck to be shuffled. </param>
+    public void Shuffle(List<Card> cards)
+    {
+        int random;
+        Card temp = null;
+        for (int i = 0; i < cards.Count; i++)
+        {
+            random  = rnd.Next(i, cards.Count);
+            temp = cards[random];
+            cards[random] = cards[i];
+            cards[i] = temp;
+        }
+    }
+
+    /// <summary> Draw and return the top card from the Pot Luck deck. </summary>
+    /// <returns> The top card from the Pot Luck deck. </returns>
+    public Card TakeLuck()
+    {
+        if(luckDeck.Count != 0)
+        {
+            return (luckDeck[0]);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /// <summary> Draw and return the top card from the Opportunity Knocks deck. </summary>
+    /// <returns> The top card from the Opportunity Knocks deck. </returns>
+    public Card TakeOpportunity()
+    {
+        if (opportunityDeck.Count != 0)
+        {
+            return (opportunityDeck[0]);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /// <summary> Place a card onto the bottom of the Pot Luck deck. </summary>
+    /// <param name="luckCard"> A card to be placed onto the bottom of the Pot Luck deck. </param>
+    public void ReturnLuck(Card luckCard)
+    {
+        luckDeck[luckDeck.Count] = luckCard;
+    }
+
+    /// <summary> Place a card onto the bottom of the Opportunity Knocks deck. </summary>
+    /// <param name="luckCard"> A card to be placed onto the bottom of the Opportunity Knocks deck. </param>
+    public void ReturnOpportunity(Card opportunityCard)
+    {
+        opportunityDeck[opportunityDeck.Count] = opportunityCard;
+    }
+
+
 
     /// <summary>
     /// Register <paramref name="counters"/> to the game.
