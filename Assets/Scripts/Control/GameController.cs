@@ -122,31 +122,33 @@ public class GameController : MonoBehaviour
         }
     }
 
-    /// <summary> Draw and return the top card from the Pot Luck deck. </summary>
-    /// <returns> The top card from the Pot Luck deck. </returns>
-    public Card TakeLuck()
+    /// <summary> Draw and run the action for the top card from the Pot Luck deck. </summary>
+    public void TakeLuck()
     {
         if(luckDeck.Count != 0)
         {
-            return (luckDeck[0]);
+            Card removed = luckDeck[0];
+            luckDeck.Remove(luckDeck[0]);
+            removed.action.Run(turnCounter);
         }
         else
         {
-            return null;
+            Debug.Log("Deck is empty");
         }
     }
 
-    /// <summary> Draw and return the top card from the Opportunity Knocks deck. </summary>
-    /// <returns> The top card from the Opportunity Knocks deck. </returns>
-    public Card TakeOpportunity()
+    /// <summary> Draw and run the action for the top card from the Opportunity Knocks deck. </summary>
+    public void TakeOpportunity()
     {
         if (opportunityDeck.Count != 0)
         {
-            return (opportunityDeck[0]);
+            Card removed = opportunityDeck[0];
+            opportunityDeck.Remove(luckDeck[0]);
+            removed.action.Run(turnCounter);
         }
         else
         {
-            return null;
+            Debug.Log("Deck is empty");
         }
     }
 
