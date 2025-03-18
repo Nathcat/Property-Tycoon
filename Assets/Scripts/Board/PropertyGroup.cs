@@ -89,6 +89,24 @@ public class PropertyGroup
     }
 
     /// <summary>
+    /// Get the minimum upgrade level of all the properties in this group
+    /// </summary>
+    /// <returns>The minimum upgrade level of all the properties in this group</returns>
+    public int GetMinimumUpgradeLevel()
+    {
+        int min = 5;
+        foreach (Property p in properties)
+        {
+            if (p.upgradeLevel < min)
+            {
+                min = p.upgradeLevel;
+            }
+        }
+
+        return min;
+    }
+
+    /// <summary>
     /// Get the colour to display on properties of this group. This is determined by the name of the group
     /// </summary>
     /// <returns>The colour associated with each name</returns>

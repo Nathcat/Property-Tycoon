@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class Station : Property
 {
-    public Station(int position, string name, PropertyGroup group, Action action, int cost) : base(position, name, group, action, cost)
+    public Station(int position, string name, PropertyGroup group, Action action, int cost) : base(position, name, group, action, cost, 0)
     {
         if (group.name != PropertyGroup.STATION_GROUP_NAME)
         {

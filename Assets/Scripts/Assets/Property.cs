@@ -24,6 +24,11 @@ public class Property : Space, IAsset
     private int cost;
 
     /// <summary>
+    /// The cost to upgrade this property
+    /// </summary>
+    public int upgradeCost { get; private set; }
+
+    /// <summary>
     /// The property group this property is a part of
     /// </summary>
     public PropertyGroup propertyGroup { get; private set; }
@@ -41,11 +46,12 @@ public class Property : Space, IAsset
     /// <param name="group">The property group this property is a part of.</param>
     /// <param name="action">The action to be performed upon landing on this property.</param>
     /// <param name="cost"> An integer denoting the value of the property.</param>
-    public Property(int position, string name, PropertyGroup group, Action action, int cost) : base(position, name, action)
+    public Property(int position, string name, PropertyGroup group, Action action, int cost, int upgradeCost) : base(position, name, action)
     {
         isMortgaged = false;
         this.propertyGroup = group;
         this.cost = cost;
+        this.upgradeCost = upgradeCost;
     }
 
     /// <summary>
@@ -79,12 +85,36 @@ public class Property : Space, IAsset
     }
 
     /// <summary>
-    /// Upgrade this property.
+    /// Check whether or not this property can be upgraded
+    /// </summary>
+    /// <returns>True if the property can be upgraded, false otherwise</returns>
+    public bool CanUpgrade()
+    {
+        // TODO Check here if the player who owns this property, owns all the properties in the group.
+
+        if (upgradeLevel != propertyGroup.GetMinimumUpgradeLevel())
+        {
+            Debug.LogWarning("Cannot upgrade property '" + name + "', the disparity in upgrades within the property group '" + propertyGroup.name + "' would be too great!");
+            return false;
+        }
+
+        if (upgradeLevel >= 0 && upgradeLevel < 5)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Upgrade this property, if it can be upgraded.
     /// </summary>
     public void Upgrade()
     {
-        if (upgradeLevel >= 0 && upgradeLevel < 5)
+        if (CanUpgrade())
         {
+            // TODO Remove cash from owner
+            Cash toPay = new Cash(upgradeCost);
             upgradeLevel++;
         }
     }

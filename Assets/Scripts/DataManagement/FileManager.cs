@@ -78,9 +78,9 @@ public class FileManager
         {
             string[] elements = Regex.Split(content[i], ",\\s*", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500));
 
-            if (elements.Length != 5)
+            if (elements.Length != 6)
             {
-                throw new InvalidFormatException("Expected 5 items in row " + i + ", but got " + elements.Length);
+                throw new InvalidFormatException("Expected 6 items in row " + i + ", but got " + elements.Length);
             }
 
             // Parse data from the line
@@ -138,7 +138,8 @@ public class FileManager
                         elements[1],
                         g,
                         new Action(elements[4]),
-                        cost
+                        cost,
+                        Int32.Parse(elements[5])
                     );
                 }
 
