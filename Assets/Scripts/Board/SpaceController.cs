@@ -14,9 +14,9 @@ public class SpaceController : MonoBehaviour
         output.text = space.name;
 
         // Set the color of the mesh material to that of the property group
-        if (space.propertyGroup != null)
+        if (space is Property)
         {
-            transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = space.propertyGroup.GetColor();
+            transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = (space as Property).propertyGroup.GetColor();
         }
     }
 

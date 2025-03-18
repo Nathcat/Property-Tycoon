@@ -4,8 +4,18 @@ using UnityEngine;
 /// <summary>
 /// Cash: A subclass of asset, used to represent any money used in Property Tycoon.
 /// </summary>
-public class Cash : Asset
+public class Cash : IAsset
 {
+    /// <summary>
+    /// The cash value contained by this asset
+    /// </summary>
+    private int value = 0;
+
+    public Cash(int value)
+    {
+        this.value = value;
+    }
+
     /// <summary>
     /// Adds the value of another Cash object to the selected Cash object.
     /// </summary>
@@ -22,6 +32,12 @@ public class Cash : Asset
     {
         value = value + cashIn;
     }
+
+    public int GetValue()
+    {
+        return value;
+    }
+
     /// <summary>
     /// Removes an integer value from the value of the Cash object.
     /// </summary>

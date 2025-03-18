@@ -37,9 +37,9 @@ public class FileManagerTest : MonoBehaviour
         foreach (Space s in data.spaces)
         {
             string o = "Space: " + s.name;
-            if (s.propertyGroup != null)
+            if (s is Property)
             {
-                o += " of group " + s.propertyGroup.name;
+                o += " of group " + (s as Property).propertyGroup.name;
             }
 
             Debug.Log(o);

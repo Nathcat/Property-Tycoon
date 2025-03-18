@@ -19,9 +19,9 @@ public class PropertyGroup
     public static Color COLOR_UTILITIES = new Color(0.9f, 0.9f, 0.9f);
 
     public string name;
-    private List<Space> properties;  // Change this to List<Property> once implemented
+    private List<Property> properties;  // Change this to List<Property> once implemented
 
-    public PropertyGroup(string name, List<Space> properties)
+    public PropertyGroup(string name, List<Property> properties)
     {
         this.name = name;
         this.properties = properties;
@@ -30,7 +30,7 @@ public class PropertyGroup
     public PropertyGroup(string name)
     {
         this.name = name;
-        this.properties = new List<Space>();
+        this.properties = new List<Property>();
     }
 
     /// <summary>
@@ -47,9 +47,9 @@ public class PropertyGroup
     /// </summary>
     /// <param name="p">The property to search for</param>
     /// <returns>True if this group contains p, false otherwise</returns>
-    public bool ContainsProperty(Space p)
+    public bool ContainsProperty(Property p)
     {
-        foreach (Space prop in properties)
+        foreach (Property prop in properties)
         {
             if (prop == p) return true;
         }
@@ -63,10 +63,10 @@ public class PropertyGroup
     /// </summary>
     /// <param name="pList">The list of properties to check.</param>
     /// <returns>True if this list contains all the properties in this group, false otherwise</returns>
-    public bool HasCompleteGroup(Space[] pList)
+    public bool HasCompleteGroup(Property[] pList)
     {
         int containedProperties = 0;
-        foreach (Space p in pList)
+        foreach (Property p in pList)
         {
             if (ContainsProperty(p)) containedProperties++;
 
@@ -80,7 +80,7 @@ public class PropertyGroup
     /// Add a property to the group
     /// </summary>
     /// <param name="p">The property to add</param>
-    public void AddProperty(Space p)
+    public void AddProperty(Property p)
     {
         properties.Add(p);
     }

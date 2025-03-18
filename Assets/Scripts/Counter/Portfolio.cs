@@ -19,7 +19,7 @@ public class Portfolio
     /// </summary>
     public Portfolio() 
     {
-        cashBalance = new Cash();
+        cashBalance = new Cash(0);
         properties = new List<Property>();
     }
 
@@ -42,7 +42,7 @@ public class Portfolio
     /// Adds a new asset to the portfolio.
     /// </summary>
     /// <param name="newAsset">The new asset to be added to the portfolio.</param>
-    public void AddAsset(Asset newAsset)
+    public void AddAsset(IAsset newAsset)
     {
         Type t = newAsset.GetType();
         if (t.Equals(typeof(Cash)))

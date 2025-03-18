@@ -5,20 +5,41 @@ using UnityEngine;
 /// <summary>
 /// Property: A subclass of Asset, used to represent a property in PropertyTycoon.
 /// </summary>
-public class Property : Asset
+public class Property : Space, IAsset
 {
-    /// <param name="isMortgaged"> A boolean to signify if the property has been mortgaged.</param>
+    /// <summary> A boolean to signify if the property has been mortgaged.</summary>
     private bool isMortgaged;
 
     /// <summary>
-    /// A constructor which takes an integer, and sets the value of the property to that, as well as setting the mortgage status to false.
+    /// The cost to buy of this property. Also denotes is value as an asset.
     /// </summary>
-    /// <param name="valueIn"> An integer denoting the value of the property.</param>
-    public Property(int valueIn)
+    private int cost;
+
+    /// <summary>
+    /// The property group this property is a part of
+    /// </summary>
+    public PropertyGroup propertyGroup { get; private set; }
+
+    /// <summary>
+    /// The current upgrade level of this property
+    /// </summary>
+    public int upgradeLevel { get; private set; } = 0;
+
+    /// <summary>
+    /// Initialise a property with the given information.
+    /// </summary>
+    /// <param name="position">The index position this property will lie on on the board.</param>
+    /// <param name="name">The name of the property.</param>
+    /// <param name="group">The property group this property is a part of.</param>
+    /// <param name="action">The action to be performed upon landing on this property.</param>
+    /// <param name="cost"> An integer denoting the value of the property.</param>
+    public Property(int position, string name, PropertyGroup group, Action action, int cost) : base(position, name, action)
     {
         isMortgaged = false;
-        value = valueIn;
+        this.propertyGroup = group;
+        this.cost = cost;
     }
+
     /// <summary>
     /// Returns the mortgage status of the property.
     /// </summary>
@@ -27,15 +48,36 @@ public class Property : Asset
     {
         return isMortgaged;
     }
+
     /// <summary>
     /// Sets the property for mortgage, and returns the amount of cash gained from doing so.
     /// </summary>
     /// <returns>Cash from mortgaging the property.</returns>
     public Cash Mortgage()
     {
-        Cash output = new Cash();
-        output.AddCash(value / 2);
+        Cash output = new Cash(cost / 2);
         isMortgaged = true;
         return output;
+    }
+
+    /// <summary>
+    /// Return the value of this property. The value of a property is the cost to buy it. Or, if the property is
+    /// currently mortgaged, the value of the property is halved.
+    /// </summary>
+    /// <returns>The current value of the property.</returns>
+    public int GetValue()
+    {
+        if (isMortgaged) { return cost / 2; } else { return cost;  }
+    }
+
+    /// <summary>
+    /// Upgrade this property.
+    /// </summary>
+    public void Upgrade()
+    {
+        if (upgradeLevel >= 0 && upgradeLevel < 5)
+        {
+            upgradeLevel++;
+        }
     }
 }
