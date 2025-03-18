@@ -110,15 +110,39 @@ public class FileManager
             // not a property. Otherwise we assume it is a property.
             if (g != null)
             {
-                s = new Property(
-                    Int32.Parse(elements[0]),
-                    elements[1],
-                    g,
-                    new Action(elements[4]),
-                    cost
-                );
+                if (g.name == PropertyGroup.STATION_GROUP_NAME)
+                {
+                    s = new Station(
+                        Int32.Parse(elements[0]),
+                        elements[1],
+                        g,
+                        new Action(elements[4]),
+                        cost
+                    );
+                }
+                else if (g.name == PropertyGroup.UTILITY_GROUP_NAME)
+                {
+                    s = new Utility(
+                        Int32.Parse(elements[0]),
+                        elements[1],
+                        g,
+                        new Action(elements[4]),
+                        cost
+                    );
 
-                g.AddProperty(s as Property);
+                }
+                else
+                {
+                    s = new Property(
+                        Int32.Parse(elements[0]),
+                        elements[1],
+                        g,
+                        new Action(elements[4]),
+                        cost
+                    );
+                }
+
+                    g.AddProperty(s as Property);
             }
             else
             {

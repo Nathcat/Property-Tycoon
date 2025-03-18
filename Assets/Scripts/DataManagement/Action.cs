@@ -6,17 +6,13 @@ using System;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 using System.Runtime.InteropServices;
+using Unity.VisualScripting;
 
 /// <summary>
 /// Abstracts the use of action strings from the setup files.
 /// </summary>
 public class Action
 {
-
-
-
-
-
     public class SyntaxError : Exception {
         public SyntaxError(string m) : base(m) {}
     }
@@ -85,6 +81,12 @@ public class Action
 
                 commandState = new List<Token>();
                 c.Execute(counterController, args);
+
+                if (i != commandStringLexed.Length - 1)
+                {
+                    Debug.LogWarning("First command has been executed, but there are more commands in this action string and will be ignored!");
+                    return;
+                }
             }
             else if (commandState[commandState.Count - 1] is Command || commandState[commandState.Count - 1] is Argument) {
                 if (next is Command) {
@@ -140,5 +142,24 @@ public class Action
         }
 
         return tokens.ToArray();
+    }
+
+    /// <summary>
+    /// Determine whether or not this action contains the specified command
+    /// </summary>
+    /// <typeparam name="T">The command type</typeparam>
+    /// <returns>True if the action contains the command given by type T, false otherwise</returns>
+    public bool ContainsCommand<T>() where T: Command
+    {
+        for (int i = 0; i < commandStringLexed.Length; i++)
+        {
+            Token next = commandStringLexed[i];
+            if (next is T)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

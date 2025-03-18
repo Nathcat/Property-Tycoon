@@ -7,6 +7,14 @@ using UnityEngine;
 /// </summary>
 public class Property : Space, IAsset
 {
+    /// <summary>
+    /// Thrown if the property group provided to a property is invalid in some way.
+    /// </summary>
+    public class InvalidPropertyGroupException : System.Exception
+    {
+        public InvalidPropertyGroupException(string m) : base(m) { }
+    }
+
     /// <summary> A boolean to signify if the property has been mortgaged.</summary>
     private bool isMortgaged;
 
@@ -78,6 +86,23 @@ public class Property : Space, IAsset
         if (upgradeLevel >= 0 && upgradeLevel < 5)
         {
             upgradeLevel++;
+        }
+    }
+
+    /// <summary>
+    /// Verify that this space's action string is valid within the context of this space.
+    /// i.e. for a property space, the action should use the PropertyRent command, and not StationRent, or UtilityRent.
+    /// </summary>
+    override public void ValidateAction()
+    {
+        if (!action.ContainsCommand<PropertyRent>())
+        {
+            throw new Action.SyntaxError("The property '" + name + "' must contain the PropertyRent command in its' action string.");
+        }
+
+        if (action.ContainsCommand<StationRent>() || action.ContainsCommand<UtilityRent>())
+        {
+            throw new Action.SyntaxError("The property '" + name + "' must contain the cannot contain either StationRent or UtilityRent in its' action string.");
         }
     }
 }

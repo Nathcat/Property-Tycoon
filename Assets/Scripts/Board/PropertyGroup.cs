@@ -18,6 +18,9 @@ public class PropertyGroup
     public static Color COLOR_STATION = new Color(0.2f, 0.2f, 0.2f);
     public static Color COLOR_UTILITIES = new Color(0.9f, 0.9f, 0.9f);
 
+    public static string STATION_GROUP_NAME = "Station";
+    public static string UTILITY_GROUP_NAME = "Utilities";
+
     public string name;
     private List<Property> properties;  // Change this to List<Property> once implemented
 
