@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using TMPro;
-
 /// <summary>Provides utility functions for generating the game board</summary>
 public class BoardGenerator
 {
