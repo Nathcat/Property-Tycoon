@@ -47,14 +47,16 @@ public class GameController : MonoBehaviour
     /// <summary> The configuration data of the currently loaded board. </summary>
     private FileManager.BoardData board;
 
+    /// <summary> The configuration data for the two decks of cards. </summary>
+    private FileManager.CardData cards;
+
     /// <summary> The card deck for the Opportunity Knocks cards. </summary>
-    public List<Card> opportunityDeck;
+    private Queue<Card> opportunityDeck;
 
     /// <summary> The card deck for the Pot Luck cards. </summary>
-    public List<Card> luckDeck;
+    private Queue<Card> luckDeck;
 
-    /// <summary> Random used for shuffling the card decks. </summary>
-    public System.Random rnd;
+    
 
 
 
@@ -99,36 +101,48 @@ public class GameController : MonoBehaviour
     /// <summary> Put the card information from the csv file into the relevant card decks, and shuffle both decks. </summary>
     public void SetupCards()
     {
-        FileManager.ReadCardCSV(Path.Combine(Application.dataPath, "card.csv"), luckDeck, opportunityDeck);
-        rnd = new System.Random();
+        cards = FileManager.ReadCardCSV(Path.Combine(Application.dataPath, "card.csv"));
+        luckDeck = cards.luck;
+        opportunityDeck = cards.opportunity;
         //shuffle the pot luck cards
-        Shuffle(luckDeck);
+        //Shuffle(luckDeck);
         //shuffle the opportunity knocks cards
-        Shuffle(opportunityDeck);
+        //Shuffle(opportunityDeck);
     }
 
     /// <summary> Shuffle the given card deck using a BogoSort style method. </summary>
     /// <param name="cards"> The card deck to be shuffled. </param>
-    public void Shuffle(List<Card> cards)
+    public void Shuffle(Queue<Card> input)
     {
         int random;
         Card temp = null;
-        for (int i = 0; i < cards.Count; i++)
+        Card[] cards = new Card[input.Count];
+        for (int i = 0; i < input.Count; i++)
         {
-            random  = rnd.Next(i, cards.Count);
+            cards[i] = input.Dequeue();
+        }
+        
+        for (int i = 0; i < cards.Length; i++)
+        {
+            random  = Random.Range(i, cards.Length);
             temp = cards[random];
             cards[random] = cards[i];
             cards[i] = temp;
         }
+
+        for (int i = 0; i < cards.Length; i++)
+        {
+            input.Enqueue(cards[i]);
+        }
+        
     }
 
     /// <summary> Draw and run the action for the top card from the Pot Luck deck. </summary>
-    public void TakeLuck()
+    public void DrawLuck()
     {
         if(luckDeck.Count != 0)
         {
-            Card removed = luckDeck[0];
-            luckDeck.Remove(luckDeck[0]);
+            Card removed = luckDeck.Dequeue();
             removed.action.Run(turnCounter);
         }
         else
@@ -137,13 +151,12 @@ public class GameController : MonoBehaviour
         }
     }
 
-    /// <summary> Draw and run the action for the top card from the Opportunity Knocks deck. </summary>
-    public void TakeOpportunity()
+    public void DrawOpportunity()
     {
         if (opportunityDeck.Count != 0)
         {
-            Card removed = opportunityDeck[0];
-            opportunityDeck.Remove(luckDeck[0]);
+            Card removed = opportunityDeck.Dequeue();
+            
             removed.action.Run(turnCounter);
         }
         else
@@ -154,16 +167,16 @@ public class GameController : MonoBehaviour
 
     /// <summary> Place a card onto the bottom of the Pot Luck deck. </summary>
     /// <param name="luckCard"> A card to be placed onto the bottom of the Pot Luck deck. </param>
-    public void ReturnLuck(Card luckCard)
+    public void DiscardLuck(Card luckCard)
     {
-        luckDeck[luckDeck.Count] = luckCard;
+        luckDeck.Enqueue(luckCard);
     }
 
     /// <summary> Place a card onto the bottom of the Opportunity Knocks deck. </summary>
     /// <param name="luckCard"> A card to be placed onto the bottom of the Opportunity Knocks deck. </param>
-    public void ReturnOpportunity(Card opportunityCard)
+    public void DiscardOpportunity(Card opportunityCard)
     {
-        opportunityDeck[opportunityDeck.Count] = opportunityCard;
+        opportunityDeck.Enqueue(opportunityCard);
     }
 
 
