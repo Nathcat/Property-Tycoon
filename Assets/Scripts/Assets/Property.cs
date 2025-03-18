@@ -114,7 +114,16 @@ public class Property : Space, IAsset
         if (CanUpgrade())
         {
             // TODO Remove cash from owner
-            Cash toPay = new Cash(upgradeCost);
+            Cash toPay;
+            if (upgradeLevel == 4)
+            {
+                toPay = new Cash(upgradeCost * 5);
+            }
+            else
+            {
+                toPay = new Cash(upgradeCost);
+            }
+
             upgradeLevel++;
         }
     }
@@ -134,5 +143,22 @@ public class Property : Space, IAsset
         {
             throw new Action.SyntaxError("The property '" + name + "' must contain the cannot contain either StationRent or UtilityRent in its' action string.");
         }
+    }
+
+    /// <summary>
+    /// Get a string describing the rent which should be paid upon landing on this space.
+    /// Should be used to display to the user.
+    /// </summary>
+    /// <returns>A string describing the rent to be paid upon landing on this space.</returns>
+    virtual public string GetRentDescription()
+    {
+        Argument[] args = action.GetCommandArguments<PropertyRent>();
+
+        if (args.Length != 6)
+        {
+            throw new Action.SyntaxError("Action string for space '" + name + "' is invalid, PropertyRent should have 6 arguments!");
+        }
+
+        return "Undeveloped: £" + args[0].value + "\n1 house: £" + args[1] + "\n2 houses: £" + args[2] + "\n3 houses: £" + args[3] + "\n4 houses: " + args[4] + "\nHotel: £" + args[5];
     }
 }

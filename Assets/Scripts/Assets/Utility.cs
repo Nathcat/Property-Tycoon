@@ -31,4 +31,9 @@ public class Utility : Property
             throw new Action.SyntaxError("The utility '" + name + "' must contain the cannot contain either StationRent or PropertyRent in its' action string.");
         }
     }
+
+    public override string GetRentDescription()
+    {
+        return "If one utility is owned by the player who owns this utility, rent is 4 times the amount shown on the dice.\nIf both utilities are owned by the same player, rent is 10 times the amount shown on the dice.";
+    }
 }

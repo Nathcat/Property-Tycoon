@@ -162,4 +162,36 @@ public class Action
 
         return false;
     }
+
+    /// <summary>
+    /// Return the arguments given to the first instance of the specified command in this action.
+    /// </summary>
+    /// <typeparam name="T">The type of the command</typeparam>
+    /// <returns>The arguments provided to the first instance of the specified command.</returns>
+    public Argument[] GetCommandArguments<T>() where T: Command
+    {
+        List<Argument> args = new List<Argument>();
+
+        bool adding = false;
+        foreach (Token token in commandStringLexed)
+        {
+            if (!adding && token is T)
+            {
+                adding = true;
+            }
+            else if (adding)
+            {
+                if (token is Argument)
+                {
+                    args.Add(token as Argument);
+                }
+                else if (token is CommandEnd)
+                {
+                    return args.ToArray();
+                }
+            }
+        }
+
+        return null;
+    }
 }
