@@ -18,10 +18,13 @@ public class PropertyGroup
     public static Color COLOR_STATION = new Color(0.2f, 0.2f, 0.2f);
     public static Color COLOR_UTILITIES = new Color(0.9f, 0.9f, 0.9f);
 
-    public string name;
-    private List<Space> properties;  // Change this to List<Property> once implemented
+    public static string STATION_GROUP_NAME = "Station";
+    public static string UTILITY_GROUP_NAME = "Utilities";
 
-    public PropertyGroup(string name, List<Space> properties)
+    public string name;
+    private List<Property> properties;  // Change this to List<Property> once implemented
+
+    public PropertyGroup(string name, List<Property> properties)
     {
         this.name = name;
         this.properties = properties;
@@ -30,7 +33,7 @@ public class PropertyGroup
     public PropertyGroup(string name)
     {
         this.name = name;
-        this.properties = new List<Space>();
+        this.properties = new List<Property>();
     }
 
     /// <summary>
@@ -47,9 +50,9 @@ public class PropertyGroup
     /// </summary>
     /// <param name="p">The property to search for</param>
     /// <returns>True if this group contains p, false otherwise</returns>
-    public bool ContainsProperty(Space p)
+    public bool ContainsProperty(Property p)
     {
-        foreach (Space prop in properties)
+        foreach (Property prop in properties)
         {
             if (prop == p) return true;
         }
@@ -63,10 +66,10 @@ public class PropertyGroup
     /// </summary>
     /// <param name="pList">The list of properties to check.</param>
     /// <returns>True if this list contains all the properties in this group, false otherwise</returns>
-    public bool HasCompleteGroup(Space[] pList)
+    public bool HasCompleteGroup(Property[] pList)
     {
         int containedProperties = 0;
-        foreach (Space p in pList)
+        foreach (Property p in pList)
         {
             if (ContainsProperty(p)) containedProperties++;
 
@@ -80,9 +83,27 @@ public class PropertyGroup
     /// Add a property to the group
     /// </summary>
     /// <param name="p">The property to add</param>
-    public void AddProperty(Space p)
+    public void AddProperty(Property p)
     {
         properties.Add(p);
+    }
+
+    /// <summary>
+    /// Get the minimum upgrade level of all the properties in this group
+    /// </summary>
+    /// <returns>The minimum upgrade level of all the properties in this group</returns>
+    public int GetMinimumUpgradeLevel()
+    {
+        int min = 5;
+        foreach (Property p in properties)
+        {
+            if (p.upgradeLevel < min)
+            {
+                min = p.upgradeLevel;
+            }
+        }
+
+        return min;
     }
 
     /// <summary>

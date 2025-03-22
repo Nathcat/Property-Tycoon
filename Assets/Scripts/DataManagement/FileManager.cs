@@ -78,19 +78,14 @@ public class FileManager
         {
             string[] elements = Regex.Split(content[i], ",\\s*", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500));
 
-            if (elements.Length != 5)
+            if (elements.Length != 6)
             {
-                throw new InvalidFormatException("Expected 5 items in row " + i + ", but got " + elements.Length);
+                throw new InvalidFormatException("Expected 6 items in row " + i + ", but got " + elements.Length);
             }
 
             // Parse data from the line
             PropertyGroup g = null;
             int cost = -1;
-
-            if (elements[3] != "null")
-            {
-                cost = Int32.Parse(elements[3]);
-            }
 
             if (elements[2] != "null")
             {
@@ -104,17 +99,58 @@ public class FileManager
                     groups[elements[2]] = g;
                 }
             }
+            else if (elements[3] != "null")
+            {
+                cost = Int32.Parse(elements[3]);
+            }
 
-            Space s = new Space(
-                Int32.Parse(elements[0]),
-                elements[1],
-                g,
-                new Action(elements[4]),
-                cost
-            );
+            Space s;
+
+            // If the property group given in the CSV is null, we assume we are dealing with a normal space, and
+            // not a property. Otherwise we assume it is a property.
+            if (g != null)
+            {
+                if (g.name == PropertyGroup.STATION_GROUP_NAME)
+                {
+                    s = new Station(
+                        Int32.Parse(elements[0]),
+                        elements[1],
+                        g,
+                        new Action(elements[4]),
+                        cost
+                    );
+                }
+                else if (g.name == PropertyGroup.UTILITY_GROUP_NAME)
+                {
+                    s = new Utility(
+                        Int32.Parse(elements[0]),
+                        elements[1],
+                        g,
+                        new Action(elements[4]),
+                        cost
+                    );
+
+                }
+                else
+                {
+                    s = new Property(
+                        Int32.Parse(elements[0]),
+                        elements[1],
+                        g,
+                        new Action(elements[4]),
+                        cost,
+                        Int32.Parse(elements[5])
+                    );
+                }
+
+                    g.AddProperty(s as Property);
+            }
+            else
+            {
+                s = new Space(Int32.Parse(elements[0]), elements[1], new Action(elements[4]));
+            }
 
             spaces.Add(s);
-            if (g != null) g.AddProperty(s);
         }
 
         return new BoardData(spaces.ToArray(), groups.Values.ToArray());
