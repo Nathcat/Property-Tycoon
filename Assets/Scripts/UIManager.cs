@@ -21,12 +21,15 @@ public class UIManager : MonoBehaviour
     //InGame Fields
     [SerializeField] private GameObject HelpAndEscape = null;
     [SerializeField] private GameObject PauseButton = null;
-    [SerializeField] private GameObject Die1 = null;
-    [SerializeField] private GameObject Die2 = null;
+    [SerializeField] private GameObject[] Dice;
     [SerializeField] private GameObject[] PlayerCardElements;
     [SerializeField] private TextMeshProUGUI PlayerTurn;
     public int DiceValue1;
     public int DiceValue2;
+
+
+    //AuctionMenu Fields
+    [SerializeField] private GameObject AuctionScreen = null;
 
 
     //Scene Management
@@ -177,8 +180,8 @@ public class UIManager : MonoBehaviour
     {
         //Roll dice with value
         //Pass to appropriate functions
-        //Die1.text = 
-        //Die2.text = 
+        //Dice[0].text = 
+        //Dice[1].text = 
     }
     public void SetAllCardNames()
     {
@@ -217,6 +220,57 @@ public class UIManager : MonoBehaviour
 
         //Set the leaderboard name by getting the name from the player controller (For loop)
         //Set the leaderboard money by getting the money from the player controller (For loop)
+    }
+    //----------auction menu-------------------
+    public void AMOpen()
+    {
+        AuctionScreen.SetActive(true);
+        TurnOnPlayerCards();
+        PauseButton.SetActive(true);
+        HelpAndEscape.SetActive(false);
+        HelpAndRules.SetActive(false);
+        Rules.SetActive(false);
+        Help.SetActive(false);
+        Dice[0].SetActive(false);
+        Dice[1].SetActive(false);
+        SetAllAuctionCardNames();
+    }
+    public void AMClose()
+    {
+        TurnOnPlayerCards();
+        PauseButton.SetActive(true);
+        HelpAndEscape.SetActive(false);
+        HelpAndRules.SetActive(false);
+        Rules.SetActive(false);
+        Help.SetActive(false);
+        Dice[0].SetActive(false);
+        Dice[1].SetActive(false);
+        AuctionScreen.SetActive(false);
+        SetAllCardNames();
+    }
+    public void AMBid(int Bid, int PlayerID)
+    {
+        //Increment player's bid by X if their money is above X+HighestBid
+        //If it can't, say error?
+        //Check if this is highest bid, if so player is set as the 'winner' if the auction ends (All withdraw but them, if another player bids above this they are set to the 'winner') and update the ui element
+    }
+    public void AMWithdraw(int PlayerID)
+    {
+        //Remove player from list of bidders
+        //If list is 1, call end auction
+    }
+    public void AMEndAuction()
+    {
+        //Awards player X with the property and deducts the money from their money
+        //Calls AMClose()
+    }
+    public void SetAllAuctionCardNames()
+    {
+        for (int i = 0; i < GameController.instance.counters.Length; i++)
+        {
+            PlayerCardElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
+            //PlayerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = //This would be wherever we get the bid amount from
+        }
     }
 
 
