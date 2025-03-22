@@ -80,14 +80,7 @@ public class CounterController : MonoBehaviour
         // Gets the second dice's value
         int dice2 = Random.Range(1, 7);
         
-        if(dice1 == dice2)
-        {
-            return new rollData(dice1, dice2, true);
-        }
-        else
-        {
-            return new rollData(dice1, dice2, false);
-        }
+        return new rollData(dice1, dice2, dice1 == dice2);
     }
 
 
