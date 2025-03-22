@@ -15,7 +15,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private int heightOffset = 2;
     [SerializeField] private int lengthOffset = 5;
 
-    [SerializeField] public Property space;
+    [SerializeField] public Property property;
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +34,7 @@ public class CameraController : MonoBehaviour
         if (target.TryGetComponent<CounterController>(out CounterController counter))
         {
             if ((counter.space) is Property) {
-                space = (counter.space as Property);
+                property = (counter.space as Property);
                 onUpdateCamera.Invoke(this);
             }
             

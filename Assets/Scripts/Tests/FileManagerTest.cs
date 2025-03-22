@@ -39,7 +39,7 @@ public class FileManagerTest : MonoBehaviour
             string o = "Space: " + s.name;
             if (s is Property)
             {
-                o += " of group " + (s as Property).propertyGroup.name;
+                o += " of group " + (s as Property).propertyGroup.name + " costing " + (s as Property).cost;
             }
 
             Debug.Log(o);

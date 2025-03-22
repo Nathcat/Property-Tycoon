@@ -98,10 +98,15 @@ public class FileManager
                     g = new PropertyGroup(elements[2]);
                     groups[elements[2]] = g;
                 }
-            }
-            else if (elements[3] != "null")
-            {
-                cost = Int32.Parse(elements[3]);
+
+                if (elements[3] != "null")
+                {
+                    cost = Int32.Parse(elements[3]);
+                }
+                else
+                {
+                    Debug.LogWarning("Property group was supplied without a cost for property " + elements[1]);
+                }
             }
 
             Space s;
@@ -143,7 +148,9 @@ public class FileManager
                     );
                 }
 
-                    g.AddProperty(s as Property);
+                g.AddProperty(s as Property);
+
+                Debug.Log((s as Property).GetRentDescription());
             }
             else
             {

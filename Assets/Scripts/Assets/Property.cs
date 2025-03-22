@@ -159,6 +159,6 @@ public class Property : Space, IAsset
             throw new Action.SyntaxError("Action string for space '" + name + "' is invalid, PropertyRent should have 6 arguments!");
         }
 
-        return "Undeveloped: £" + args[0].value + "\n1 house: £" + args[1] + "\n2 houses: £" + args[2] + "\n3 houses: £" + args[3] + "\n4 houses: " + args[4] + "\nHotel: £" + args[5];
+        return "Current rent cost: £" + args[upgradeLevel].value + "\n\nUndeveloped: £" + args[0].value + "\n1 house: £" + args[1].value + "\n2 houses: £" + args[2].value + "\n3 houses: £" + args[3].value + "\n4 houses: £" + args[4].value + "\nHotel: £" + args[5].value;
     }
 }
