@@ -21,16 +21,15 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject HelpAndEscape = null;
     [SerializeField] private GameObject PauseButton = null;
-    [SerializeField] private GameObject[] 
     [SerializeField] private GameObject Dice = null;
     [SerializeField] private GameObject[] PlayerCardElements;
+    [SerializeField] private TextMeshProUGUI PlayerTurn;
 
 
 
     [SerializeField] private Scene Scene;
     [SerializeField] private string CurrentScene = "";
     [SerializeField] private string GameScene = "Tyler's Testing Scene";
-    [SerializeField] private CounterController[] counters = GameController.instance.counters;
 
     //private TMP_Text text;
 
@@ -52,7 +51,7 @@ public class UIManager : MonoBehaviour
         }
         else if (Scene.name == GameScene)
         {
-            TurnOffPlayerCards;
+            TurnOffPlayerCards();
             //SetupScreen.SetActive(true);
             PauseButton.SetActive(false);
             HelpAndEscape.SetActive(false);
@@ -83,7 +82,7 @@ public class UIManager : MonoBehaviour
         }
         else if (Scene.name == GameScene)
         {
-            TurnOffPlayerCards;
+            TurnOffPlayerCards();
             HelpAndEscape.SetActive(true);
             HelpAndRules.SetActive(true);
             //HelpMenu.SetActive(false);
@@ -144,7 +143,7 @@ public class UIManager : MonoBehaviour
     }
     public void PMBackButton()
     {
-        TurnOnPlayerCards;
+        TurnOnPlayerCards();
         HelpAndEscape.SetActive(false);
         //Start all functions of the game
     }
@@ -163,31 +162,32 @@ public class UIManager : MonoBehaviour
     {
         PlayerTurn.text = GameController.instance.turnCounter.name;
     }
+
     public void IGInitialiseUI()
     {
-        TurnOnPlayerCards;
+        TurnOnPlayerCards();
         PauseButton.SetActive(true);
         //SetupScreen.SetActive(false);
         //Activates the names, money, etc
     }
     public void SetAllCardNames()
     {
-        for (int i = 0; i < counters.Length; i++)
+        for (int i = 0; i < GameController.instance.counters.Length; i++)
         {
-            PlayerCardElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = counters[i].name;
-            PlayerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = counters[i].portfolio.TotalValue().ToString();
+            PlayerCardElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
+            PlayerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].portfolio.TotalValue().ToString();
         }
     }
     public void TurnOffPlayerCards()
     {
-        for (global::System.Int32 i = 0; i < PlayerCardElements.length; i++)
+        for (global::System.Int32 i = 0; i < PlayerCardElements.Length; i++)
         {
             PlayerCardElements[i].SetActive(false);
         }
     }
     public void TurnOnPlayerCards()
     {
-        for (global::System.Int32 i = 0; i < PlayerCardElements.length; i++)
+        for (global::System.Int32 i = 0; i < PlayerCardElements.Length; i++)
         {
             PlayerCardElements[i].SetActive(true);
         }
