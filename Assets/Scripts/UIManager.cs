@@ -221,6 +221,12 @@ public class UIManager : MonoBehaviour
         //Set the leaderboard name by getting the name from the player controller (For loop)
         //Set the leaderboard money by getting the money from the player controller (For loop)
     }
+    //----------property buying----------------
+    public void PBOption(bool Selection)
+    {
+        //If true, they bought property, deduct money and add it to their portfolio
+        //If false, they auctioned, call AMOpen()
+    }
     //----------auction menu-------------------
     public void AMOpen()
     {
