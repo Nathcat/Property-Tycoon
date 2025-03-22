@@ -15,6 +15,8 @@ public class CounterController : MonoBehaviour
     
     /// <summary> The index of this counter in <see cref="GameController.counters"/>. </summary>
     public int order { get { return System.Array.IndexOf(GameController.instance.counters, this); } }
+
+    public string name;
     
     // Start is called before the first frame update
     void Start()

@@ -17,9 +17,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject Rules = null;
     [SerializeField] private GameObject HelpAndEscape = null;
     [SerializeField] private GameObject Dice = null;
+    [SerializeField] private GameObject[] PlayerNameElements;
     [SerializeField] private Scene Scene;
     [SerializeField] private string CurrentScene = "";
     [SerializeField] private string GameScene = "Tyler's Testing Scene";
+    [SerializeField] private CounterController[] counters = Gamecontroller.counters;
 
     //private TMP_Text text;
 
@@ -52,7 +54,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     //----------main menu----------
@@ -143,17 +145,25 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    public void SetPlayerTurnDullCard(int PlayerID)
+    public void IGSettingCurrentTurn()
+    {
+        PlayerTurn.text = GameController.instance.turnCounter.name;
+    }
+    public void SetAllCardNames()
+    {
+        for (global::System.Int32 i = 0; i < counters.length; i++)
+        {
+            PlayerNameElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = counters[i].name;
+            PlayerNameElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = counters[i].portfolio.TotalValue;
+        }
+    }
+    public void SetPlayerTurnDullCard(int cardToDull)
     {
         //We'd dull everyone's colours but the Player who's ID we have, maybe we dull all then lighten the right card
         //Some array of colours saved, 6 for regular colours and 6 for dull
 
         //gameObject.GetComponent<Renderer>().material.color = new Color(0f, 0f, 0f);
 
-    }
-    public void SetCurrentCardName(int PlayerID)
-    {
-        //Get the name from the game controller based upon ID
     }
     public void SetLeaderboard()
     {
