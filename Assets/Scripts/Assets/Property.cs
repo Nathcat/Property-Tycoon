@@ -21,7 +21,7 @@ public class Property : Space, IAsset
     /// <summary>
     /// The cost to buy of this property. Also denotes is value as an asset.
     /// </summary>
-    private int cost;
+    public int cost;
 
     /// <summary>
     /// The cost to upgrade this property

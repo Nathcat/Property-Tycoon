@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour
 
     /// <summary> The <see cref="CounterController"/> who currently has their turn. </summary>
     public CounterController turnCounter { get { return counters[turnIndex]; } }
-
+    
     /// <summary> Array of <see cref="SpaceController"/> objects the board consists of. </summary>
     public SpaceController[] spaceControllers { get; private set; }
 
@@ -45,6 +45,7 @@ public class GameController : MonoBehaviour
 
     /// <summary> The configuration data of the currently loaded board. </summary>
     private FileManager.BoardData board;
+
 
     [Header("Testing")]
     [SerializeField] private CounterController counterPrefab;
@@ -59,8 +60,9 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         SetupBoard();
-
+        
         SetupCounters(new CounterController[6].Select(_ => Instantiate(counterPrefab)).ToArray());
+  
         turnCounter.PlayTurn();
     }
 

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CameraController : MonoBehaviour
 {
+    public static UnityEvent<CameraController> onUpdateCamera = new UnityEvent<CameraController>();
     //for testing purposes
-    [SerializeField] private GameObject target;
+    [SerializeField] public GameObject target = null;
     ///used to set the board radius
     [SerializeField] private float boardRadius = 5;
     ///used to contol the camers offset
@@ -13,7 +15,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private int heightOffset = 2;
     [SerializeField] private int lengthOffset = 5;
 
-    [SerializeField] public Space space;
+    [SerializeField] public Property space;
 
     // Start is called before the first frame update
     void Start()
@@ -28,29 +30,38 @@ public class CameraController : MonoBehaviour
     /// <param name="target">what you want the camera to focus on</param>
     void UpdateCamera(GameObject target) 
     {
-        //sets the position to that of the target
-        this.transform.position = target.transform.position;
+        
+        if (target.TryGetComponent<CounterController>(out CounterController counter))
+        {
+            if ((counter.space) is Property) {
+                space = (counter.space as Property);
+                onUpdateCamera.Invoke(this);
+            }
+            
+            //sets the position to that of the target
+            this.transform.position = target.transform.position;
 
-        //checks where the target is and then moves it based on if its in the N,S,E or W
-        if (this.transform.position.x > boardRadius) 
-        {
-            this.transform.position = new Vector3(target.transform.position.x+ sideOffset, target.transform.position.y + heightOffset, target.transform.position.z+ lengthOffset);
-            this.transform.LookAt(target.transform.position);
-        }
-        else if (this.transform.position.z < -boardRadius)
-        {
-            this.transform.position = new Vector3(target.transform.position.x + lengthOffset, target.transform.position.y + heightOffset, target.transform.position.z - sideOffset);
-            this.transform.LookAt(target.transform.position);
-        }
-        else if (this.transform.position.x < -boardRadius)
-        {
-            this.transform.position = new Vector3(target.transform.position.x - sideOffset, target.transform.position.y + heightOffset, target.transform.position.z - lengthOffset);
-            this.transform.LookAt(target.transform.position);
-        }
-        else if (this.transform.position.z > boardRadius)
-        {
-            this.transform.position = new Vector3(target.transform.position.x - lengthOffset, target.transform.position.y + heightOffset, target.transform.position.z + sideOffset);
-            this.transform.LookAt(target.transform.position);
+            //checks where the target is and then moves it based on if its in the N,S,E or W
+            if (this.transform.position.x > boardRadius)
+            {
+                this.transform.position = new Vector3(target.transform.position.x + sideOffset, target.transform.position.y + heightOffset, target.transform.position.z + lengthOffset);
+                this.transform.LookAt(target.transform.position);
+            }
+            else if (this.transform.position.z < -boardRadius)
+            {
+                this.transform.position = new Vector3(target.transform.position.x + lengthOffset, target.transform.position.y + heightOffset, target.transform.position.z - sideOffset);
+                this.transform.LookAt(target.transform.position);
+            }
+            else if (this.transform.position.x < -boardRadius)
+            {
+                this.transform.position = new Vector3(target.transform.position.x - sideOffset, target.transform.position.y + heightOffset, target.transform.position.z - lengthOffset);
+                this.transform.LookAt(target.transform.position);
+            }
+            else if (this.transform.position.z > boardRadius)
+            {
+                this.transform.position = new Vector3(target.transform.position.x - lengthOffset, target.transform.position.y + heightOffset, target.transform.position.z + sideOffset);
+                this.transform.LookAt(target.transform.position);
+            }
         }
     }
 }
