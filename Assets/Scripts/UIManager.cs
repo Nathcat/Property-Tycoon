@@ -16,9 +16,17 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject Settings = null;
     [SerializeField] private GameObject Help = null;
     [SerializeField] private GameObject Rules = null;
+
+
+
     [SerializeField] private GameObject HelpAndEscape = null;
+    [SerializeField] private GameObject PauseButton = null;
+    [SerializeField] private GameObject[] 
     [SerializeField] private GameObject Dice = null;
-    [SerializeField] private GameObject[] PlayerNameElements;
+    [SerializeField] private GameObject[] PlayerCardElements;
+
+
+
     [SerializeField] private Scene Scene;
     [SerializeField] private string CurrentScene = "";
     [SerializeField] private string GameScene = "Tyler's Testing Scene";
@@ -44,8 +52,9 @@ public class UIManager : MonoBehaviour
         }
         else if (Scene.name == GameScene)
         {
+            TurnOffPlayerCards;
             //SetupScreen.SetActive(true);
-            //PauseMenu.SetActive(false);
+            PauseButton.SetActive(false);
             HelpAndEscape.SetActive(false);
             HelpAndRules.SetActive(false);
             Rules.SetActive(false);
@@ -74,6 +83,7 @@ public class UIManager : MonoBehaviour
         }
         else if (Scene.name == GameScene)
         {
+            TurnOffPlayerCards;
             HelpAndEscape.SetActive(true);
             HelpAndRules.SetActive(true);
             //HelpMenu.SetActive(false);
@@ -134,6 +144,7 @@ public class UIManager : MonoBehaviour
     }
     public void PMBackButton()
     {
+        TurnOnPlayerCards;
         HelpAndEscape.SetActive(false);
         //Start all functions of the game
     }
@@ -154,14 +165,31 @@ public class UIManager : MonoBehaviour
     }
     public void IGInitialiseUI()
     {
+        TurnOnPlayerCards;
+        PauseButton.SetActive(true);
+        //SetupScreen.SetActive(false);
         //Activates the names, money, etc
     }
     public void SetAllCardNames()
     {
         for (int i = 0; i < counters.Length; i++)
         {
-            PlayerNameElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = counters[i].name;
-            PlayerNameElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = counters[i].portfolio.TotalValue().ToString();
+            PlayerCardElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = counters[i].name;
+            PlayerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = counters[i].portfolio.TotalValue().ToString();
+        }
+    }
+    public void TurnOffPlayerCards()
+    {
+        for (global::System.Int32 i = 0; i < PlayerCardElements.length; i++)
+        {
+            PlayerCardElements[i].SetActive(false);
+        }
+    }
+    public void TurnOnPlayerCards()
+    {
+        for (global::System.Int32 i = 0; i < PlayerCardElements.length; i++)
+        {
+            PlayerCardElements[i].SetActive(true);
         }
     }
     public void SetPlayerTurnDullCard(int cardToDull)
