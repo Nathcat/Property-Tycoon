@@ -103,5 +103,5 @@ public class CounterController : MonoBehaviour
     /// <param name="dice1"> First dice value. </param>
     /// <param name="dice2"> Second dice value. </param>
     /// <param name="doubleRoll"> Whether the dice rolls are the same. </param>
-    public record rollData(int dice1, int dice2, bool doubleRoll);
+    public record RollData(int dice1, int dice2, bool doubleRoll);
 }
