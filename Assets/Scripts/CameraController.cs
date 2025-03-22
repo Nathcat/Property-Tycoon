@@ -13,6 +13,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private int heightOffset = 2;
     [SerializeField] private int lengthOffset = 5;
 
+    [SerializeField] public Space space;
+
     // Start is called before the first frame update
     void Start()
     {
