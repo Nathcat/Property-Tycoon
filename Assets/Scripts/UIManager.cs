@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Scene Scene;
     [SerializeField] private string CurrentScene = "";
     [SerializeField] private string GameScene = "Tyler's Testing Scene";
-    [SerializeField] private CounterController[] counters = Gamecontroller.counters;
+    [SerializeField] private CounterController[] counters = GameController.instance.counters;
 
     //private TMP_Text text;
 
@@ -151,10 +152,10 @@ public class UIManager : MonoBehaviour
     }
     public void SetAllCardNames()
     {
-        for (global::System.Int32 i = 0; i < counters.length; i++)
+        for (int i = 0; i < counters.Length; i++)
         {
             PlayerNameElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = counters[i].name;
-            PlayerNameElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = counters[i].portfolio.TotalValue;
+            PlayerNameElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = counters[i].portfolio.TotalValue().ToString();
         }
     }
     public void SetPlayerTurnDullCard(int cardToDull)
