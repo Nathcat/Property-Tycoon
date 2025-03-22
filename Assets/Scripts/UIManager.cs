@@ -7,7 +7,7 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-
+    //MainMenu Fields
     [SerializeField] private GameObject StartScreen = null;
     [SerializeField] private GameObject Credits = null;
     [SerializeField] private GameObject HelpAndRules = null;
@@ -18,15 +18,18 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject Rules = null;
 
 
-
+    //InGame Fields
     [SerializeField] private GameObject HelpAndEscape = null;
     [SerializeField] private GameObject PauseButton = null;
-    [SerializeField] private GameObject Dice = null;
+    [SerializeField] private GameObject Die1 = null;
+    [SerializeField] private GameObject Die2 = null;
     [SerializeField] private GameObject[] PlayerCardElements;
     [SerializeField] private TextMeshProUGUI PlayerTurn;
+    public int DiceValue1;
+    public int DiceValue2;
 
 
-
+    //Scene Management
     [SerializeField] private Scene Scene;
     [SerializeField] private string CurrentScene = "";
     [SerializeField] private string GameScene = "Tyler's Testing Scene";
@@ -117,7 +120,11 @@ public class UIManager : MonoBehaviour
         StartScreen.SetActive(false);
         ConfirmClose.SetActive(true);
     }
-
+    public void EMYesButton()
+    {
+        //Close the program, I think we should do a while true loop that eats all their RAM >:3
+    }
+    //----------help menu----------
     public void HMHelpButton()
     {
         Help.SetActive(true);
@@ -129,10 +136,6 @@ public class UIManager : MonoBehaviour
         Help.SetActive(false);
     }
 
-    public void EMYesButton()
-    {
-        //Close the program, I think we should do a while true loop that eats all their RAM >:3
-    }
 
     //----------game----------
 
@@ -169,6 +172,13 @@ public class UIManager : MonoBehaviour
         PauseButton.SetActive(true);
         //SetupScreen.SetActive(false);
         //Activates the names, money, etc
+    }
+    public void IGSetDiceValues()
+    {
+        //Roll dice with value
+        //Pass to appropriate functions
+        //Die1.text = 
+        //Die2.text = 
     }
     public void SetAllCardNames()
     {
