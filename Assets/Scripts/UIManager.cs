@@ -44,6 +44,8 @@ public class UIManager : MonoBehaviour
         }
         else if (Scene.name == GameScene)
         {
+            //SetupScreen.SetActive(true);
+            //PauseMenu.SetActive(false);
             HelpAndEscape.SetActive(false);
             HelpAndRules.SetActive(false);
             Rules.SetActive(false);
@@ -149,6 +151,10 @@ public class UIManager : MonoBehaviour
     public void IGSettingCurrentTurn()
     {
         PlayerTurn.text = GameController.instance.turnCounter.name;
+    }
+    public void IGInitialiseUI()
+    {
+        //Activates the names, money, etc
     }
     public void SetAllCardNames()
     {
