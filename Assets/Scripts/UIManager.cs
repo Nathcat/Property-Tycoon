@@ -21,7 +21,6 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject HelpAndEscape = null;
     [SerializeField] private GameObject PauseButton = null;
-    [SerializeField] private GameObject[] 
     [SerializeField] private GameObject Dice = null;
     [SerializeField] private GameObject[] PlayerCardElements;
 
@@ -53,7 +52,7 @@ public class UIManager : MonoBehaviour
         else if (Scene.name == GameScene)
         {
             TurnOffPlayerCards;
-            //SetupScreen.SetActive(true);
+            //SetupScreen.SetActive(true); //This will activate the setup screen which will contain things like file selector for the CSV, player names, game type (Abridged, Full)
             PauseButton.SetActive(false);
             HelpAndEscape.SetActive(false);
             HelpAndRules.SetActive(false);
