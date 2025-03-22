@@ -15,6 +15,9 @@ public class CounterController : MonoBehaviour
     
     /// <summary> The index of this counter in <see cref="GameController.counters"/>. </summary>
     public int order { get { return System.Array.IndexOf(GameController.instance.counters, this); } }
+
+    /// <summary> The space that the counter is currently on </summary>
+    public SpaceController space { get { return GameController.instance.spaceControllers[position]; } }
     
     // Start is called before the first frame update
     void Start()
@@ -54,6 +57,6 @@ public class CounterController : MonoBehaviour
     /// <summary> Move this counter to the space specified in <see cref="position"/> </summary>
     private void Move()
     {
-        transform.position = GameController.instance.spaceControllers[position].waypoints[order].position;
+        transform.position = space.waypoints[order].position;
     }
 }
