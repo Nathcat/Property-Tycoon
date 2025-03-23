@@ -66,6 +66,7 @@ public class Portfolio
     /// <summary>
     /// Removes a given property from the portfolio.
     /// </summary>
+    /// <remarks>This should not be called manually! To sell a property use <see cref="Property.Sell"/></remarks>
     /// <param name="propertyOut">The property to be removed from the portfolio.</param>
     /// <returns>The removed property.</returns>
     public int RemoveProperty(Property propertyOut)
