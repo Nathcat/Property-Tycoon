@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -35,7 +34,7 @@ public class CounterController : MonoBehaviour
     /// </summary>
     public void PlayTurn()
     {
-        rollData roll = RollDice();
+        RollData roll = RollDice();
         MoveCounter(roll.dice1, roll.dice2);
         if (roll.doubleRoll)
         {
@@ -73,14 +72,14 @@ public class CounterController : MonoBehaviour
     /// Rolls two dice, and returns them, along with whether the dice rolls are the same.
     /// </summary>
     /// <returns> a record containing the two dice rolls as integers, as well as a boolean to denote whether the dice rolls were the same. </returns>
-    public rollData RollDice()
+    public RollData RollDice()
     {
         // Gets the first dice's value
         int dice1 = Random.Range(1, 7);
         // Gets the second dice's value
         int dice2 = Random.Range(1, 7);
         
-        return new rollData(dice1, dice2, dice1 == dice2);
+        return new RollData(dice1, dice2, dice1 == dice2);
     }
 
 
