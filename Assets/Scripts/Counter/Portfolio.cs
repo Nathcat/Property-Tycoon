@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
-using UnityEngine;
 
 /// <summary>
 /// Portfolio: A class used to represent a counter's portfolio in Property Tycoon.
