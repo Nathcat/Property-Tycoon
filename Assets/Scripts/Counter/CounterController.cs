@@ -50,6 +50,8 @@ public class CounterController : MonoBehaviour
             MoveCounter(roll.dice1, roll.dice2);
             // add in triple roll for prison
         }
+
+        GameController.instance.spaces[position].action.Run(this);
     }
 
 

@@ -18,6 +18,7 @@ public class UtilityRent : Command
 
         if (utility.isMortgaged) {
             Debug.LogError("Cannot take rent on mortgaged property!");
+            return;
         }
 
         if (!utility.isOwned) {

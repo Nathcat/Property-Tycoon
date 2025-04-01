@@ -46,7 +46,7 @@ public class Property : Space, IAsset
     /// <summary>
     /// True if this property has an owner
     /// </summary>
-    public bool isOwned { get { return owner == null; } }
+    public bool isOwned { get { return owner != null; } }
 
     /// <summary>
     /// The of upgrading to a hotel

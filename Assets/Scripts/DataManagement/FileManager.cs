@@ -66,7 +66,7 @@ public class FileManager
             opportunity.Enqueue(opportunityKnocks[i]);
         }
 
-        for (int i = 0; i <= potLuck.Count; i++)
+        for (int i = 0; i < potLuck.Count; i++)
         {
             luck.Enqueue(potLuck[i]);
         }

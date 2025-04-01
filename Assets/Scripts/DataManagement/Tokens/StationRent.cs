@@ -18,6 +18,7 @@ public class StationRent : Command
 
         if (station.isMortgaged) {
             Debug.LogError("Cannot take rent on mortgaged property!");
+            return;
         }
 
         if (!station.isOwned) {

@@ -18,6 +18,7 @@ public class PropertyRent : Command
 
         if (property.isMortgaged) {
             Debug.LogError("Cannot take rent on mortgaged property!");
+            return;
         }
 
         if (property.owner == null) {
