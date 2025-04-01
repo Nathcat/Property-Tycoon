@@ -56,6 +56,11 @@ public class GameController : MonoBehaviour
     /// <summary> The card deck for the Pot Luck cards. </summary>
     private Queue<Card> luckDeck;
 
+    /// <summary>
+    /// The total cash collected in free parking
+    /// </summary>
+    [HideInInspector] public Cash freeParking = new Cash(0);
+
 
 
 
