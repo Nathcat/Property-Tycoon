@@ -96,7 +96,7 @@ public class Property : Space, IAsset
     /// <returns>The current value of the property.</returns>
     public int GetValue()
     {
-        if (isMortgaged) { return cost / 2; } else { return cost;  }
+        if (isMortgaged) { return cost / 2; } else { return cost + (upgradeLevel == 5 ? hotelCost : (upgradeLevel * upgradeCost)); }
     }
 
     /// <summary>
