@@ -26,7 +26,7 @@ public class PropertyRent : Command
             return;
         }
 
-        int rent = System.Int32.Parse(args[property.upgradeLevel].value);
+        int rent = int.Parse(args[property.upgradeLevel].value);
 
         if (counterController.portfolio.GetCashBalance() >= rent) {
             property.owner.portfolio.AddAsset(counterController.portfolio.RemoveCash(new Cash(rent)));
