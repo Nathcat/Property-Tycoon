@@ -12,19 +12,24 @@ public class FileManagerTest : MonoBehaviour
         Debug.Log(cardsPath);
         Debug.Log(boardPath);
 
-        List<Card> potLuck = new List<Card>();
-        List<Card> opportunityKnocks = new List<Card>();
+        Queue<Card> potLuck;
+        Queue<Card> opportunityKnocks;
 
-        FileManager.ReadCardCSV(cardsPath, potLuck, opportunityKnocks);
+        FileManager.CardData cards = FileManager.ReadCardCSV(cardsPath);
+        potLuck = cards.luck;
+        opportunityKnocks = cards.opportunity;
+
 
         for (int i = 0; i < potLuck.Count; i++) {
-            Debug.Log("Pot Luck card: " + potLuck[i].ToString());
-            potLuck[i].action.Run(null);
+            Card tempCard = potLuck.Dequeue();
+            Debug.Log("Pot Luck card: " + tempCard.ToString());
+            tempCard.action.Run(null);
         }
 
         for (int i = 0; i < opportunityKnocks.Count; i++) {
-            Debug.Log("Opportunity Knocks card: " + opportunityKnocks[i].ToString());
-            opportunityKnocks[i].action.Run(null);
+            Card tempCard = opportunityKnocks.Dequeue();
+            Debug.Log("Opportunity Knocks card: " + tempCard.ToString());
+            tempCard.action.Run(null);
         }
 
         FileManager.BoardData data = FileManager.ReadBoardCSV(boardPath);
