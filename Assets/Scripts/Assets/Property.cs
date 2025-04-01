@@ -113,6 +113,10 @@ public class Property : Space, IAsset
             return false;
         }
 
+        if (owner.portfolio.GetCashBalance() < (upgradeLevel == 4 ? hotelCost : upgradeCost)) {
+            return false;
+        }
+
         if (upgradeLevel >= 0 && upgradeLevel < 5)
         {
             return true;
@@ -164,7 +168,7 @@ public class Property : Space, IAsset
             throw new Action.SyntaxError("Action string for space '" + name + "' is invalid, PropertyRent should have 6 arguments!");
         }
 
-        return "Undeveloped: £" + args[0].value + "\n1 house: £" + args[1] + "\n2 houses: £" + args[2] + "\n3 houses: £" + args[3] + "\n4 houses: " + args[4] + "\nHotel: £" + args[5];
+        return "Undeveloped: ï¿½" + args[0].value + "\n1 house: ï¿½" + args[1] + "\n2 houses: ï¿½" + args[2] + "\n3 houses: ï¿½" + args[3] + "\n4 houses: " + args[4] + "\nHotel: ï¿½" + args[5];
     }
 
     /// <summary>
@@ -174,7 +178,7 @@ public class Property : Space, IAsset
     /// <returns>True if <paramref name="counter"/> can purcahse this property.</returns>
     public bool CanPurchase(CounterController counter)
     {
-        return !isOwned && counter.portfolio.GetCashBalance() > cost;
+        return !isOwned && counter.portfolio.GetCashBalance() >= cost;
     }
 
     /// <summary>
