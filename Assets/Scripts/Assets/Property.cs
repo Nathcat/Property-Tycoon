@@ -16,7 +16,7 @@ public class Property : Space, IAsset
     }
 
     /// <summary> A boolean to signify if the property has been mortgaged.</summary>
-    private bool isMortgaged;
+    public bool isMortgaged { get; private set; } = false;
 
     /// <summary>
     /// The cost to buy of this property. Also denotes is value as an asset.
@@ -67,15 +67,6 @@ public class Property : Space, IAsset
         this.propertyGroup = group;
         this.cost = cost;
         this.upgradeCost = upgradeCost;
-    }
-
-    /// <summary>
-    /// Returns the mortgage status of the property.
-    /// </summary>
-    /// <returns>True if mortgaged, False if not.</returns>
-    public bool IsMortgaged()
-    {
-        return isMortgaged;
     }
 
     /// <summary>
