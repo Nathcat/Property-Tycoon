@@ -15,6 +15,11 @@ public class CounterController : MonoBehaviour
     /// <summary> The index of this counter in <see cref="GameController.counters"/>. </summary>
     public int order { get { return System.Array.IndexOf(GameController.instance.counters, this); } }
     
+    /// <summary>
+    /// Stores the last roll performed by this counter
+    /// </summary>
+    public RollData lastRoll { get; private set; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,11 +40,13 @@ public class CounterController : MonoBehaviour
     public void PlayTurn()
     {
         RollData roll = RollDice();
+        lastRoll = roll;
         MoveCounter(roll.dice1, roll.dice2);
         if (roll.doubleRoll)
         {
             Debug.Log("Double roll");
             roll = RollDice();
+            lastRoll = roll;
             MoveCounter(roll.dice1, roll.dice2);
             // add in triple roll for prison
         }

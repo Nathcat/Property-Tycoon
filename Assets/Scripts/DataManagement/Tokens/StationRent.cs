@@ -7,12 +7,45 @@ public class StationRent : Command
     public StationRent(string value) : base(value) {}
 
     override public void Execute(CounterController counterController, Argument[] args) {
-        string s = "----- STATIONRENT -----\n";
+        Space space = GameController.instance.spaces[counterController.position];
 
-        for (int i = 0; i < args.Length; i++) {
-            s += args[i].value + "\n";
+        if (!(space is Station)) {
+            Debug.LogError("StationRent must be applied to a station!");
+            return;
+        }
+    
+        Station station = (Station) space;
+
+        if (station.isMortgaged) {
+            Debug.LogError("Cannot take rent on mortgaged property!");
         }
 
-        Debug.Log(s);
+        if (!station.isOwned) {
+            Debug.LogError("Station must be owned for rent to apply!");
+            return;
+        }
+
+        int stationsOwned = 0;
+        foreach (Space s in GameController.instance.spaces) {
+            if (s is Station && (s as Station).owner == station.owner) stationsOwned++;
+        }
+
+        int rent = 0;
+
+        switch (stationsOwned) {
+            case 1: rent = 25; break;
+            case 2: rent = 50; break;
+            case 3: rent = 100; break;
+            case 4: rent = 200; break;
+            default: Debug.LogError("The owner of the incident station owns more than 4 stations, or no stations, this should be impossible!"); break;
+        }
+
+        if (counterController.portfolio.GetCashBalance() >= rent) {
+            station.owner.portfolio.AddAsset(counterController.portfolio.RemoveCash(new Cash(rent)));
+        }
+        else {
+            // TODO Here we should ask the player to sell their assets!
+            Debug.LogError("Incident player does not have enough money to pay rent!");
+        }
     }
 }

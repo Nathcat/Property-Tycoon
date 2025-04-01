@@ -105,7 +105,7 @@ public class Property : Space, IAsset
 
         if (owner.portfolio.GetCashBalance() >= (cost / 2)) {
             isMortgaged = false;
-            owner.portfolio.RemoveCash();
+            owner.portfolio.RemoveCash(new Cash(cost / 2));
         }
     }
 
