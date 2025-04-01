@@ -90,6 +90,26 @@ public class Property : Space, IAsset
     }
 
     /// <summary>
+    /// Determine whether or not you can unmortgage this property.
+    /// </summary>
+    /// <returns>True if the owner of this property can afford to unmortgage it, false otherwise</returns>
+    public bool CanUnMortgage() {
+        return owner != null && owner.portfolio.GetCashBalance() >= (cost / 2);
+    }
+
+    /// <summary>
+    /// Unmortgage this property, if possible
+    /// </summary>
+    public void UnMortgage() {
+        if (!CanUnMortgage()) return;
+
+        if (owner.portfolio.GetCashBalance() >= (cost / 2)) {
+            isMortgaged = false;
+            owner.portfolio.RemoveCash();
+        }
+    }
+
+    /// <summary>
     /// Return the value of this property. The value of a property is the cost to buy it. Or, if the property is
     /// currently mortgaged, the value of the property is halved.
     /// </summary>
