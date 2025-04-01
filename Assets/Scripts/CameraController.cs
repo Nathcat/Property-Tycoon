@@ -14,8 +14,11 @@ public class CameraController : MonoBehaviour
     [SerializeField] private int sideOffset = 1;
     [SerializeField] private int heightOffset = 2;
     [SerializeField] private int lengthOffset = 5;
-
+    [SerializeField] private GameObject propertyUIConroller;
     [SerializeField] public Property property;
+    [SerializeField] private int lastPropertyIndex;
+    [SerializeField] private GameObject events;
+
 
     // Start is called before the first frame update
     void Start()
@@ -30,14 +33,21 @@ public class CameraController : MonoBehaviour
     /// <param name="target">what you want the camera to focus on</param>
     void UpdateCamera(GameObject target) 
     {
-        
+
         if (target.TryGetComponent<CounterController>(out CounterController counter))
         {
-            if ((counter.space) is Property) {
+            if ((counter.space) is Property)
+            {
                 property = (counter.space as Property);
                 onUpdateCamera.Invoke(this);
+                lastPropertyIndex = property.position;
+                propertyUIConroller.GetComponent<CanvasGroup>().alpha = 1;
             }
-            
+            else
+            {
+                propertyUIConroller.GetComponent<CanvasGroup>().alpha = 0;
+            }
+
             //sets the position to that of the target
             this.transform.position = target.transform.position;
 
@@ -62,6 +72,69 @@ public class CameraController : MonoBehaviour
                 this.transform.position = new Vector3(target.transform.position.x - lengthOffset, target.transform.position.y + heightOffset, target.transform.position.z + sideOffset);
                 this.transform.LookAt(target.transform.position);
             }
+        }
+        
+    }
+
+    public void nextProperty() {
+        target = GameController.instance.spaceControllers[lastPropertyIndex + 1].gameObject;
+        if (target.GetComponent<SpaceController>().space is Property)
+        {
+            property = target.GetComponent<SpaceController>().space as Property;
+            events.GetComponent<PropertyUIController>().GetPropertyDetails(this);
+            onUpdateCamera.Invoke(this);
+            if (lastPropertyIndex <= GameController.instance.spaceControllers.Length - 1)
+            {
+                lastPropertyIndex = 0;
+            }
+            else
+            {
+                lastPropertyIndex = property.position + 1;
+            }
+        }
+
+        else
+        {
+            if (lastPropertyIndex <= GameController.instance.spaceControllers.Length - 1)
+            {
+                lastPropertyIndex = 0;
+            }
+            else
+            {
+                lastPropertyIndex = property.position + 1;
+            }
+            nextProperty();
+        }
+    }
+
+    public void lastProperty()
+    {
+        target = GameController.instance.spaceControllers[lastPropertyIndex - 1].gameObject;
+        if (target.GetComponent<SpaceController>().space is Property)
+        {
+            property = target.GetComponent<SpaceController>().space as Property;
+            events.GetComponent<PropertyUIController>().GetPropertyDetails(this);
+            onUpdateCamera.Invoke(this);
+            if (lastPropertyIndex  <= 0)
+            {
+                lastPropertyIndex = GameController.instance.spaceControllers.Length - 1;
+            }
+            else
+            {
+                lastPropertyIndex = property.position + 1;
+            }
+        }
+        else
+        {
+            if (lastPropertyIndex <= 0)
+            {
+                lastPropertyIndex = GameController.instance.spaceControllers.Length - 1;
+            }
+            else
+            {
+                lastPropertyIndex = property.position + 1;
+            }
+            nextProperty();
         }
     }
 }

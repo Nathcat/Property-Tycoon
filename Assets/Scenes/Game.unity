@@ -277,6 +277,9 @@ MonoBehaviour:
   sideOffset: 1
   heightOffset: 2
   lengthOffset: 5
+  propertyUIConroller: {fileID: 833346564}
+  lastPropertyIndex: 0
+  events: {fileID: 622103744}
 --- !u!1 &462438262 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7128892156882679776, guid: e23469b929cc5944bbe431a77e1282a4,
@@ -376,6 +379,24 @@ MonoBehaviour:
   propertyMortgageUI: {fileID: 1336571526}
   propertyHouseValueUI: {fileID: 960582518}
   propertyRentDescriptionUI: {fileID: 462438262}
+--- !u!1 &833346564 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 78121678833249948, guid: e23469b929cc5944bbe431a77e1282a4,
+    type: 3}
+  m_PrefabInstance: {fileID: 9019465926762578626}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &833346569
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 833346564}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &960582518 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6406998053615873582, guid: e23469b929cc5944bbe431a77e1282a4,
@@ -636,6 +657,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PropertyDetailsUI
       objectReference: {fileID: 0}
+    - target: {fileID: 1039142556063015417, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2300712532417131649, guid: e23469b929cc5944bbe431a77e1282a4,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -666,6 +692,41 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -550
       objectReference: {fileID: 0}
+    - target: {fileID: 7032956871814233787, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7032956871814233787, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7032956871814233787, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 129424071}
+    - target: {fileID: 7032956871814233787, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7032956871814233787, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: nextProperty
+      objectReference: {fileID: 0}
+    - target: {fileID: 7032956871814233787, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CameraController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7032956871814233787, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7046148341102162246, guid: e23469b929cc5944bbe431a77e1282a4,
         type: 3}
       propertyPath: m_UiScaleMode
@@ -680,6 +741,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ReferenceResolution.y
       value: 768
+      objectReference: {fileID: 0}
+    - target: {fileID: 7280532013877849884, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7280532013877849884, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7280532013877849884, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 129424071}
+    - target: {fileID: 7280532013877849884, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7280532013877849884, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: lastProperty
+      objectReference: {fileID: 0}
+    - target: {fileID: 7280532013877849884, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CameraController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7280532013877849884, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7328801603862468124, guid: e23469b929cc5944bbe431a77e1282a4,
         type: 3}
@@ -839,7 +935,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 78121678833249948, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 833346569}
   m_SourcePrefab: {fileID: 100100000, guid: e23469b929cc5944bbe431a77e1282a4, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

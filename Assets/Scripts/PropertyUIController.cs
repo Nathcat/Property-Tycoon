@@ -47,7 +47,7 @@ public class PropertyUIController : MonoBehaviour
         
     }
 
-    void GetPropertyDetails(CameraController camera) {
+    public void GetPropertyDetails(CameraController camera) {
         // Tyler what the fuck
         Property space = camera.property;
         propertyName = space.name;
