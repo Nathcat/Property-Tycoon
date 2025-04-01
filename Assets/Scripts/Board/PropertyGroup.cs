@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
@@ -104,6 +105,15 @@ public class PropertyGroup
         }
 
         return min;
+    }
+
+    /// <summary>
+    /// Get the maximum upgrade level of all the properties in this group
+    /// </summary>
+    /// <returns>The maximum upgrade level of all the properties in this group</returns>
+    public int GetMaximumUpgradeLevel()
+    {
+        return properties.Select(p => p.upgradeLevel).Max();
     }
 
     /// <summary>
