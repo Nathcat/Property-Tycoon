@@ -240,7 +240,7 @@ public class Property : Space, IAsset
     {
         if (!CanSell()) return;
 
-        owner.portfolio.AddAsset(new Cash(cost));
+        owner.portfolio.AddAsset(new Cash(isMortgaged ? (cost / 2) : cost));
         owner.portfolio.RemoveProperty(this);
         owner = null;
     }
