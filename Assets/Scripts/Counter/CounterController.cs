@@ -43,11 +43,13 @@ public class CounterController : MonoBehaviour
     {
         MoveAbsolute(GameController.instance.jailSpace.position);
         isInJail = true;
+        Debug.Log(name + " is now in jail! Jail space is at position " + GameController.instance.jailSpace.position);
     }
 
     public void LeaveJail()
     {
         isInJail = false;
+        Debug.Log(name + " has left jail!");
     }
 
     /// <summary>
