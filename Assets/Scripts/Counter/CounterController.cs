@@ -136,8 +136,13 @@ public class CounterController : MonoBehaviour
 
         // checks that the counter's new position is within the board limits
         position = position + move;
-        if (position > (GameController.instance.spaces.Length) - 1)
+        if (position > (GameController.instance.spaces.Length) - 1) {
             position = position % GameController.instance.spaces.Length;
+
+            // Add 200 cash when the player has moved fully around the board
+            portfolio.AddAsset(new Cash(200));
+            Debug.Log(name + " receives 200 for completing a lap of the board.");
+        }
 
         Move();
     }
