@@ -10,19 +10,24 @@ public class PropertyRent : Command
         Space space = GameController.instance.spaces[counterController.position];
 
         if (!(space is Property)) {
-            Debug.LogError("PropertyRent must be applied to a property!");
+            Debug.LogWarning("PropertyRent must be applied to a property!");
             return;
         }
     
         Property property = (Property) space;
 
         if (property.isMortgaged) {
-            Debug.LogError("Cannot take rent on mortgaged property!");
+            Debug.LogWarning("Cannot take rent on mortgaged property!");
             return;
         }
 
         if (property.owner == null) {
-            Debug.LogError("Property must be owned for rent to be taken!");
+            Debug.LogWarning("Property must be owned for rent to be taken!");
+            return;
+        }
+
+        if (property.owner.isInJail) {
+            Debug.LogWarning("Owner is in jail and cannot collect rent!");
             return;
         }
 
@@ -34,7 +39,7 @@ public class PropertyRent : Command
         }
         else {
             // TODO Here we should ask the player to sell their assets!
-            Debug.LogError("Incident player does not have enough money to pay rent!");
+            Debug.LogWarning("Incident player does not have enough money to pay rent!");
         }
     }
 }

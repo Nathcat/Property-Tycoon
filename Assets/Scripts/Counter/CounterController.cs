@@ -79,24 +79,34 @@ public class CounterController : MonoBehaviour
 
             Utils.RunAfter(1, GameController.instance.NextTurn);
         }
-        else {
+        else
+        {
             // Roll up to three times if in jail.
             // If any of those rolls is a double, then the player
             // leaves jail, and ends their turn.
             RollData roll = RollDice();
-            if (roll.doubleRoll) {
+            Debug.Log(roll.doubleRoll ? "First roll is a double!" : "First roll is not a double.");
+            if (roll.doubleRoll)
+            {
+                LeaveJail();
                 Utils.RunAfter(1, GameController.instance.NextTurn);
                 return;
             }
 
             roll = RollDice();
-            if (roll.doubleRoll) {
+            Debug.Log(roll.doubleRoll ? "Second roll is a double!" : "First roll is not a double.");
+            if (roll.doubleRoll)
+            {
+                LeaveJail();
                 Utils.RunAfter(1, GameController.instance.NextTurn);
                 return;
             }
 
             roll = RollDice();
-            if (roll.doubleRoll) {
+            Debug.Log(roll.doubleRoll ? "Third roll is a double!" : "First roll is not a double.");
+            if (roll.doubleRoll)
+            {
+                LeaveJail();
                 Utils.RunAfter(1, GameController.instance.NextTurn);
                 return;
             }
