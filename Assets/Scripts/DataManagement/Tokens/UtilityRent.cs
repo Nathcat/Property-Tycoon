@@ -41,6 +41,7 @@ public class UtilityRent : Command
 
         if (counterController.portfolio.GetCashBalance() >= rent) {
             utility.owner.portfolio.AddAsset(counterController.portfolio.RemoveCash(new Cash(rent)));
+            Debug.Log(counterController.name + " pays " + rent + " in rent to " + utility.owner.name + " for utility " + utility.name);
         }
         else {
             // TODO Here we should ask the player to sell their assets!

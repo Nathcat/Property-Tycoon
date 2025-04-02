@@ -8,5 +8,7 @@ public class Fine : Command
 
     override public void Execute(CounterController counterController, Argument[] args) {
         GameController.instance.freeParking.AddCash(new Cash(int.Parse(args[0].value)));
+
+        Debug.Log(counterController.name + " is fined " + args[0].value);
     }
 }

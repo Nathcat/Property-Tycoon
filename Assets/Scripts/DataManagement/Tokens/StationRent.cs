@@ -43,6 +43,7 @@ public class StationRent : Command
 
         if (counterController.portfolio.GetCashBalance() >= rent) {
             station.owner.portfolio.AddAsset(counterController.portfolio.RemoveCash(new Cash(rent)));
+            Debug.Log(counterController.name + " pays " + rent + " in rent to " + station.owner.name + " for station " + station.name);
         }
         else {
             // TODO Here we should ask the player to sell their assets!

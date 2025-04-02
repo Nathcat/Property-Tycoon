@@ -15,6 +15,7 @@ public class PayPerUpgrade : Command
             totalCost += p.upgradeLevel == 5 ? hotelCost : (houseCost * p.upgradeLevel);
         }
 
+        Debug.Log(counterController.name + " pays " + houseCost + " per house and " + hotelCost + " per hotel, for a total of " + totalCost);
         counterController.portfolio.RemoveCash(new Cash(totalCost));
     }
 }

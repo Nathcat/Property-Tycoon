@@ -16,9 +16,16 @@ public class CounterController : MonoBehaviour
     public int order { get { return System.Array.IndexOf(GameController.instance.counters, this); } }
     
     /// <summary>
+    /// The name of the game object this controller is attached to
+    /// </summary>
+    public string name { get { return gameObject.name; } }
+
+    /// <summary>
     /// Stores the last roll performed by this counter
     /// </summary>
     public RollData lastRoll { get; private set; }
+
+    public bool isInJail { get; private set; }
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +39,14 @@ public class CounterController : MonoBehaviour
         
     }
 
+    public void GoToJail() {
+        MoveAbsolute(GameController.instance.jailSpace.position);
+        isInJail = true;
+    }
 
+    public void LeaveJail() {
+        isInJail = false;
+    }
 
     /// <summary>
     /// Rolls both dice, and moves the counter. If the roll is a double roll, the dice are rolled again and counter moved again.
