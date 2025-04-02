@@ -16,7 +16,7 @@ public class Property : Space, IAsset
     }
 
     /// <summary> A boolean to signify if the property has been mortgaged.</summary>
-    private bool isMortgaged;
+    public bool isMortgaged { get; private set; } = false;
 
     /// <summary>
     /// The cost to buy of this property. Also denotes is value as an asset.
@@ -46,7 +46,7 @@ public class Property : Space, IAsset
     /// <summary>
     /// True if this property has an owner
     /// </summary>
-    public bool isOwned { get { return owner == null; } }
+    public bool isOwned { get { return owner != null; } }
 
     /// <summary>
     /// The of upgrading to a hotel
@@ -70,15 +70,6 @@ public class Property : Space, IAsset
     }
 
     /// <summary>
-    /// Returns the mortgage status of the property.
-    /// </summary>
-    /// <returns>True if mortgaged, False if not.</returns>
-    public bool IsMortgaged()
-    {
-        return isMortgaged;
-    }
-
-    /// <summary>
     /// Sets the property for mortgage, and returns the amount of cash gained from doing so.
     /// </summary>
     /// <returns>Cash from mortgaging the property.</returns>
@@ -90,13 +81,33 @@ public class Property : Space, IAsset
     }
 
     /// <summary>
+    /// Determine whether or not you can unmortgage this property.
+    /// </summary>
+    /// <returns>True if the owner of this property can afford to unmortgage it, false otherwise</returns>
+    public bool CanUnMortgage() {
+        return owner != null && owner.portfolio.GetCashBalance() >= (cost / 2);
+    }
+
+    /// <summary>
+    /// Unmortgage this property, if possible
+    /// </summary>
+    public void UnMortgage() {
+        if (!CanUnMortgage()) return;
+
+        if (owner.portfolio.GetCashBalance() >= (cost / 2)) {
+            isMortgaged = false;
+            owner.portfolio.RemoveCash(new Cash(cost / 2));
+        }
+    }
+
+    /// <summary>
     /// Return the value of this property. The value of a property is the cost to buy it. Or, if the property is
     /// currently mortgaged, the value of the property is halved.
     /// </summary>
     /// <returns>The current value of the property.</returns>
     public int GetValue()
     {
-        if (isMortgaged) { return cost / 2; } else { return cost;  }
+        if (isMortgaged) { return cost / 2; } else { return cost + (upgradeLevel == 5 ? hotelCost : (upgradeLevel * upgradeCost)); }
     }
 
     /// <summary>

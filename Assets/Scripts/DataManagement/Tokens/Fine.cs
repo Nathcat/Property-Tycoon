@@ -7,12 +7,6 @@ public class Fine : Command
     public Fine(string value) : base(value) {}
 
     override public void Execute(CounterController counterController, Argument[] args) {
-        string s = "----- FINE -----\n";
-
-        for (int i = 0; i < args.Length; i++) {
-            s += args[i].value + "\n";
-        }
-
-        Debug.Log(s);
+        GameController.instance.freeParking.AddCash(new Cash(int.Parse(args[0].value)));
     }
 }

@@ -56,7 +56,12 @@ public class GameController : MonoBehaviour
     /// <summary> The card deck for the Pot Luck cards. </summary>
     private Queue<Card> luckDeck;
 
-    
+    /// <summary>
+    /// The total cash collected in free parking
+    /// </summary>
+    [HideInInspector] public Cash freeParking = new Cash(0);
+
+
 
 
 
@@ -93,7 +98,7 @@ public class GameController : MonoBehaviour
         if (spaceControllers != null)
             foreach (SpaceController space in spaceControllers)
                 Destroy(space.gameObject);
-        
+
         board = FileManager.ReadBoardCSV(Path.Combine(Application.dataPath, "board.csv"));
         spaceControllers = BoardGenerator.GenerateBoard(transform, 2, 1, normalSpace, cornerSpace, spaces);
     }
@@ -101,7 +106,7 @@ public class GameController : MonoBehaviour
     /// <summary> Put the card information from the csv file into the relevant card decks, and shuffle both decks. </summary>
     public void SetupCards()
     {
-        cards = FileManager.ReadCardCSV(Path.Combine(Application.dataPath, "card.csv"));
+        cards = FileManager.ReadCardCSV(Path.Combine(Application.dataPath, "cards.csv"));
         luckDeck = cards.luck;
         opportunityDeck = cards.opportunity;
         //shuffle the pot luck cards
@@ -121,10 +126,10 @@ public class GameController : MonoBehaviour
         {
             cards[i] = input.Dequeue();
         }
-        
+
         for (int i = 0; i < cards.Length; i++)
         {
-            random  = Random.Range(i, cards.Length);
+            random = Random.Range(i, cards.Length);
             temp = cards[random];
             cards[random] = cards[i];
             cards[i] = temp;
@@ -134,16 +139,17 @@ public class GameController : MonoBehaviour
         {
             input.Enqueue(cards[i]);
         }
-        
+
     }
 
     /// <summary> Draw and run the action for the top card from the Pot Luck deck. </summary>
     public void DrawLuck()
     {
-        if(luckDeck.Count != 0)
+        if (luckDeck.Count != 0)
         {
             Card removed = luckDeck.Dequeue();
             removed.action.Run(turnCounter);
+            DiscardLuck(removed);
         }
         else
         {
@@ -151,13 +157,56 @@ public class GameController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Draw and run the action for the top card of the Pot Luck deck on the given counter
+    /// </summary>
+    /// <param name="counterController">The counter to run the card action on</param>
+    public void DrawLuck(CounterController counterController)
+    {
+        if (luckDeck.Count != 0)
+        {
+            Card removed = luckDeck.Dequeue();
+            removed.action.Run(counterController);
+            DiscardLuck(removed);
+        }
+        else
+        {
+            Debug.Log("Deck is empty");
+        }
+    }
+
+    /// <summary>
+    /// Draw and run the action for the top card of the Opportunity Knocks deck
+    /// </summary>
     public void DrawOpportunity()
     {
         if (opportunityDeck.Count != 0)
         {
             Card removed = opportunityDeck.Dequeue();
-            
+
             removed.action.Run(turnCounter);
+
+            DiscardOpportunity(removed);
+        }
+        else
+        {
+            Debug.Log("Deck is empty");
+        }
+    }
+
+    /// <summary>
+    /// Draw and run the action for the top card of the Opportunity Knocks deck on the given counter
+    /// </summary>
+    /// <param name="counterController">The counter to run the card action on</param>
+    public void DrawOpportunity(CounterController counterController)
+    {
+        if (opportunityDeck.Count != 0)
+        {
+            Card removed = opportunityDeck.Dequeue();
+
+            removed.action.Run(counterController);
+
+            DiscardOpportunity(removed);
         }
         else
         {

@@ -15,6 +15,11 @@ public class CounterController : MonoBehaviour
     /// <summary> The index of this counter in <see cref="GameController.counters"/>. </summary>
     public int order { get { return System.Array.IndexOf(GameController.instance.counters, this); } }
     
+    /// <summary>
+    /// Stores the last roll performed by this counter
+    /// </summary>
+    public RollData lastRoll { get; private set; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,18 +40,35 @@ public class CounterController : MonoBehaviour
     public void PlayTurn()
     {
         RollData roll = RollDice();
+        lastRoll = roll;
         MoveCounter(roll.dice1, roll.dice2);
         if (roll.doubleRoll)
         {
             Debug.Log("Double roll");
             roll = RollDice();
+            lastRoll = roll;
             MoveCounter(roll.dice1, roll.dice2);
             // add in triple roll for prison
         }
+
+        // Call the action when landing on a new space, if the counter is moved to a new space as a result of the action
+        int oldPos = position;
+        do {
+            oldPos = position;
+            GameController.instance.spaces[position].action.Run(this);
+        } while (oldPos != position);
+
+        Utils.RunAfter(1, GameController.instance.NextTurn);
     }
 
-
-
+    /// <summary>
+    /// Move the counter to a specific space
+    /// </summary>
+    /// <param name="space">The index of the space to  move to</param>
+    public void MoveAbsolute(int space) {
+        position = space % GameController.instance.spaces.Length;
+        Move();
+    }
 
     /// <summary>
     /// Takes in two integers for the dice rolled, and moves the counter the required number of spaces.
@@ -64,8 +86,6 @@ public class CounterController : MonoBehaviour
             position = position%GameController.instance.spaces.Length;
 
         Move();
-
-        Utils.RunAfter(1, GameController.instance.NextTurn);
     }
 
     /// <summary>
