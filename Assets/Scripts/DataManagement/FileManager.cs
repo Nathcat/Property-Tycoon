@@ -167,7 +167,7 @@ public class FileManager
             }
             else
             {
-                s = new Space(Int32.Parse(elements[0]), elements[1], new Action(elements[4]));
+                s = new Space(Int32.Parse(elements[0])-1, elements[1], new Action(elements[4]));
                 if (s.name.ToLower() == "jail") {
                     jailSpace = s;
                 }
