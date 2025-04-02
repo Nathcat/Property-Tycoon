@@ -11,10 +11,10 @@ public class CounterController : MonoBehaviour
 
     /// <summary> The index in <see cref="GameController.spaces"/> that this counter is currently on. </summary>
     [HideInInspector] public int position { get; private set; }
-    
+
     /// <summary> The index of this counter in <see cref="GameController.counters"/>. </summary>
     public int order { get { return System.Array.IndexOf(GameController.instance.counters, this); } }
-    
+
     /// <summary>
     /// The name of the game object this controller is attached to
     /// </summary>
@@ -36,15 +36,17 @@ public class CounterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void GoToJail() {
+    public void GoToJail()
+    {
         MoveAbsolute(GameController.instance.jailSpace.position);
         isInJail = true;
     }
 
-    public void LeaveJail() {
+    public void LeaveJail()
+    {
         isInJail = false;
     }
 
@@ -53,33 +55,61 @@ public class CounterController : MonoBehaviour
     /// </summary>
     public void PlayTurn()
     {
-        RollData roll = RollDice();
-        lastRoll = roll;
-        MoveCounter(roll.dice1, roll.dice2);
-        if (roll.doubleRoll)
+        if (!isInJail)
         {
-            Debug.Log("Double roll");
-            roll = RollDice();
+            RollData roll = RollDice();
             lastRoll = roll;
             MoveCounter(roll.dice1, roll.dice2);
-            // add in triple roll for prison
+            if (roll.doubleRoll)
+            {
+                Debug.Log("Double roll");
+                roll = RollDice();
+                lastRoll = roll;
+                MoveCounter(roll.dice1, roll.dice2);
+                // add in triple roll for prison
+            }
+
+            // Call the action when landing on a new space, if the counter is moved to a new space as a result of the action
+            int oldPos = position;
+            do
+            {
+                oldPos = position;
+                GameController.instance.spaces[position].action.Run(this);
+            } while (oldPos != position);
+
+            Utils.RunAfter(1, GameController.instance.NextTurn);
         }
+        else {
+            // Roll up to three times if in jail.
+            // If any of those rolls is a double, then the player
+            // leaves jail, and ends their turn.
+            RollData roll = RollDice();
+            if (roll.doubleRoll) {
+                Utils.RunAfter(1, GameController.instance.NextTurn);
+                return;
+            }
 
-        // Call the action when landing on a new space, if the counter is moved to a new space as a result of the action
-        int oldPos = position;
-        do {
-            oldPos = position;
-            GameController.instance.spaces[position].action.Run(this);
-        } while (oldPos != position);
+            roll = RollDice();
+            if (roll.doubleRoll) {
+                Utils.RunAfter(1, GameController.instance.NextTurn);
+                return;
+            }
 
-        Utils.RunAfter(1, GameController.instance.NextTurn);
+            roll = RollDice();
+            if (roll.doubleRoll) {
+                Utils.RunAfter(1, GameController.instance.NextTurn);
+                return;
+            }
+
+        }
     }
 
     /// <summary>
     /// Move the counter to a specific space
     /// </summary>
     /// <param name="space">The index of the space to  move to</param>
-    public void MoveAbsolute(int space) {
+    public void MoveAbsolute(int space)
+    {
         position = space % GameController.instance.spaces.Length;
         Move();
     }
@@ -96,8 +126,8 @@ public class CounterController : MonoBehaviour
 
         // checks that the counter's new position is within the board limits
         position = position + move;
-        if (position > (GameController.instance.spaces.Length)-1)
-            position = position%GameController.instance.spaces.Length;
+        if (position > (GameController.instance.spaces.Length) - 1)
+            position = position % GameController.instance.spaces.Length;
 
         Move();
     }
@@ -112,7 +142,7 @@ public class CounterController : MonoBehaviour
         int dice1 = Random.Range(1, 7);
         // Gets the second dice's value
         int dice2 = Random.Range(1, 7);
-        
+
         return new RollData(dice1, dice2, dice1 == dice2);
     }
 
