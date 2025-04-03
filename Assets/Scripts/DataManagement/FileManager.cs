@@ -91,6 +91,7 @@ public class FileManager
 
         Dictionary<string, PropertyGroup> groups = new Dictionary<string, PropertyGroup>();
         List<Space> spaces = new List<Space>();
+        Space jailSpace = null;
 
         // Skip over the first line, since this specifies the headers of the CSV.
         for (int i = 1; i < content.Length; i++)
@@ -166,13 +167,16 @@ public class FileManager
             }
             else
             {
-                s = new Space(Int32.Parse(elements[0]), elements[1], new Action(elements[4]));
+                s = new Space(Int32.Parse(elements[0])-1, elements[1], new Action(elements[4]));
+                if (s.name.ToLower() == "jail") {
+                    jailSpace = s;
+                }
             }
 
             spaces.Add(s);
         }
 
-        return new BoardData(spaces.ToArray(), groups.Values.ToArray());
+        return new BoardData(spaces.ToArray(), groups.Values.ToArray(), jailSpace);
     }
 
     /// <summary>
@@ -180,7 +184,7 @@ public class FileManager
     /// </summary>
     /// <param name="spaces">Array of <see cref="Space"/> objects read from the board.</param>
     /// <param name="groups">Array of <see cref="PropertyGroup"/> objects read from the board.</param>
-    public record BoardData(Space[] spaces, PropertyGroup[] groups);
+    public record BoardData(Space[] spaces, PropertyGroup[] groups, Space jailSpace);
 
     public record CardData(Queue<Card> opportunity, Queue<Card> luck);
 }

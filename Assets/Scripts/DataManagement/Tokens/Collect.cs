@@ -19,5 +19,7 @@ public class Collect : Command
         }
 
         counterController.portfolio.AddAsset(total);
+
+        Debug.Log(counterController.gameObject.name + " collects " + cost.GetValue() + " from each player, for a total of " + total.GetValue());
     }
 }

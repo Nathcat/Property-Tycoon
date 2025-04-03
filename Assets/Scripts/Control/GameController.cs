@@ -32,6 +32,11 @@ public class GameController : MonoBehaviour
     /// <summary> Array of <see cref="Space"/> objects the board consists of. </summary>
     public Space[] spaces { get { return board.spaces; } }
 
+    /// <summary>
+    /// Get the jail space on the board
+    /// </summary>
+    public Space jailSpace { get { return board.jailSpace; } }
+
     /// <summary> The index in <see cref="counters"/> of the <see cref="CounterController"/> who currently has their turn. </summary>
     public int turnIndex { get; private set; }
 
