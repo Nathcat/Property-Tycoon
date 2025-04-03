@@ -55,7 +55,7 @@ public class UIManager : MonoBehaviour
             Rules.SetActive(false);
             Help.SetActive(false);
         }
-        else if (Scene.name == GameScene)
+        else if (Scene.name == GameScene || Scene.name == "Game")
         {
             TurnOffPlayerCards();
             //SetupScreen.SetActive(true);
@@ -64,7 +64,10 @@ public class UIManager : MonoBehaviour
             HelpAndRules.SetActive(false);
             Rules.SetActive(false);
             Help.SetActive(false);
-            Dice.SetActive(false);
+
+            foreach (GameObject d in Dice) {
+                d.SetActive(false);
+            }
         }
     }
 

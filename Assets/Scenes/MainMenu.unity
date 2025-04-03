@@ -905,14 +905,23 @@ MonoBehaviour:
   StartScreen: {fileID: 1329747770}
   Credits: {fileID: 590467399}
   HelpAndRules: {fileID: 1344364698}
+  HelpAndRules2: {fileID: 0}
   ConfirmClose: {fileID: 1818372480}
   Settings: {fileID: 847956395}
   Help: {fileID: 2108434584}
   Rules: {fileID: 1303838750}
   HelpAndEscape: {fileID: 0}
-  scene:
+  PauseButton: {fileID: 0}
+  Dice: []
+  PlayerCardElements: []
+  PlayerTurn: {fileID: 0}
+  DiceValue1: 0
+  DiceValue2: 0
+  AuctionScreen: {fileID: 0}
+  Scene:
     m_Handle: 0
-  gamescene: Tyler's Testing Scene
+  CurrentScene: 
+  GameScene: Tyler's Testing Scene
 --- !u!114 &443972570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1150,10 +1159,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -1804,10 +1813,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -3150,10 +3159,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -3507,7 +3516,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Back
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3993,6 +4002,16 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 443972569}
+    - target: {fileID: 2355703263862650221, guid: a74c295325e881f4d968fb778642716f,
+        type: 3}
+      propertyPath: m_Size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2355703263862650221, guid: a74c295325e881f4d968fb778642716f,
+        type: 3}
+      propertyPath: m_Value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3222862957801031513, guid: a74c295325e881f4d968fb778642716f,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -4052,6 +4071,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4715825312074687296, guid: a74c295325e881f4d968fb778642716f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -3195.8335
       objectReference: {fileID: 0}
     - target: {fileID: 6131303997869509272, guid: a74c295325e881f4d968fb778642716f,
         type: 3}
