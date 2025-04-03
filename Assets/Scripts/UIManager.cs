@@ -55,7 +55,7 @@ public class UIManager : MonoBehaviour
             Rules.SetActive(false);
             Help.SetActive(false);
         }
-        else if (Scene.name == GameScene || Scene.name == "Game")
+        else if (Scene.name == GameScene)
         {
             TurnOffPlayerCards();
             //SetupScreen.SetActive(true);
@@ -64,6 +64,19 @@ public class UIManager : MonoBehaviour
             HelpAndRules.SetActive(false);
             Rules.SetActive(false);
             Help.SetActive(false);
+
+            foreach (GameObject d in Dice) {
+                d.SetActive(false);
+            }
+        }
+        else if (Scene.name == "Game") {
+            //PauseButton.SetActive(false);
+            HelpAndEscape.SetActive(false);
+            HelpAndRules.SetActive(false);
+            Rules.SetActive(false);
+            Help.SetActive(false);
+
+            SetAllCardNames();
 
             foreach (GameObject d in Dice) {
                 d.SetActive(false);
@@ -191,7 +204,7 @@ public class UIManager : MonoBehaviour
         for (int i = 0; i < GameController.instance.counters.Length; i++)
         {
             PlayerCardElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
-            PlayerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].portfolio.TotalValue().ToString();
+            PlayerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].portfolio.GetCashBalance().ToString();
         }
     }
     public void TurnOffPlayerCards()
