@@ -27,6 +27,11 @@ public class CounterController : MonoBehaviour
 
     public bool isInJail { get; private set; }
 
+    /// <summary>
+    /// The number of turns the player has been in jail
+    /// </summary>
+    private int turnsInJail = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,14 +47,40 @@ public class CounterController : MonoBehaviour
     public void GoToJail()
     {
         MoveAbsolute(GameController.instance.jailSpace.position);
-        isInJail = true;
-        Debug.Log(name + " is now in jail! Jail space is at position " + GameController.instance.jailSpace.position);
+
+        if (portfolio.GetCashBalance() >= 50 && AskIfPayForJail())
+        {
+            Cash fine = new Cash(50);
+            portfolio.RemoveCash(fine);
+            GameController.instance.freeParking.AddCash(fine);
+            Debug.Log(name + " pays to leave jail!");
+
+            Utils.RunAfter(1, GameController.instance.NextTurn);
+        }
+        else
+        {
+            isInJail = true;
+            Debug.Log(name + " is now in jail! Jail space is at position " + GameController.instance.jailSpace.position);
+            Utils.RunAfter(1, GameController.instance.NextTurn);
+        }
     }
 
     public void LeaveJail()
     {
         isInJail = false;
         Debug.Log(name + " has left jail!");
+        Utils.RunAfter(1, GameController.instance.NextTurn);
+    }
+
+    /// <summary>
+    /// Ask the player if they want to pay to leave jail
+    /// </summary>
+    /// <returns></returns>
+    public bool AskIfPayForJail()
+    {
+        // TODO Implement this with UI
+        Debug.LogWarning("The player would be asked to pay to leave jail here!");
+        return false;
     }
 
     /// <summary>
@@ -68,7 +99,24 @@ public class CounterController : MonoBehaviour
                 roll = RollDice();
                 lastRoll = roll;
                 MoveCounter(roll.dice1, roll.dice2);
-                // add in triple roll for prison
+
+                if (roll.doubleRoll)
+                {
+                    Debug.Log("Another double roll!");
+                    roll = RollDice();
+                    lastRoll = roll;
+
+                    if (roll.doubleRoll)
+                    {
+                        Debug.Log("Triple double roll, player goes to jail!");
+                        GoToJail();
+                        return;
+                    }
+                    else
+                    {
+                        MoveCounter(roll.dice1, roll.dice2);
+                    }
+                }
             }
 
             // Call the action when landing on a new space, if the counter is moved to a new space as a result of the action
@@ -83,36 +131,15 @@ public class CounterController : MonoBehaviour
         }
         else
         {
-            // Roll up to three times if in jail.
-            // If any of those rolls is a double, then the player
-            // leaves jail, and ends their turn.
-            RollData roll = RollDice();
-            Debug.Log(roll.doubleRoll ? "First roll is a double!" : "First roll is not a double.");
-            if (roll.doubleRoll)
+            // Wait for 2 turns to leave jail
+            turnsInJail++;
+
+            if (turnsInJail == 2)
             {
                 LeaveJail();
-                Utils.RunAfter(1, GameController.instance.NextTurn);
-                return;
             }
 
-            roll = RollDice();
-            Debug.Log(roll.doubleRoll ? "Second roll is a double!" : "First roll is not a double.");
-            if (roll.doubleRoll)
-            {
-                LeaveJail();
-                Utils.RunAfter(1, GameController.instance.NextTurn);
-                return;
-            }
-
-            roll = RollDice();
-            Debug.Log(roll.doubleRoll ? "Third roll is a double!" : "First roll is not a double.");
-            if (roll.doubleRoll)
-            {
-                LeaveJail();
-                Utils.RunAfter(1, GameController.instance.NextTurn);
-                return;
-            }
-
+            Utils.RunAfter(1, GameController.instance.NextTurn);
         }
     }
 
@@ -138,7 +165,8 @@ public class CounterController : MonoBehaviour
 
         // checks that the counter's new position is within the board limits
         position = position + move;
-        if (position > (GameController.instance.spaces.Length) - 1) {
+        if (position > (GameController.instance.spaces.Length) - 1)
+        {
             position = position % GameController.instance.spaces.Length;
 
             // Add 200 cash when the player has moved fully around the board
