@@ -7,12 +7,7 @@ public class TakeOppoKnocks : Command
     public TakeOppoKnocks(string value) : base(value) {}
     
     override public void Execute(CounterController counterController, Argument[] args) {
-        string s = "----- TAKEPOTLUCK -----\n";
-
-        for (int i = 0; i < args.Length; i++) {
-            s += args[i].value + "\n";
-        }
-
-        Debug.Log(s);
+        Debug.Log(counterController.name + " plays an Opportunity Knocks card");
+        GameController.instance.DrawOpportunity(counterController);
     }
 }

@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
-using UnityEngine;
 
 /// <summary>
 /// Portfolio: A class used to represent a counter's portfolio in Property Tycoon.
@@ -19,7 +16,7 @@ public class Portfolio
     /// </summary>
     public Portfolio() 
     {
-        cashBalance = new Cash();
+        cashBalance = new Cash(0);
         properties = new List<Property>();
     }
 
@@ -42,7 +39,7 @@ public class Portfolio
     /// Adds a new asset to the portfolio.
     /// </summary>
     /// <param name="newAsset">The new asset to be added to the portfolio.</param>
-    public void AddAsset(Asset newAsset)
+    public void AddAsset(IAsset newAsset)
     {
         Type t = newAsset.GetType();
         if (t.Equals(typeof(Cash)))
@@ -69,6 +66,7 @@ public class Portfolio
     /// <summary>
     /// Removes a given property from the portfolio.
     /// </summary>
+    /// <remarks>This should not be called manually! To sell a property use <see cref="Property.Sell"/></remarks>
     /// <param name="propertyOut">The property to be removed from the portfolio.</param>
     /// <returns>The removed property.</returns>
     public int RemoveProperty(Property propertyOut)

@@ -7,12 +7,7 @@ public class PayOut : Command
     public PayOut(string value) : base(value) {}
 
     override public void Execute(CounterController counterController, Argument[] args) {
-        string s = "----- PAYOUT -----\n";
-
-        for (int i = 0; i < args.Length; i++) {
-            s += args[i].value + "\n";
-        }
-
-        Debug.Log(s);
+        Debug.Log(counterController.name + " receives " + args[0].value + " from the bank.");
+        counterController.portfolio.AddAsset(new Cash(int.Parse(args[0].value)));
     }
 }

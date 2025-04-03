@@ -3,6 +3,7 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
 /// <summary> Main script for controlling high level flow of the game. </summary>
 public class GameController : MonoBehaviour
@@ -31,6 +32,11 @@ public class GameController : MonoBehaviour
     /// <summary> Array of <see cref="Space"/> objects the board consists of. </summary>
     public Space[] spaces { get { return board.spaces; } }
 
+    /// <summary>
+    /// Get the jail space on the board
+    /// </summary>
+    public Space jailSpace { get { return board.jailSpace; } }
+
     /// <summary> The index in <see cref="counters"/> of the <see cref="CounterController"/> who currently has their turn. </summary>
     public int turnIndex { get; private set; }
 
@@ -46,6 +52,24 @@ public class GameController : MonoBehaviour
     /// <summary> The configuration data of the currently loaded board. </summary>
     private FileManager.BoardData board;
 
+    /// <summary> The configuration data for the two decks of cards. </summary>
+    private FileManager.CardData cards;
+
+    /// <summary> The card deck for the Opportunity Knocks cards. </summary>
+    private Queue<Card> opportunityDeck;
+
+    /// <summary> The card deck for the Pot Luck cards. </summary>
+    private Queue<Card> luckDeck;
+
+    /// <summary>
+    /// The total cash collected in free parking
+    /// </summary>
+    [HideInInspector] public Cash freeParking = new Cash(0);
+
+
+
+
+
     [Header("Testing")]
     [SerializeField] private CounterController counterPrefab;
 
@@ -59,7 +83,7 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         SetupBoard();
-
+        SetupCards();
         SetupCounters(new CounterController[6].Select(_ => Instantiate(counterPrefab)).ToArray());
         turnCounter.PlayTurn();
     }
@@ -79,10 +103,137 @@ public class GameController : MonoBehaviour
         if (spaceControllers != null)
             foreach (SpaceController space in spaceControllers)
                 Destroy(space.gameObject);
-        
+
         board = FileManager.ReadBoardCSV(Path.Combine(Application.dataPath, "board.csv"));
         spaceControllers = BoardGenerator.GenerateBoard(transform, 2, 1, normalSpace, cornerSpace, spaces);
     }
+
+    /// <summary> Put the card information from the csv file into the relevant card decks, and shuffle both decks. </summary>
+    public void SetupCards()
+    {
+        cards = FileManager.ReadCardCSV(Path.Combine(Application.dataPath, "cards.csv"));
+        luckDeck = cards.luck;
+        opportunityDeck = cards.opportunity;
+        //shuffle the pot luck cards
+        //Shuffle(luckDeck);
+        //shuffle the opportunity knocks cards
+        //Shuffle(opportunityDeck);
+    }
+
+    /// <summary> Shuffle the given card deck using a BogoSort style method. </summary>
+    /// <param name="cards"> The card deck to be shuffled. </param>
+    public void Shuffle(Queue<Card> input)
+    {
+        int random;
+        Card temp = null;
+        Card[] cards = new Card[input.Count];
+        for (int i = 0; i < input.Count; i++)
+        {
+            cards[i] = input.Dequeue();
+        }
+
+        for (int i = 0; i < cards.Length; i++)
+        {
+            random = Random.Range(i, cards.Length);
+            temp = cards[random];
+            cards[random] = cards[i];
+            cards[i] = temp;
+        }
+
+        for (int i = 0; i < cards.Length; i++)
+        {
+            input.Enqueue(cards[i]);
+        }
+
+    }
+
+    /// <summary> Draw and run the action for the top card from the Pot Luck deck. </summary>
+    public void DrawLuck()
+    {
+        if (luckDeck.Count != 0)
+        {
+            Card removed = luckDeck.Dequeue();
+            removed.action.Run(turnCounter);
+            DiscardLuck(removed);
+        }
+        else
+        {
+            Debug.Log("Deck is empty");
+        }
+    }
+
+    /// <summary>
+    /// Draw and run the action for the top card of the Pot Luck deck on the given counter
+    /// </summary>
+    /// <param name="counterController">The counter to run the card action on</param>
+    public void DrawLuck(CounterController counterController)
+    {
+        if (luckDeck.Count != 0)
+        {
+            Card removed = luckDeck.Dequeue();
+            removed.action.Run(counterController);
+            DiscardLuck(removed);
+        }
+        else
+        {
+            Debug.Log("Deck is empty");
+        }
+    }
+
+    /// <summary>
+    /// Draw and run the action for the top card of the Opportunity Knocks deck
+    /// </summary>
+    public void DrawOpportunity()
+    {
+        if (opportunityDeck.Count != 0)
+        {
+            Card removed = opportunityDeck.Dequeue();
+
+            removed.action.Run(turnCounter);
+
+            DiscardOpportunity(removed);
+        }
+        else
+        {
+            Debug.Log("Deck is empty");
+        }
+    }
+
+    /// <summary>
+    /// Draw and run the action for the top card of the Opportunity Knocks deck on the given counter
+    /// </summary>
+    /// <param name="counterController">The counter to run the card action on</param>
+    public void DrawOpportunity(CounterController counterController)
+    {
+        if (opportunityDeck.Count != 0)
+        {
+            Card removed = opportunityDeck.Dequeue();
+
+            removed.action.Run(counterController);
+
+            DiscardOpportunity(removed);
+        }
+        else
+        {
+            Debug.Log("Deck is empty");
+        }
+    }
+
+    /// <summary> Place a card onto the bottom of the Pot Luck deck. </summary>
+    /// <param name="luckCard"> A card to be placed onto the bottom of the Pot Luck deck. </param>
+    public void DiscardLuck(Card luckCard)
+    {
+        luckDeck.Enqueue(luckCard);
+    }
+
+    /// <summary> Place a card onto the bottom of the Opportunity Knocks deck. </summary>
+    /// <param name="luckCard"> A card to be placed onto the bottom of the Opportunity Knocks deck. </param>
+    public void DiscardOpportunity(Card opportunityCard)
+    {
+        opportunityDeck.Enqueue(opportunityCard);
+    }
+
+
 
     /// <summary>
     /// Register <paramref name="counters"/> to the game.

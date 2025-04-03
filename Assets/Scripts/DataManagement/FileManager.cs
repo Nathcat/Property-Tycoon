@@ -20,9 +20,11 @@ public class FileManager
     /// Read the CSV file containing the data of cards
     /// </summary>
     /// <param name="path">Path to the CSV file</param>
-    /// <param name="opportunityKnocks">The list of opportunity knocks cards</param>
-    /// <param name="potLuck">The list of pot luck cards</param>
-    public static void ReadCardCSV(string path, List<Card> potLuck, List<Card> opportunityKnocks) {
+    public static CardData ReadCardCSV(string path) {
+        
+        List<Card> potLuck = new List<Card>();
+        List<Card> opportunityKnocks = new List<Card>();
+
         string[] content = new string[0];
 
         using (StreamReader sr = new StreamReader(path)) {
@@ -54,6 +56,23 @@ public class FileManager
                 }
             }  
         }
+        // add two queues of cards, one for opportunity knocks, and one for pot luck.
+        Queue<Card> opportunity = new Queue<Card>();
+        Queue<Card> luck = new Queue<Card>();
+        
+        // enqueue cards into the relevant queues.
+        for (int i = 0; i < opportunityKnocks.Count; i++)
+        {
+            opportunity.Enqueue(opportunityKnocks[i]);
+        }
+
+        for (int i = 0; i < potLuck.Count; i++)
+        {
+            luck.Enqueue(potLuck[i]);
+        }
+        // return cards
+        return new CardData(opportunity, luck);
+
     }
 
     /// <summary>
@@ -72,25 +91,21 @@ public class FileManager
 
         Dictionary<string, PropertyGroup> groups = new Dictionary<string, PropertyGroup>();
         List<Space> spaces = new List<Space>();
+        Space jailSpace = null;
 
         // Skip over the first line, since this specifies the headers of the CSV.
         for (int i = 1; i < content.Length; i++)
         {
             string[] elements = Regex.Split(content[i], ",\\s*", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500));
 
-            if (elements.Length != 5)
+            if (elements.Length != 6)
             {
-                throw new InvalidFormatException("Expected 5 items in row " + i + ", but got " + elements.Length);
+                throw new InvalidFormatException("Expected 6 items in row " + i + ", but got " + elements.Length);
             }
 
             // Parse data from the line
             PropertyGroup g = null;
             int cost = -1;
-
-            if (elements[3] != "null")
-            {
-                cost = Int32.Parse(elements[3]);
-            }
 
             if (elements[2] != "null")
             {
@@ -104,20 +119,64 @@ public class FileManager
                     groups[elements[2]] = g;
                 }
             }
+            else if (elements[3] != "null")
+            {
+                cost = Int32.Parse(elements[3]);
+            }
 
-            Space s = new Space(
-                Int32.Parse(elements[0]),
-                elements[1],
-                g,
-                new Action(elements[4]),
-                cost
-            );
+            Space s;
+
+            // If the property group given in the CSV is null, we assume we are dealing with a normal space, and
+            // not a property. Otherwise we assume it is a property.
+            if (g != null)
+            {
+                if (g.name == PropertyGroup.STATION_GROUP_NAME)
+                {
+                    s = new Station(
+                        Int32.Parse(elements[0]),
+                        elements[1],
+                        g,
+                        new Action(elements[4]),
+                        cost
+                    );
+                }
+                else if (g.name == PropertyGroup.UTILITY_GROUP_NAME)
+                {
+                    s = new Utility(
+                        Int32.Parse(elements[0]),
+                        elements[1],
+                        g,
+                        new Action(elements[4]),
+                        cost
+                    );
+
+                }
+                else
+                {
+                    s = new Property(
+                        Int32.Parse(elements[0]),
+                        elements[1],
+                        g,
+                        new Action(elements[4]),
+                        cost,
+                        Int32.Parse(elements[5])
+                    );
+                }
+
+                    g.AddProperty(s as Property);
+            }
+            else
+            {
+                s = new Space(Int32.Parse(elements[0])-1, elements[1], new Action(elements[4]));
+                if (s.name.ToLower() == "jail") {
+                    jailSpace = s;
+                }
+            }
 
             spaces.Add(s);
-            if (g != null) g.AddProperty(s);
         }
 
-        return new BoardData(spaces.ToArray(), groups.Values.ToArray());
+        return new BoardData(spaces.ToArray(), groups.Values.ToArray(), jailSpace);
     }
 
     /// <summary>
@@ -125,5 +184,7 @@ public class FileManager
     /// </summary>
     /// <param name="spaces">Array of <see cref="Space"/> objects read from the board.</param>
     /// <param name="groups">Array of <see cref="PropertyGroup"/> objects read from the board.</param>
-    public record BoardData(Space[] spaces, PropertyGroup[] groups);
+    public record BoardData(Space[] spaces, PropertyGroup[] groups, Space jailSpace);
+
+    public record CardData(Queue<Card> opportunity, Queue<Card> luck);
 }
