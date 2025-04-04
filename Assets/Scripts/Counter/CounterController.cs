@@ -40,6 +40,10 @@ public class CounterController : MonoBehaviour
     /// True if the player is able to get out of jail free
     /// </summary>
     public bool getOutOfJailFree = false;
+    /// <summary>
+    /// Determines whether or not the player can currently buy properties
+    /// </summary>
+    public bool canPurchaseProperties { get; private set; } = false;
 
     // Start is called before the first frame update
     void Start()
@@ -219,6 +223,8 @@ public class CounterController : MonoBehaviour
 
             // Add 200 cash when the player has moved fully around the board
             portfolio.AddAsset(new Cash(200));
+            if (!canPurchaseProperties) Debug.Log(name + " can now buy properties");
+            canPurchaseProperties = true;
             Debug.Log(name + " receives 200 for completing a lap of the board.");
         }
 
