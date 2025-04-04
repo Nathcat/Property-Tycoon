@@ -3206,7 +3206,7 @@ GameObject:
   - component: {fileID: 1862753492}
   - component: {fileID: 1862753491}
   m_Layer: 5
-  m_Name: StartButtin
+  m_Name: StartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4072,10 +4072,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4654081504860644522, guid: a74c295325e881f4d968fb778642716f,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4654081504860644522, guid: a74c295325e881f4d968fb778642716f,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4654081504860644522, guid: a74c295325e881f4d968fb778642716f,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4715825312074687296, guid: a74c295325e881f4d968fb778642716f,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -3195.8335
+      value: 3195.8342
       objectReference: {fileID: 0}
     - target: {fileID: 6131303997869509272, guid: a74c295325e881f4d968fb778642716f,
         type: 3}

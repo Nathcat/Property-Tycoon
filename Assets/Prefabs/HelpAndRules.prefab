@@ -390,8 +390,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: BackButton
+        m_TargetAssemblyTypeName: GameUIManager, Assembly-CSharp
+        m_MethodName: BackButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -538,7 +538,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 12.661011, y: -3195.8342}
+  m_AnchoredPosition: {x: 12.661011, y: 3195.8337}
   m_SizeDelta: {x: 1717.7, y: 7091.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6952968289777647408
@@ -1176,8 +1176,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: HMHelpButton
+        m_TargetAssemblyTypeName: GameUIManager, Assembly-CSharp
+        m_MethodName: HelpButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1519,8 +1519,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6095060496663067505}
   m_HandleRect: {fileID: 6495595683189471273}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.098698795
+  m_Value: -0.0000000381967
+  m_Size: 0.09869879
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1781,8 +1781,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: HMRulesButton
+        m_TargetAssemblyTypeName: GameUIManager, Assembly-CSharp
+        m_MethodName: RulesButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1947,8 +1947,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: HMRulesButton
+        m_TargetAssemblyTypeName: GameUIManager, Assembly-CSharp
+        m_MethodName: RulesButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2428,8 +2428,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: BackButton
+        m_TargetAssemblyTypeName: GameUIManager, Assembly-CSharp
+        m_MethodName: BackButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2651,8 +2651,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: HMHelpButton
+        m_TargetAssemblyTypeName: GameUIManager, Assembly-CSharp
+        m_MethodName: HelpButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

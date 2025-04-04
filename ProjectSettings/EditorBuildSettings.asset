@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tyler's Testing Scene.unity
     guid: 238fe34b0b36e97459bcf5a5e5b8f3b9
+  - enabled: 1
+    path: Assets/Scenes/Game.unity
+    guid: e5490c3a5d9779c49a4ee0286dbe49df
   m_configObjects: {}

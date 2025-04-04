@@ -68,6 +68,7 @@ public class CounterController : MonoBehaviour
     public void LeaveJail()
     {
         isInJail = false;
+        turnsInJail = 0;
         Debug.Log(name + " has left jail!");
         Utils.RunAfter(1, GameController.instance.NextTurn);
     }
@@ -134,9 +135,13 @@ public class CounterController : MonoBehaviour
             // Wait for 2 turns to leave jail
             turnsInJail++;
 
+            Debug.Log(name + " has been in jail for " + turnsInJail + " turns.");
+
             if (turnsInJail == 2)
             {
+                Debug.Log(name + " is leaving jail! They have done " + turnsInJail + " turns while imprisoned!");
                 LeaveJail();
+                return;
             }
 
             Utils.RunAfter(1, GameController.instance.NextTurn);

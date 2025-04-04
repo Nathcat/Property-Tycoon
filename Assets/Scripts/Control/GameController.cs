@@ -84,7 +84,13 @@ public class GameController : MonoBehaviour
     {
         SetupBoard();
         SetupCards();
-        SetupCounters(new CounterController[6].Select(_ => Instantiate(counterPrefab)).ToArray());
+        SetupCounters(new CounterController[6].Select((c, index) =>
+        {
+            CounterController o = Instantiate(counterPrefab);
+            o.gameObject.name = "Player " + index;
+            return o;
+        }).ToArray());
+        
         turnCounter.PlayTurn();
     }
 

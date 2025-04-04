@@ -35,7 +35,7 @@ public class UIManager : MonoBehaviour
     //Scene Management
     [SerializeField] private Scene Scene;
     [SerializeField] private string CurrentScene = "";
-    [SerializeField] private string GameScene = "Tyler's Testing Scene";
+    [SerializeField] private string GameScene = "Game";
 
     //private TMP_Text text;
 
@@ -59,24 +59,11 @@ public class UIManager : MonoBehaviour
         {
             TurnOffPlayerCards();
             //SetupScreen.SetActive(true);
-            PauseButton.SetActive(false);
+            PauseButton.SetActive(true);
             HelpAndEscape.SetActive(false);
             HelpAndRules.SetActive(false);
             Rules.SetActive(false);
             Help.SetActive(false);
-
-            foreach (GameObject d in Dice) {
-                d.SetActive(false);
-            }
-        }
-        else if (Scene.name == "Game") {
-            //PauseButton.SetActive(false);
-            HelpAndEscape.SetActive(false);
-            HelpAndRules.SetActive(false);
-            Rules.SetActive(false);
-            Help.SetActive(false);
-
-            SetAllCardNames();
 
             foreach (GameObject d in Dice) {
                 d.SetActive(false);
