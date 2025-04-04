@@ -61,7 +61,8 @@ public class CounterController : MonoBehaviour
 
         if (getOutOfJailFree) {
             Debug.Log("... they have a get out of jail free card!");
-            Utils.RunAfter(1, GameController.instance.NextTurn);
+            //Utils.RunAfter(1, GameController.instance.NextTurn);
+            return;
         }
 
         if (portfolio.GetCashBalance() >= 50)
@@ -80,13 +81,13 @@ public class CounterController : MonoBehaviour
                     GameController.instance.freeParking.AddCash(fine);
                     Debug.Log(name + " pays to leave jail!");
 
-                    Utils.RunAfter(1, GameController.instance.NextTurn);
+                    //Utils.RunAfter(1, GameController.instance.NextTurn);
                 }
                 else
                 {
                     isInJail = true;
                     Debug.Log(name + " is now in jail! Jail space is at position " + GameController.instance.jailSpace.position);
-                    Utils.RunAfter(1, GameController.instance.NextTurn);
+                    //Utils.RunAfter(1, GameController.instance.NextTurn);
                 }
             });
 
@@ -96,7 +97,7 @@ public class CounterController : MonoBehaviour
             Debug.Log("... they cannot pay.");
             isInJail = true;
             Debug.Log(name + " is now in jail! Jail space is at position " + GameController.instance.jailSpace.position);
-            Utils.RunAfter(1, GameController.instance.NextTurn);
+            //Utils.RunAfter(1, GameController.instance.NextTurn);
         }
     }
 
@@ -105,7 +106,7 @@ public class CounterController : MonoBehaviour
         isInJail = false;
         turnsInJail = 0;
         Debug.Log(name + " has left jail!");
-        Utils.RunAfter(1, GameController.instance.NextTurn);
+        //Utils.RunAfter(1, GameController.instance.NextTurn);
     }
 
     /// <summary>
@@ -166,7 +167,7 @@ public class CounterController : MonoBehaviour
             if (!isWaitingForPrompt)
             {
                 Debug.Log("Going to next turn");
-                Utils.RunAfter(1, GameController.instance.NextTurn);
+                //Utils.RunAfter(1, GameController.instance.NextTurn);
             }
             else {
                 Debug.Log("Not allowed to go to next turn, player is waiting for a prompt!");
@@ -186,7 +187,7 @@ public class CounterController : MonoBehaviour
                 return;
             }
 
-            Utils.RunAfter(1, GameController.instance.NextTurn);
+            //Utils.RunAfter(1, GameController.instance.NextTurn);
         }
     }
 
