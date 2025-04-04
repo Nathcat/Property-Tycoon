@@ -33,10 +33,6 @@ public class CounterController : MonoBehaviour
     /// </summary>
     private int turnsInJail = 0;
     /// <summary>
-    /// Whether or not the player is currently waiting for a prompt
-    /// </summary>
-    private bool isWaitingForPrompt = false;
-    /// <summary>
     /// True if the player is able to get out of jail free
     /// </summary>
     public bool getOutOfJailFree = false;
@@ -44,6 +40,10 @@ public class CounterController : MonoBehaviour
     /// Determines whether or not the player can currently buy properties
     /// </summary>
     public bool canPurchaseProperties { get; private set; } = false;
+    /// <summary>
+    /// True if the player is currently determining whether or not they should be in jail.
+    /// </summary>
+    private bool determiningJailState = false;
 
     // Start is called before the first frame update
     void Start()
@@ -59,11 +59,13 @@ public class CounterController : MonoBehaviour
 
     public void GoToJail()
     {
+        determiningJailState = true;
         MoveAbsolute(GameController.instance.jailSpace.position);
 
         Debug.Log(name + " has gone to jail, can they pay?");
 
-        if (getOutOfJailFree) {
+        if (getOutOfJailFree)
+        {
             Debug.Log("... they have a get out of jail free card!");
             //Utils.RunAfter(1, GameController.instance.NextTurn);
             return;
@@ -73,11 +75,9 @@ public class CounterController : MonoBehaviour
         {
             Debug.Log("... they can pay, asking if they want to...");
 
-            isWaitingForPrompt = true;
             GameUIManager.instance.YesNoPrompt("Pay £50 to get out of jail?", (reply) =>
             {
-                isWaitingForPrompt = false;
-
+                determiningJailState = false;
                 if (reply)
                 {
                     Cash fine = new Cash(50);
@@ -86,18 +86,22 @@ public class CounterController : MonoBehaviour
                     Debug.Log(name + " pays to leave jail!");
 
                     //Utils.RunAfter(1, GameController.instance.NextTurn);
+                    TurnPostMove();
                 }
                 else
                 {
                     isInJail = true;
                     Debug.Log(name + " is now in jail! Jail space is at position " + GameController.instance.jailSpace.position);
+
                     //Utils.RunAfter(1, GameController.instance.NextTurn);
+                    TurnPostMove();
                 }
             });
 
         }
         else
         {
+            determiningJailState = false;
             Debug.Log("... they cannot pay.");
             isInJail = true;
             Debug.Log(name + " is now in jail! Jail space is at position " + GameController.instance.jailSpace.position);
@@ -168,14 +172,7 @@ public class CounterController : MonoBehaviour
                 GameController.instance.spaces[position].action.Run(this);
             } while (oldPos != position);
 
-            if (!isWaitingForPrompt)
-            {
-                Debug.Log("Going to next turn");
-                //Utils.RunAfter(1, GameController.instance.NextTurn);
-            }
-            else {
-                Debug.Log("Not allowed to go to next turn, player is waiting for a prompt!");
-            }
+            if (!determiningJailState) TurnPostMove();
         }
         else
         {
@@ -192,6 +189,45 @@ public class CounterController : MonoBehaviour
             }
 
             //Utils.RunAfter(1, GameController.instance.NextTurn);
+        }
+    }
+
+    /// <summary>
+    /// Play the remainder of the turn, after the player has moved. This should be called after all player movement has concluded for this turn.
+    /// The player should be settled on a space.
+    /// </summary>
+    public void TurnPostMove()
+    {
+        Space space = GameController.instance.spaces[position];
+
+        if (space is Property)
+        {
+            Property p = space as Property;
+
+            if (!p.isOwned && canPurchaseProperties)
+            {
+                if (p.CanPurchase(this))
+                {
+                    GameUIManager.instance.YesNoPrompt("Would you like to buy " + p.name + " for £" + p.GetValue() + "?", (reply) =>
+                    {
+                        if (reply)
+                        {
+                            p.Purchase(this);
+                            Debug.Log(name + " has purchased " + p.name);
+                        }
+                        else
+                        {
+                            // TODO Start auction
+                            Debug.LogWarning("Auctions are not implemented yet.");
+                        }
+                    });
+                }
+                else
+                {
+                    // TODO Start auction
+                    Debug.LogWarning("Auctions are not implemented yet.");
+                }
+            }
         }
     }
 
@@ -252,6 +288,7 @@ public class CounterController : MonoBehaviour
     {
         transform.position = GameController.instance.spaceControllers[position].waypoints[order].position;
     }
+
     /// <summary>
     /// A record used to return dice roll data.
     /// </summary>

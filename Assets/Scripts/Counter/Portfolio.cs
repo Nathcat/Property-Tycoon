@@ -48,7 +48,7 @@ public class Portfolio
         }
         else if (t.Equals(typeof(Property)))
         {
-            properties[properties.Count] = (Property)newAsset;
+            properties.Add((Property) newAsset);
         }
        
     }

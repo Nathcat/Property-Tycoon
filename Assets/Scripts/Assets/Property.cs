@@ -196,7 +196,7 @@ public class Property : Space, IAsset
     /// Purchases this property as <paramref name="counter"/>.
     /// </summary>
     /// <param name="counter">The <see cref="CounterController"/> purchasing the property.</param>
-    public void Purcahse(CounterController counter)
+    public void Purchase(CounterController counter)
     {
         if (!CanPurchase(counter)) return;
 
