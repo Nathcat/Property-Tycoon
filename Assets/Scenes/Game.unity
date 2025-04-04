@@ -402,7 +402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  boardRadius: 5
+  boardRadius: 4.5
   sideOffset: 1
   heightOffset: 2
   lengthOffset: 5
