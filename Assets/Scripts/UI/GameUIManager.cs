@@ -10,6 +10,11 @@ using UnityEngine.UIElements;
 public class GameUIManager : MonoBehaviour
 {
     /// <summary>
+    /// The active instance of this class
+    /// </summary>
+    public static GameUIManager instance { get; private set; }
+
+    /// <summary>
     /// This is the help and rules menu canvas
     /// </summary>
     [SerializeField] private GameObject helpAndRulesMenu;
@@ -26,13 +31,19 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject diceRollUI;
     /// <summary>
+    /// The yes / no prompt UI
+    /// </summary>
+    [SerializeField] private GameObject yesNoPromptUI;
+    private System.Action<bool> onYesNoResponse;
+    /// <summary>
     /// The player cards displayed in the main UI
     /// </summary>
     [SerializeField] private GameObject[] playerCardElements;
     /// <summary>
     /// The state the UI was in before its current state
     /// </summary>
-    private bool[] previousUIState = new bool[] {true, false, false, false};
+    private bool[] previousUIState = new bool[] { true, false, false, false };
+    private bool[] currentUIState = new bool[] { true, false, false, false };
 
     /// <summary>
     /// Set the state of the UI displays (active or inactive)
@@ -43,36 +54,37 @@ public class GameUIManager : MonoBehaviour
     /// <param name="diceRollUI">The desired state of the <see cref="diceRollUI"></param>
     private void SetUIState(bool mainUI, bool helpAndRulesMenu, bool pauseMenu, bool diceRollUI)
     {
-        previousUIState = new bool[] {this.mainUI.activeInHierarchy, this.helpAndRulesMenu.activeInHierarchy, this.pauseMenu.activeInHierarchy, this.diceRollUI.activeInHierarchy};
-
-        this.helpAndRulesMenu.SetActive(helpAndRulesMenu);
-        this.mainUI.SetActive(mainUI);
-        this.pauseMenu.SetActive(pauseMenu);
-        this.diceRollUI.SetActive(diceRollUI);
-
-        this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
-        this.helpAndRulesMenu.transform.GetChild(1).gameObject.SetActive(false);
+        previousUIState = currentUIState;
+        currentUIState = new bool[] { mainUI, helpAndRulesMenu, pauseMenu, diceRollUI };
     }
 
     /// <summary>
     /// Revert the UI state back to its previous state
     /// </summary>
-    private void RevertToPreviousUIState() {
-        bool[] tmp = new bool[] {this.mainUI.activeInHierarchy, this.helpAndRulesMenu.activeInHierarchy, this.pauseMenu.activeInHierarchy, this.diceRollUI.activeInHierarchy};
-
-        this.mainUI.SetActive(previousUIState[0]);
-        this.helpAndRulesMenu.SetActive(previousUIState[1]);
-        this.pauseMenu.SetActive(previousUIState[2]);
-        this.diceRollUI.SetActive(previousUIState[3]);
-
+    private void RevertToPreviousUIState()
+    {
+        bool[] tmp = (bool[]) currentUIState.Clone();
+        currentUIState = previousUIState;
         previousUIState = tmp;
     }
 
     void Start()
     {
+        instance = this;
+
         // Disable all but the main UI
         SetUIState(true, false, false, false);
-        GameController.instance.onNextTurn.AddListener(UpdateUIForNewTurn);
+        this.yesNoPromptUI.SetActive(false);
+        this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
+        this.helpAndRulesMenu.transform.GetChild(1).gameObject.SetActive(false);
+    }
+
+    void Update()
+    {
+        this.mainUI.SetActive(currentUIState[0]);
+        this.helpAndRulesMenu.SetActive(currentUIState[1]);
+        this.pauseMenu.SetActive(currentUIState[2]);
+        this.diceRollUI.SetActive(currentUIState[3]);
     }
 
     /// <summary>
@@ -111,17 +123,21 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// Update the current state of the leaderboard
     /// </summary>
-    private void UpdateLeaderboard() {
+    private void UpdateLeaderboard()
+    {
         List<CounterController> order = new List<CounterController>();
         int i;
-        foreach (CounterController counterController in GameController.instance.counters) {
-            if (order.Count == 0) {
+        foreach (CounterController counterController in GameController.instance.counters)
+        {
+            if (order.Count == 0)
+            {
                 order.Add(counterController);
                 continue;
             }
 
             i = 0;
-            while (i < order.Count && order[i].portfolio.TotalValue() >= counterController.portfolio.TotalValue()) {
+            while (i < order.Count && order[i].portfolio.TotalValue() >= counterController.portfolio.TotalValue())
+            {
                 i++;
             }
 
@@ -130,7 +146,8 @@ public class GameUIManager : MonoBehaviour
 
         string s = "";
         i = 1;
-        foreach (CounterController counterController in order) {
+        foreach (CounterController counterController in order)
+        {
             s += i.ToString() + (i == 1 ? "st" : (i == 2 ? "nd" : (i == 3 ? "rd" : "th"))) + " " + counterController.name + ": " + counterController.portfolio.TotalValue() + "\n";
             i++;
         }
@@ -175,14 +192,16 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// Change to the previous UI state
     /// </summary>
-    public void BackButtonClicked() {
+    public void BackButtonClicked()
+    {
         RevertToPreviousUIState();
     }
 
     /// <summary>
     /// Display the help section of the help and rules menu
     /// </summary>
-    public void HelpButtonClicked() {
+    public void HelpButtonClicked()
+    {
         this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
         this.helpAndRulesMenu.transform.GetChild(1).gameObject.SetActive(false);
     }
@@ -190,8 +209,46 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// Display the rules section of the help and rules menu
     /// </summary>
-    public void RulesButtonClicked() {
+    public void RulesButtonClicked()
+    {
         this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(false);
         this.helpAndRulesMenu.transform.GetChild(1).gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// Create a yes or no prompt on the UI
+    /// </summary>
+    /// <param name="prompt">The prompt message to display to the user</param>
+    /// <param name="onResponse">The callback to execute once the user has replied</param>
+    public void YesNoPrompt(string prompt, System.Action<bool> onResponse)
+    {
+        SetUIState(false, false, false, false);
+        this.yesNoPromptUI.transform.Find("Prompt").GetComponent<TextMeshProUGUI>().text = prompt;
+        this.yesNoPromptUI.SetActive(true);
+        this.onYesNoResponse = onResponse;
+    }
+
+    /// <summary>
+    /// Called when a yes / no prompt has a positive answer
+    /// </summary>
+    public void PromptReplyYes()
+    {
+        onYesNoResponse(true);
+        onYesNoResponse = null;
+        this.yesNoPromptUI.SetActive(false);
+
+        RevertToPreviousUIState();
+    }
+
+    /// <summary>
+    /// Called when a yes / no prompt has a negative answer
+    /// </summary>
+    public void PromptReplyNo()
+    {
+        onYesNoResponse(false);
+        onYesNoResponse = null;
+        this.yesNoPromptUI.SetActive(false);
+
+        RevertToPreviousUIState();
     }
 }

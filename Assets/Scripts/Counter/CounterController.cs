@@ -1,3 +1,4 @@
+using UnityEditor.MPE;
 using UnityEngine;
 
 
@@ -31,6 +32,14 @@ public class CounterController : MonoBehaviour
     /// The number of turns the player has been in jail
     /// </summary>
     private int turnsInJail = 0;
+    /// <summary>
+    /// Whether or not the player is currently waiting for a prompt
+    /// </summary>
+    private bool isWaitingForPrompt = false;
+    /// <summary>
+    /// True if the player is able to get out of jail free
+    /// </summary>
+    public bool getOutOfJailFree = false;
 
     // Start is called before the first frame update
     void Start()
@@ -48,17 +57,43 @@ public class CounterController : MonoBehaviour
     {
         MoveAbsolute(GameController.instance.jailSpace.position);
 
-        if (portfolio.GetCashBalance() >= 50 && AskIfPayForJail())
-        {
-            Cash fine = new Cash(50);
-            portfolio.RemoveCash(fine);
-            GameController.instance.freeParking.AddCash(fine);
-            Debug.Log(name + " pays to leave jail!");
+        Debug.Log(name + " has gone to jail, can they pay?");
 
+        if (getOutOfJailFree) {
+            Debug.Log("... they have a get out of jail free card!");
             Utils.RunAfter(1, GameController.instance.NextTurn);
+        }
+
+        if (portfolio.GetCashBalance() >= 50)
+        {
+            Debug.Log("... they can pay, asking if they want to...");
+
+            isWaitingForPrompt = true;
+            GameUIManager.instance.YesNoPrompt("Pay £50 to get out of jail?", (reply) =>
+            {
+                isWaitingForPrompt = false;
+
+                if (reply)
+                {
+                    Cash fine = new Cash(50);
+                    portfolio.RemoveCash(fine);
+                    GameController.instance.freeParking.AddCash(fine);
+                    Debug.Log(name + " pays to leave jail!");
+
+                    Utils.RunAfter(1, GameController.instance.NextTurn);
+                }
+                else
+                {
+                    isInJail = true;
+                    Debug.Log(name + " is now in jail! Jail space is at position " + GameController.instance.jailSpace.position);
+                    Utils.RunAfter(1, GameController.instance.NextTurn);
+                }
+            });
+
         }
         else
         {
+            Debug.Log("... they cannot pay.");
             isInJail = true;
             Debug.Log(name + " is now in jail! Jail space is at position " + GameController.instance.jailSpace.position);
             Utils.RunAfter(1, GameController.instance.NextTurn);
@@ -128,7 +163,14 @@ public class CounterController : MonoBehaviour
                 GameController.instance.spaces[position].action.Run(this);
             } while (oldPos != position);
 
-            Utils.RunAfter(1, GameController.instance.NextTurn);
+            if (!isWaitingForPrompt)
+            {
+                Debug.Log("Going to next turn");
+                Utils.RunAfter(1, GameController.instance.NextTurn);
+            }
+            else {
+                Debug.Log("Not allowed to go to next turn, player is waiting for a prompt!");
+            }
         }
         else
         {

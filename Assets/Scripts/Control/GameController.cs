@@ -98,6 +98,7 @@ public class GameController : MonoBehaviour
     public void NextTurn()
     {
         turnIndex = (turnIndex + 1) % counters.Length;
+        GameUIManager.instance.UpdateUIForNewTurn(turnCounter);
         turnCounter.PlayTurn();
         onNextTurn.Invoke(turnCounter);
     }
