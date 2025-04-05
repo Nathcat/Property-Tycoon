@@ -230,7 +230,7 @@ public class GameUIManager : MonoBehaviour
     /// <param name="onResponse">The callback to execute once the user has replied</param>
     public void YesNoPrompt(string prompt, System.Action<bool> onResponse)
     {
-        SetUIState(false, false, false, false);
+        SetUIState(true, false, false, false);
         this.yesNoPromptUI.transform.Find("Prompt").GetComponent<TextMeshProUGUI>().text = prompt;
         this.yesNoPromptUI.SetActive(true);
         this.onYesNoResponse = onResponse;
