@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 /// <summary>
 /// Property: A subclass of Asset, used to represent a property in PropertyTycoon.
 /// </summary>
+[System.Serializable]
 public class Property : Space, IAsset
 {
     /// <summary>

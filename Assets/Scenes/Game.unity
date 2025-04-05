@@ -278,6 +278,10 @@ MonoBehaviour:
   heightOffset: 2
   lengthOffset: 5
   propertyUIConroller: {fileID: 833346564}
+  property:
+    position: 0
+    name: 
+    cost: 0
   lastPropertyIndex: 0
   events: {fileID: 622103744}
 --- !u!1 &462438262 stripped
