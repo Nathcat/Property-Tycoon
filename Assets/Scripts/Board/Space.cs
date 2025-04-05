@@ -1,25 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using System;
+using Unity.VisualScripting;
+using System.Runtime.CompilerServices;
 
 /// <summary>Base class of all board spaces</summary>
 public class Space
 {
     public int position;
     public string name;
-    public PropertyGroup propertyGroup;
     public Action action;
-    public int cost;
 
-
-    public Space(int position, string name, PropertyGroup propertyGroup, Action action, int cost)
+    public Space(int position, string name, Action action)
     {
         this.position = position;
         this.name = name;
-        this.propertyGroup = propertyGroup;
         this.action = action;
-        this.cost = cost;
 
+        ValidateAction();
+    }
 
+    /// <summary>
+    /// Verify that this space's action string is valid within the context of this space.
+    /// i.e. for a normal space, the action should not contain any rent commands.
+    /// </summary>
+    virtual public void ValidateAction()
+    {
+        if (action.ContainsCommand<PropertyRent>() || action.ContainsCommand<StationRent>() || action.ContainsCommand<UtilityRent>())
+        {
+            throw new Action.SyntaxError("A normal space ('" + name + "') cannot specify a rent in it's action string!");
+        }
     }
 }
