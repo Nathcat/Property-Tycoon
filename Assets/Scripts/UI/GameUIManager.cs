@@ -49,8 +49,8 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// The state the UI was in before its current state
     /// </summary>
-    private bool[] previousUIState = new bool[] { true, false, false, false };
-    private bool[] currentUIState = new bool[] { true, false, false, false };
+    [SerializeField] private bool[] previousUIState = new bool[] { true, false, false, false };
+    [SerializeField] private bool[] currentUIState = new bool[] { true, false, false, false };
 
     /// <summary>
     /// Set the state of the UI displays (active or inactive)
@@ -61,7 +61,7 @@ public class GameUIManager : MonoBehaviour
     /// <param name="diceRollUI">The desired state of the <see cref="diceRollUI"></param>
     private void SetUIState(bool mainUI, bool helpAndRulesMenu, bool pauseMenu, bool diceRollUI)
     {
-        previousUIState = currentUIState;
+        previousUIState = (bool[]) currentUIState.Clone();
         currentUIState = new bool[] { mainUI, helpAndRulesMenu, pauseMenu, diceRollUI };
     }
 
@@ -244,7 +244,6 @@ public class GameUIManager : MonoBehaviour
         onYesNoResponse(true);
         onYesNoResponse = null;
         this.yesNoPromptUI.SetActive(false);
-
         RevertToPreviousUIState();
     }
 
@@ -256,7 +255,6 @@ public class GameUIManager : MonoBehaviour
         onYesNoResponse(false);
         onYesNoResponse = null;
         this.yesNoPromptUI.SetActive(false);
-
         RevertToPreviousUIState();
     }
 
@@ -266,6 +264,7 @@ public class GameUIManager : MonoBehaviour
     public void StartAuction() {
         Debug.Log("Starting auction.");
         SetUIState(false, false, false, false);
+        previousUIState = new bool[4];
         this.auctionMenu.SetActive(true);
         this.auctionMenu.GetComponent<AuctionManager>().StartAuction(GameController.instance.spaces[GameController.instance.turnCounter.position] as Property);
     }
