@@ -921,7 +921,7 @@ MonoBehaviour:
   Scene:
     m_Handle: 0
   CurrentScene: 
-  GameScene: Tyler's Testing Scene
+  GameScene: Game
 --- !u!114 &443972570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4090,7 +4090,7 @@ PrefabInstance:
     - target: {fileID: 4715825312074687296, guid: a74c295325e881f4d968fb778642716f,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3195.8342
+      value: 3195.8335
       objectReference: {fileID: 0}
     - target: {fileID: 6131303997869509272, guid: a74c295325e881f4d968fb778642716f,
         type: 3}
