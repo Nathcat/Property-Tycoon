@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class PayIn : Command
 {
-    public PayIn(string value) : base(value) {}
+    public PayIn(string value) : base(value) { }
 
-    override public void Execute(CounterController counterController, Argument[] args) {
-        string s = "----- PAYIN -----\n";
+    override public void Execute(CounterController counterController, Argument[] args)
+    {
+        Cash fine = new Cash(int.Parse(args[0].value));
 
-        for (int i = 0; i < args.Length; i++) {
-            s += args[i].value + "\n";
+        if (counterController.portfolio.GetCashBalance() >= fine.GetValue())
+        {
+            Debug.Log(counterController.name + " pays " + args[0].value + " to the bank");
+            counterController.portfolio.RemoveCash(fine);
         }
-
-        Debug.Log(s);
+        else
+        {
+            // TODO Should ask the player to sell their assets here
+            Debug.LogWarning(counterController.name + " must pay " + args[0].value + " to the bank, but they cannot afford it!");
+        }
     }
 }
