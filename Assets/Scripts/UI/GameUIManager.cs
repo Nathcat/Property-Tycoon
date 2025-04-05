@@ -34,6 +34,13 @@ public class GameUIManager : MonoBehaviour
     /// The yes / no prompt UI
     /// </summary>
     [SerializeField] private GameObject yesNoPromptUI;
+    /// <summary>
+    /// Menu controlling the auction process
+    /// </summary>
+    [SerializeField] private GameObject auctionMenu;
+    /// <summary>
+    /// Called on completion of a yes / no prompt
+    /// </summary>
     private System.Action<bool> onYesNoResponse;
     /// <summary>
     /// The player cards displayed in the main UI
@@ -75,6 +82,7 @@ public class GameUIManager : MonoBehaviour
         // Disable all but the main UI
         SetUIState(true, false, false, false);
         this.yesNoPromptUI.SetActive(false);
+        this.auctionMenu.SetActive(false);
         this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
         this.helpAndRulesMenu.transform.GetChild(1).gameObject.SetActive(false);
     }
@@ -250,5 +258,23 @@ public class GameUIManager : MonoBehaviour
         this.yesNoPromptUI.SetActive(false);
 
         RevertToPreviousUIState();
+    }
+
+    /// <summary>
+    /// Start an auction
+    /// </summary>
+    public void StartAuction() {
+        Debug.Log("Starting auction.");
+        SetUIState(false, false, false, false);
+        this.auctionMenu.SetActive(true);
+        this.auctionMenu.GetComponent<AuctionManager>().StartAuction(GameController.instance.spaces[GameController.instance.turnCounter.position] as Property);
+    }
+
+    /// <summary>
+    /// End an auction
+    /// </summary>
+    public void FinishAuction() {
+        this.auctionMenu.SetActive(false);
+        SetUIState(true, false, false, false);
     }
 }

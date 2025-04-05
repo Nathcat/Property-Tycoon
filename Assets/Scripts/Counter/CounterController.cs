@@ -217,15 +217,13 @@ public class CounterController : MonoBehaviour
                         }
                         else
                         {
-                            // TODO Start auction
-                            Debug.LogWarning("Auctions are not implemented yet.");
+                            GameUIManager.instance.StartAuction();
                         }
                     });
                 }
                 else
                 {
-                    // TODO Start auction
-                    Debug.LogWarning("Auctions are not implemented yet.");
+                    GameUIManager.instance.StartAuction();
                 }
             }
         }

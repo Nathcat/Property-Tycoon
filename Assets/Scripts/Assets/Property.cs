@@ -206,6 +206,17 @@ public class Property : Space, IAsset
     }
 
     /// <summary>
+    /// Purchase this property in the context of an auction
+    /// </summary>
+    /// <param name="counter">The winning player</param>
+    /// <param name="auctionValue">The value of their bid</param>
+    public void AuctionPurchase(CounterController counter, Cash auctionValue) {
+        owner = counter;
+        counter.portfolio.AddAsset(this);
+        counter.portfolio.RemoveCash(auctionValue);
+    } 
+
+    /// <summary>
     /// Check weather this property can be downgraded
     /// </summary>
     /// <returns>True if the property can be downgraded, false otherwise</returns>
