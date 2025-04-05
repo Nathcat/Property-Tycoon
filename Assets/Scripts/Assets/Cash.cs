@@ -16,6 +16,10 @@ public class Cash : IAsset
         this.value = value;
     }
 
+    public Cash() {
+        this.value = 0;
+    }
+
     /// <summary>
     /// Adds the value of another Cash object to the selected Cash object.
     /// </summary>

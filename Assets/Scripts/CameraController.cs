@@ -7,7 +7,7 @@ public class CameraController : MonoBehaviour
     //for testing purposes
     [SerializeField] private GameObject target;
     ///used to set the board radius
-    [SerializeField] private float boardRadius = 5;
+    [SerializeField] private float boardRadius = 4.5f;
     ///used to contol the camers offset
     [SerializeField] private int sideOffset = 1;
     [SerializeField] private int heightOffset = 2;
@@ -49,6 +49,9 @@ public class CameraController : MonoBehaviour
         {
             this.transform.position = new Vector3(target.transform.position.x - lengthOffset, target.transform.position.y + heightOffset, target.transform.position.z + sideOffset);
             this.transform.LookAt(target.transform.position);
+        }
+        else {
+            Debug.LogError("No offset is valid");
         }
     }
 }

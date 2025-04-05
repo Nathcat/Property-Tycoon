@@ -99,6 +99,13 @@ public class GameController : MonoBehaviour
         timeExpired = false;
         finalRound = false;
         SetupCounters(new CounterController[6].Select(_ => Instantiate(counterPrefab)).ToArray());
+        SetupCounters(new CounterController[6].Select((c, index) =>
+        {
+            CounterController o = Instantiate(counterPrefab);
+            o.gameObject.name = "Player " + index;
+            return o;
+        }).ToArray());
+        
         turnCounter.PlayTurn();
     }
 
@@ -126,6 +133,10 @@ public class GameController : MonoBehaviour
             
         }
         
+        turnIndex = (turnIndex + 1) % counters.Length;
+        GameUIManager.instance.UpdateUIForNewTurn(turnCounter);
+        turnCounter.PlayTurn();
+        onNextTurn.Invoke(turnCounter);
     }
 
     /// <summary> Parse board configuration and place spaces. </summary>

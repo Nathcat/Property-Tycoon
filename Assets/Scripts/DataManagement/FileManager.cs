@@ -119,7 +119,8 @@ public class FileManager
                     groups[elements[2]] = g;
                 }
             }
-            else if (elements[3] != "null")
+            
+            if (elements[3] != "null")
             {
                 cost = Int32.Parse(elements[3]);
             }
