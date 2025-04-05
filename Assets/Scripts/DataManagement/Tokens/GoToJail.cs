@@ -7,12 +7,7 @@ public class GoToJail : Command
     public GoToJail(string value) : base(value) {}
     
     override public void Execute(CounterController counterController, Argument[] args) {
-        string s = "----- GOTOJAIL -----\n";
-
-        for (int i = 0; i < args.Length; i++) {
-            s += args[i].value + "\n";
-        }
-
-        Debug.Log(s);
+        counterController.GoToJail();
+        Debug.Log(counterController.gameObject.name + " goes to jail.");
     }
 }

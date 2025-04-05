@@ -1,5 +1,5 @@
 Position, Name, Group, Cost, Action, UpgradeCost
-1, Go, null, null, PayOut 200 ;, null
+1, Go, null, null, PayOut 0 ;, null
 2, The Old Creek, Brown, 60, PropertyRent 2 10 30 90 160 250 ;, 50
 3, Pot Luck, null, null, TakePotLuck ;, null
 4, Gangsters Paradise, Brown, 60, PropertyRent 4 20 60 180 320 450 ;, 50

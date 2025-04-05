@@ -7,12 +7,15 @@ public class PayPerUpgrade : Command
     public PayPerUpgrade(string value) : base(value) {}
     
     override public void Execute(CounterController counterController, Argument[] args) {
-        string s = "----- PAYPERUPGRADE -----\n";
+        int houseCost = int.Parse(args[0].value);
+        int hotelCost = int.Parse(args[1].value);
+        int totalCost = 0;
 
-        for (int i = 0; i < args.Length; i++) {
-            s += args[i].value + "\n";
+        foreach (Property p in counterController.portfolio.GetProperties()) {
+            totalCost += p.upgradeLevel == 5 ? hotelCost : (houseCost * p.upgradeLevel);
         }
 
-        Debug.Log(s);
+        Debug.Log(counterController.name + " pays " + houseCost + " per house and " + hotelCost + " per hotel, for a total of " + totalCost);
+        counterController.portfolio.RemoveCash(new Cash(totalCost));
     }
 }
