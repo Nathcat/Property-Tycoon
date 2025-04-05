@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine.Events;
 using System.Collections.Generic;
+using UnityEngine.SocialPlatforms.Impl;
 
 /// <summary> Main script for controlling high level flow of the game. </summary>
 public class GameController : MonoBehaviour
@@ -66,8 +67,17 @@ public class GameController : MonoBehaviour
     /// </summary>
     [HideInInspector] public Cash freeParking = new Cash(0);
 
+    /// <summary> A flag to show whether the game is abridged or not. </summary>
+    private bool abridged;
 
+    /// <summary> A float to hold the remaining time (in seconds), if playing the abridged version of the game. </summary>
+    public float timeRemaining;
 
+    /// <summary> a flag to show if the timer has expired </summary>
+    public bool timeExpired;
+
+    /// <summary> a flag to show if the abridged version of the game is on its final round. </summary>
+    public bool finalRound;
 
 
     [Header("Testing")]
@@ -84,16 +94,38 @@ public class GameController : MonoBehaviour
     {
         SetupBoard();
         SetupCards();
+        abridged = true;
+        timeRemaining = (60);
+        timeExpired = false;
+        finalRound = false;
         SetupCounters(new CounterController[6].Select(_ => Instantiate(counterPrefab)).ToArray());
         turnCounter.PlayTurn();
     }
 
+
     /// <summary> Increment <see cref="turnIndex"/> and start the next turn.</summary>
     public void NextTurn()
     {
-        turnIndex = (turnIndex + 1) % counters.Length;
-        turnCounter.PlayTurn();
-        onNextTurn.Invoke(turnCounter);
+        
+        if (finalRound && (turnIndex % counters.Length) == 1)
+        {
+            EndGame();
+            Debug.Log("finished final round");
+        }
+        else
+        {
+            if (timeExpired && (turnIndex % counters.Length) == 1)
+            {
+                finalRound = true;
+                Debug.Log("reached final round");
+            } 
+           
+            turnIndex = (turnIndex + 1) % counters.Length;
+            turnCounter.PlayTurn();
+            onNextTurn.Invoke(turnCounter);
+            
+        }
+        
     }
 
     /// <summary> Parse board configuration and place spaces. </summary>
@@ -242,5 +274,46 @@ public class GameController : MonoBehaviour
     public void SetupCounters(CounterController[] counters)
     {
         this.counters = counters;
+    }
+    
+    /// <summary>
+    /// Decreases the timer if the abridged version is active.
+    /// </summary>
+    public void Update()
+    {
+        if (abridged && !timeExpired)
+        {
+            timeRemaining -= Time.deltaTime;
+            if (timeRemaining <= 0)
+            {
+                timeExpired = true;
+            }
+        }
+       
+    }
+    
+    /// <summary>
+    /// Prints the winner of the game.
+    /// </summary>
+    public void EndGame()
+    {
+        int[] totals = new int[counters.Length];
+        Debug.Log("number of players: " + counters.Length);
+        for (int i = 0; i < counters.Length; i++)
+        {
+            totals[i] = counters[i].portfolio.TotalValue();
+            Debug.Log("player " + i + " got a score of " + totals[i]);
+        }
+        int winner = 0;
+        for (int i = 0; i < totals.Length; i++)
+        {
+            if (totals[i] > totals[winner])
+            {
+                winner = i;
+            }
+        }
+
+        Debug.Log("Winner is " + counters[winner].name + " with a score of " + totals[winner]);
+
     }
 }
