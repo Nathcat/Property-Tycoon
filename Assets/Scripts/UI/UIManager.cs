@@ -129,6 +129,7 @@ public class UIManager : MonoBehaviour
     public void EMYesButton()
     {
         //Close the program, I think we should do a while true loop that eats all their RAM >:3
+        Application.Quit();
     }
     //----------help menu----------
     public void HMHelpButton()
