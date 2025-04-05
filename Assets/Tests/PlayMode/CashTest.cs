@@ -11,7 +11,7 @@ public class CashTest
     public void CashValueTest()
     {
         // Use the Assert class to test conditions
-        Cash cash = new Cash();
+        Cash cash = new Cash(0);
         Assert.AreEqual(0, cash.GetValue());
     }
 
@@ -19,8 +19,8 @@ public class CashTest
         public void CashAddTest()
     {
         // Use the Assert class to test conditions
-        Cash cash = new Cash();
-        Cash cash1 = new Cash();
+        Cash cash = new Cash(0);
+        Cash cash1 = new Cash(0);
         cash1.AddCash(50);
         cash.AddCash(cash1);
         Assert.AreEqual(50, cash.GetValue());
@@ -30,8 +30,8 @@ public class CashTest
         public void CashRemoveTest()
     {
         // Use the Assert class to test conditions
-        Cash cash = new Cash();
-        Cash cash1 = new Cash();
+        Cash cash = new Cash(0);
+        Cash cash1 = new Cash(0);
         cash.AddCash(100);
         cash1.AddCash(50);
         cash.RemoveCash(cash1);
