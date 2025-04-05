@@ -7,12 +7,19 @@ public class Collect : Command
     public Collect(string value) : base(value) {}
 
     override public void Execute(CounterController counterController, Argument[] args) {
-        string s = "----- COLLECT -----\n";
+        Cash cost = new Cash(int.Parse(args[0].value));
+        Cash total = new Cash(0);
+        foreach (CounterController counter in GameController.instance.counters) {
+            if (counter == counterController) continue;
+            else if (counter.portfolio.GetCashBalance() < cost.GetValue()) {
+                // TODO Ask player to sell assets to meet cost
+            }
 
-        for (int i = 0; i < args.Length; i++) {
-            s += args[i].value + "\n";
+            total.AddCash(counter.portfolio.RemoveCash(cost));
         }
 
-        Debug.Log(s);
+        counterController.portfolio.AddAsset(total);
+
+        Debug.Log(counterController.gameObject.name + " collects " + cost.GetValue() + " from each player, for a total of " + total.GetValue());
     }
 }

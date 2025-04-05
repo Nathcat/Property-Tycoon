@@ -7,12 +7,9 @@ public class CollectFreeParking : Command
     public CollectFreeParking(string value) : base(value) {}
     
     override public void Execute(CounterController counterController, Argument[] args) {
-        string s = "----- COLLECTFREEPARKING -----\n";
+        Debug.Log(counterController.name + " collects free parking, worth " + GameController.instance.freeParking.GetValue());
 
-        for (int i = 0; i < args.Length; i++) {
-            s += args[i].value + "\n";
-        }
-
-        Debug.Log(s);
+        counterController.portfolio.AddAsset(GameController.instance.freeParking);
+        GameController.instance.freeParking = new Cash(0);
     }
 }
