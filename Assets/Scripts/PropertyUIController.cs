@@ -4,6 +4,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+using TreeEditor;
+using MacUI;
+using AOT;
+using GluonGui;
+//using Funky;
+
 public class PropertyUIController : MonoBehaviour
 {
     [SerializeField] private string propertyName;
@@ -33,6 +39,8 @@ public class PropertyUIController : MonoBehaviour
     [SerializeField] private GameObject propertyHouseValueUI;
     //[SerializeField] private GameObject propertyHouseCostUI;
     [SerializeField] private GameObject propertyRentDescriptionUI;
+    [SerializeField] private Property space;
+    [SerializeField] private GameObject needsOwenership;
 
 
     // Start is called before the first frame update
@@ -49,7 +57,7 @@ public class PropertyUIController : MonoBehaviour
 
     public void GetPropertyDetails(CameraController camera) {
         // Tyler what the fuck
-        Property space = camera.property;
+        space = camera.property;
         propertyName = space.name;
         propertyColor = space.propertyGroup.GetColor();
         propertyPrice = space.cost.ToString();
@@ -75,6 +83,15 @@ public class PropertyUIController : MonoBehaviour
         propertyMortgageUI.GetComponent<TMP_Text>().text = "Mortgage value: £" + propertyMortgage;
         propertyRentDescriptionUI.GetComponent<TMP_Text>().text = propertyRentDescription;
         //propertySellPriceUI.GetComponent<TMP_Text>().text = propertyPrice;
+        if (space.owner == GameController.instance.turnCounter)
+        {
+            needsOwenership.SetActive(true);
+        }
+        else
+        {
+            needsOwenership.SetActive(false);
+        }
+
         if (!(camera.property is Station) && !(camera.property is Utility))
         {
             propertyHouseValueUI.GetComponent<TMP_Text>().text = "House value: £" + propertyHouseValue;
@@ -83,6 +100,35 @@ public class PropertyUIController : MonoBehaviour
         else
         {
             propertyHouseValueUI.SetActive(false);
+        }
+    }
+
+    public void AddHouse()
+    {
+        if (space.CanUpgrade())
+        {
+            space.Upgrade();
+        }
+    }
+    public void DowngradeHouse()
+    {
+        if (space.CanDowngrade()) 
+        {
+            space.Downgrade();
+        }
+    }
+    public void Mortgage() 
+    {
+        if (space.isMortgaged == false)//dont change this. its very important that it stays as == false
+        {
+            space.Mortgage();
+        }
+    }
+    public void Sell() 
+    {
+        if (space.CanSell()) 
+        {
+            space.Sell();
         }
     }
 }
