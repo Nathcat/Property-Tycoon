@@ -383,6 +383,11 @@ MonoBehaviour:
   propertyMortgageUI: {fileID: 1336571526}
   propertyHouseValueUI: {fileID: 960582518}
   propertyRentDescriptionUI: {fileID: 462438262}
+  space:
+    position: 0
+    name: 
+    cost: 0
+  needsOwenership: {fileID: 1798090208}
 --- !u!1 &833346564 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 78121678833249948, guid: e23469b929cc5944bbe431a77e1282a4,
@@ -642,6 +647,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1798090208 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8957393537293728727, guid: e23469b929cc5944bbe431a77e1282a4,
+    type: 3}
+  m_PrefabInstance: {fileID: 9019465926762578626}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1930101726 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9158096777194504576, guid: e23469b929cc5944bbe431a77e1282a4,
@@ -680,6 +691,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406281329481101831, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406281329481101831, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406281329481101831, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 622103748}
+    - target: {fileID: 2406281329481101831, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406281329481101831, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Sell
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406281329481101831, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PropertyUIController, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406281329481101831, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5832106824242451016, guid: e23469b929cc5944bbe431a77e1282a4,
         type: 3}
@@ -881,6 +927,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7860435948702411307, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7860435948702411307, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7860435948702411307, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 622103748}
+    - target: {fileID: 7860435948702411307, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7860435948702411307, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DowngradeHouse
+      objectReference: {fileID: 0}
+    - target: {fileID: 7860435948702411307, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PropertyUIController, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 7860435948702411307, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8181388238768401690, guid: e23469b929cc5944bbe431a77e1282a4,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -935,6 +1016,76 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8534044080115986394, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8534044080115986394, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8534044080115986394, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 622103748}
+    - target: {fileID: 8534044080115986394, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8534044080115986394, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: AddHouse
+      objectReference: {fileID: 0}
+    - target: {fileID: 8534044080115986394, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PropertyUIController, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 8534044080115986394, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937723000222274920, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937723000222274920, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937723000222274920, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 622103748}
+    - target: {fileID: 8937723000222274920, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937723000222274920, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Mortgage
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937723000222274920, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PropertyUIController, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937723000222274920, guid: e23469b929cc5944bbe431a77e1282a4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
