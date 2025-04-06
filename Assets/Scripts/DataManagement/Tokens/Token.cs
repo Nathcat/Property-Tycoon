@@ -1,15 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Token {
+public class Token
+{
     public string value;
 
-    public Token(string value) {
+    public Token(string value)
+    {
         this.value = value;
     }
 
-    public string getTokenAsString(){
+    public string getTokenAsString()
+    {
         return (string)this.value;
     }
 }

@@ -1,11 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using System;
-using Unity.VisualScripting;
-using System.Runtime.CompilerServices;
-
 /// <summary>Base class of all board spaces</summary>
 public class Space
 {

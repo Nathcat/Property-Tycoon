@@ -1,4 +1,3 @@
-using UnityEditor.MPE;
 using UnityEngine;
 
 
@@ -284,7 +283,9 @@ public class CounterController : MonoBehaviour
     /// <summary> Move this counter to the space specified in <see cref="position"/> </summary>
     private void Move()
     {
+        Debug.Log("for player " + name + ", the position is " + position + " and the order is " + order);
         transform.position = GameController.instance.spaceControllers[position].waypoints[order].position;
+        
     }
 
     /// <summary>
