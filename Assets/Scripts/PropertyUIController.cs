@@ -79,9 +79,9 @@ public class PropertyUIController : MonoBehaviour
         CameraController camera = Camera.main.GetComponent<CameraController>();
 
         propertyNameUI.GetComponent<TMP_Text>().text = propertyName;
-        propertyPriceUI.GetComponent<TMP_Text>().text = "Value: £" + propertyPrice;
+        propertyPriceUI.GetComponent<TMP_Text>().text = "Value: ï¿½" + propertyPrice;
         propertyColorUI.GetComponent<Image>().color = propertyColor;
-        propertyMortgageUI.GetComponent<TMP_Text>().text = "Mortgage value: £" + propertyMortgage;
+        propertyMortgageUI.GetComponent<TMP_Text>().text = "Mortgage value: ï¿½" + propertyMortgage;
         propertyRentDescriptionUI.GetComponent<TMP_Text>().text = propertyRentDescription;
         //propertySellPriceUI.GetComponent<TMP_Text>().text = propertyPrice;
         if (space.owner == GameController.instance.turnCounter)
@@ -95,7 +95,7 @@ public class PropertyUIController : MonoBehaviour
 
         if (!(camera.property is Station) && !(camera.property is Utility))
         {
-            propertyHouseValueUI.GetComponent<TMP_Text>().text = "House value: £" + propertyHouseValue;
+            propertyHouseValueUI.GetComponent<TMP_Text>().text = "House value: ï¿½" + propertyHouseValue;
             propertyHouseValueUI.SetActive(true);
         }
         else
@@ -132,18 +132,4 @@ public class PropertyUIController : MonoBehaviour
             space.Sell();
         }
     }
-
-<<<<<<< Updated upstream
-        Settings.SetActive(true);
-=======
-        Settings.SetActive(true); 
->>>>>>> Stashed changes
-public void MMSettingsButton()
-    {
-        StartScreen.SetActive(false);
-<<<<<<< Updated upstream
-        Settings.SetActive(true);
-=======
-        Settings.SetActive(true); 
->>>>>>> Stashed changes
-    }
+}
