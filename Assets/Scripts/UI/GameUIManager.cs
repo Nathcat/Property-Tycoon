@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Codice.Client.BaseCommands;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -39,6 +40,10 @@ public class GameUIManager : MonoBehaviour
     /// Timer for the abridged version of the game
     /// </summary>
     [SerializeField] private GameObject gameTimer;
+    /// <summary>
+    /// Screen used when the game ends.
+    /// </summary>
+    [SerializeField] private GameObject gameEndScreen;
     /// <summary>
     /// Called on completion of a yes / no prompt
     /// </summary>
@@ -96,14 +101,20 @@ public class GameUIManager : MonoBehaviour
         this.pauseMenu.SetActive(currentUIState[2]);
         this.diceRollUI.SetActive(currentUIState[3]);
     }
-
+    /// <summary>
+    /// Set up the timer.
+    /// </summary>
+    /// <param name="inputTimer"></param>
     public void SetUpTimer(float inputTimer)
     {
         gameTimer.SetActive(true);
         gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = inputTimer.ToString();
         Debug.Log("timer set up");
     }
-
+    /// <summary>
+    /// Update the timer to show the current remaining time, in hours, mins and seconds.
+    /// </summary>
+    /// <param name="inputTimer"></param>
     public void UpdateTimer(float inputTimer)
     {
         float hours = (float)System.Math.Truncate(inputTimer / 3600);
@@ -133,12 +144,16 @@ public class GameUIManager : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Sets the timer to show the time limit has expired.
+    /// </summary>
     public void EndTimer()
     {
         gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = "Time expired!";
     }
-
+    /// <summary>
+    /// Sets the timer to show that the final round has been reached.
+    /// </summary>
     public void FinalRound()
     {
         gameTimer.transform.Find("Background").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Final Round!";
@@ -327,5 +342,29 @@ public class GameUIManager : MonoBehaviour
     {
         this.auctionMenu.SetActive(false);
         SetUIState(true, false, false, false);
+    }
+
+    /// <summary>
+    /// Brings up the game end screen, and displays the winner & their score.
+    /// </summary>
+    /// <param name="winner"> name of the winner. </param>
+    /// <param name="score"> score of the winner. </param>
+    public void EndGame(string winner, int score)
+    {
+        // hode everything but the end screen
+        this.gameEndScreen.SetActive(true);
+        SetUIState(false, false, false, false);
+        this.gameTimer.SetActive(false);
+        this.yesNoPromptUI.SetActive(false);
+        this.auctionMenu.SetActive(false);
+        gameEndScreen.transform.Find("winner").GetComponent<TextMeshProUGUI>().text = winner + " with a score of " + score;
+    }
+
+    /// <summary>
+    /// Returns to the main menu.
+    /// </summary>
+    public void EndMenuClicked()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }
