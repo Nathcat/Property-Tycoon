@@ -99,6 +99,15 @@ public class GameUIManager : MonoBehaviour
         this.helpAndRulesMenu.SetActive(currentUIState[1]);
         this.pauseMenu.SetActive(currentUIState[2]);
         this.diceRollUI.SetActive(currentUIState[3]);
+        bool GOJF = GameController.instance.turnCounter.getOutOfJailFree;
+        if (GOJF)
+        {
+            this.GetOutOfJailFree.SetActive(true);
+        }
+        else
+        {
+            this.GetOutOfJailFree.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -132,14 +141,7 @@ public class GameUIManager : MonoBehaviour
     private void SetCurrentTurnLabel(CounterController counterController)
     {
         mainUI.transform.Find("CurrentTurn").GetChild(0).GetComponent<TextMeshProUGUI>().text = counterController.name + "'s turn";
-        if (counterController.getOutOfJailFree)
-        {
-            this.GetOutOfJailFree.SetActive(true);
-        }
-        else
-        {
-            this.GetOutOfJailFree.SetActive(false);
-        }
+        
     }
 
     /// <summary>
