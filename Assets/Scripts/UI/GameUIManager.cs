@@ -90,6 +90,7 @@ public class GameUIManager : MonoBehaviour
         this.gameTimer.SetActive(false);
         this.yesNoPromptUI.SetActive(false);
         this.auctionMenu.SetActive(false);
+        this.gameEndScreen.SetActive(false);
         this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
         this.helpAndRulesMenu.transform.GetChild(1).gameObject.SetActive(false);
     }
