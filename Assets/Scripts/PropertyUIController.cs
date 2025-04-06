@@ -8,6 +8,7 @@ using TreeEditor;
 using MacUI;
 using AOT;
 using GluonGui;
+using PlasticPipe;
 //using Funky;
 
 public class PropertyUIController : MonoBehaviour
@@ -131,4 +132,18 @@ public class PropertyUIController : MonoBehaviour
             space.Sell();
         }
     }
-}
+
+<<<<<<< Updated upstream
+        Settings.SetActive(true);
+=======
+        Settings.SetActive(true); 
+>>>>>>> Stashed changes
+public void MMSettingsButton()
+    {
+        StartScreen.SetActive(false);
+<<<<<<< Updated upstream
+        Settings.SetActive(true);
+=======
+        Settings.SetActive(true); 
+>>>>>>> Stashed changes
+    }
