@@ -24,7 +24,7 @@ Position, Name, Group, Cost, Action, UpgradeCost
 23, Opportunity Knocks, null, null, TakeOppoKnocks ;, null
 24, Mulan Rouge, Red, 220, PropertyRent 18 90 250 700 875 1050 ;, 150
 25, Han Xin Gardents, Red, 240, PropertyRent 20 100 300 750 925 1100 ;, 150
-26, Falmer Station, Station, null, StationRent ;, null
+26, Falmer Station, Station, 200, StationRent ;, null
 27, Shatner Close, Yellow, 260, PropertyRent 22 110 330 800 975 1150 ;, 150
 28, Picard Avenue, Yellow, 260, PropertyRent 22 110 330 800 975 1150 ;, 150
 29, Edison Water, Utilities, 150, UtilityRent ;, null
