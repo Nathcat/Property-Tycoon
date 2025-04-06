@@ -341,13 +341,13 @@ public class UIManager : MonoBehaviour
         Min = MinInput.GetComponent<TMP_InputField>().text;
         Sec = SecInput.GetComponent<TMP_InputField>().text;
         CSV = CSVInput.GetComponent<TMP_InputField>().text;
-        Player1Type = Player1TypeInput.GetComponent<Dropdown>().value.ToString();
-        Player2Type = Player2TypeInput.GetComponent<Dropdown>().value.ToString();
-        Player3Type = Player3TypeInput.GetComponent<Dropdown>().value.ToString();
-        Player4Type = Player4TypeInput.GetComponent<Dropdown>().value.ToString();
-        Player5Type = Player5TypeInput.GetComponent<Dropdown>().value.ToString();
-        Player6Type = Player6TypeInput.GetComponent<Dropdown>().value.ToString();
-        Gamemode = GamemodeInput.GetComponent<Dropdown>().value.ToString();
+        Player1Type = Player1TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
+        Player2Type = Player2TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
+        Player3Type = Player3TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
+        Player4Type = Player4TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
+        Player5Type = Player5TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
+        Player6Type = Player6TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
+        Gamemode = GamemodeInput.GetComponent<TMP_Dropdown>().value.ToString();
         Debug.Log(Player1Name+":"+  Player1Type + ":"  + Hour + ":" + Min + ":" + Sec + ":" + CSV + ":" + Gamemode);
     }
 
