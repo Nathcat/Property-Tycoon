@@ -1,3 +1,4 @@
+using UnityEditor.MPE;
 using UnityEngine;
 
 
@@ -36,6 +37,18 @@ public class CounterController : MonoBehaviour
     /// The number of turns the player has been in jail
     /// </summary>
     private int turnsInJail = 0;
+    /// <summary>
+    /// True if the player is able to get out of jail free
+    /// </summary>
+    public bool getOutOfJailFree = false;
+    /// <summary>
+    /// Determines whether or not the player can currently buy properties
+    /// </summary>
+    public bool canPurchaseProperties { get; private set; } = false;
+    /// <summary>
+    /// True if the player is currently determining whether or not they should be in jail.
+    /// </summary>
+    private bool determiningJailState = false;
 
     // Start is called before the first frame update
     void Start()
@@ -51,30 +64,62 @@ public class CounterController : MonoBehaviour
 
     public void GoToJail()
     {
+        determiningJailState = true;
         MoveAbsolute(GameController.instance.jailSpace.position);
 
-        if (portfolio.GetCashBalance() >= 50 && AskIfPayForJail())
-        {
-            Cash fine = new Cash(50);
-            portfolio.RemoveCash(fine);
-            GameController.instance.freeParking.AddCash(fine);
-            Debug.Log(name + " pays to leave jail!");
+        Debug.Log(name + " has gone to jail, can they pay?");
 
-            Utils.RunAfter(1, GameController.instance.NextTurn);
+        if (getOutOfJailFree)
+        {
+            Debug.Log("... they have a get out of jail free card!");
+            //Utils.RunAfter(1, GameController.instance.NextTurn);
+            return;
+        }
+
+        if (portfolio.GetCashBalance() >= 50)
+        {
+            Debug.Log("... they can pay, asking if they want to...");
+
+            GameUIManager.instance.YesNoPrompt("Pay £50 to get out of jail?", (reply) =>
+            {
+                determiningJailState = false;
+                if (reply)
+                {
+                    Cash fine = new Cash(50);
+                    portfolio.RemoveCash(fine);
+                    GameController.instance.freeParking.AddCash(fine);
+                    Debug.Log(name + " pays to leave jail!");
+
+                    //Utils.RunAfter(1, GameController.instance.NextTurn);
+                    TurnPostMove();
+                }
+                else
+                {
+                    isInJail = true;
+                    Debug.Log(name + " is now in jail! Jail space is at position " + GameController.instance.jailSpace.position);
+
+                    //Utils.RunAfter(1, GameController.instance.NextTurn);
+                    TurnPostMove();
+                }
+            });
+
         }
         else
         {
+            determiningJailState = false;
+            Debug.Log("... they cannot pay.");
             isInJail = true;
             Debug.Log(name + " is now in jail! Jail space is at position " + GameController.instance.jailSpace.position);
-            Utils.RunAfter(1, GameController.instance.NextTurn);
+            //Utils.RunAfter(1, GameController.instance.NextTurn);
         }
     }
 
     public void LeaveJail()
     {
         isInJail = false;
+        turnsInJail = 0;
         Debug.Log(name + " has left jail!");
-        Utils.RunAfter(1, GameController.instance.NextTurn);
+        //Utils.RunAfter(1, GameController.instance.NextTurn);
     }
 
     /// <summary>
@@ -132,19 +177,60 @@ public class CounterController : MonoBehaviour
                 GameController.instance.spaces[position].action.Run(this);
             } while (oldPos != position);
 
-            Utils.RunAfter(1, GameController.instance.NextTurn);
+            if (!determiningJailState) TurnPostMove();
         }
         else
         {
             // Wait for 2 turns to leave jail
             turnsInJail++;
 
+            Debug.Log(name + " has been in jail for " + turnsInJail + " turns.");
+
             if (turnsInJail == 2)
             {
+                Debug.Log(name + " is leaving jail! They have done " + turnsInJail + " turns while imprisoned!");
                 LeaveJail();
+                return;
             }
 
-            Utils.RunAfter(1, GameController.instance.NextTurn);
+            //Utils.RunAfter(1, GameController.instance.NextTurn);
+        }
+    }
+
+    /// <summary>
+    /// Play the remainder of the turn, after the player has moved. This should be called after all player movement has concluded for this turn.
+    /// The player should be settled on a space.
+    /// </summary>
+    public void TurnPostMove()
+    {
+        Space space = GameController.instance.spaces[position];
+
+        if (space is Property)
+        {
+            Property p = space as Property;
+
+            if (!p.isOwned && canPurchaseProperties)
+            {
+                if (p.CanPurchase(this))
+                {
+                    GameUIManager.instance.YesNoPrompt("Would you like to buy " + p.name + " for £" + p.GetValue() + "?", (reply) =>
+                    {
+                        if (reply)
+                        {
+                            p.Purchase(this);
+                            Debug.Log(name + " has purchased " + p.name);
+                        }
+                        else
+                        {
+                            GameUIManager.instance.StartAuction();
+                        }
+                    });
+                }
+                else
+                {
+                    GameUIManager.instance.StartAuction();
+                }
+            }
         }
     }
 
@@ -176,6 +262,8 @@ public class CounterController : MonoBehaviour
 
             // Add 200 cash when the player has moved fully around the board
             portfolio.AddAsset(new Cash(200));
+            if (!canPurchaseProperties) Debug.Log(name + " can now buy properties");
+            canPurchaseProperties = true;
             Debug.Log(name + " receives 200 for completing a lap of the board.");
         }
 
@@ -203,6 +291,7 @@ public class CounterController : MonoBehaviour
     {
         transform.position = spaceController.waypoints[order].position;
     }
+
     /// <summary>
     /// A record used to return dice roll data.
     /// </summary>

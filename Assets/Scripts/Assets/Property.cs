@@ -197,7 +197,7 @@ public class Property : Space, IAsset
     /// Purchases this property as <paramref name="counter"/>.
     /// </summary>
     /// <param name="counter">The <see cref="CounterController"/> purchasing the property.</param>
-    public void Purcahse(CounterController counter)
+    public void Purchase(CounterController counter)
     {
         if (!CanPurchase(counter)) return;
 
@@ -205,6 +205,17 @@ public class Property : Space, IAsset
         counter.portfolio.AddAsset(this);
         counter.portfolio.RemoveCash(new Cash(cost));
     }
+
+    /// <summary>
+    /// Purchase this property in the context of an auction
+    /// </summary>
+    /// <param name="counter">The winning player</param>
+    /// <param name="auctionValue">The value of their bid</param>
+    public void AuctionPurchase(CounterController counter, Cash auctionValue) {
+        owner = counter;
+        counter.portfolio.AddAsset(this);
+        counter.portfolio.RemoveCash(auctionValue);
+    } 
 
     /// <summary>
     /// Check weather this property can be downgraded

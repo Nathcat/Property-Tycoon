@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour
     //for testing purposes
     [SerializeField] public GameObject target = null;
     ///used to set the board radius
-    [SerializeField] private float boardRadius = 5;
+    [SerializeField] private float boardRadius = 4.5f;
     ///used to contol the camers offset
     [SerializeField] private int sideOffset = 1;
     [SerializeField] private int heightOffset = 2;
