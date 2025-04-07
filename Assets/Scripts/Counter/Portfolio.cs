@@ -14,7 +14,7 @@ public class Portfolio
     /// <summary>
     /// Constructor for the Portfolio class.
     /// </summary>
-    public Portfolio() 
+    public Portfolio()
     {
         cashBalance = new Cash(0);
         properties = new List<Property>();
@@ -48,9 +48,9 @@ public class Portfolio
         }
         else if (t.Equals(typeof(Property)))
         {
-            properties.Add((Property) newAsset);
+            properties.Add((Property)newAsset);
         }
-       
+
     }
     /// <summary>
     /// Removes a given value in cash from the portfolio.
@@ -61,7 +61,7 @@ public class Portfolio
     {
         cashBalance.RemoveCash(cashOut);
         // should this return the amount removed from the portfolio, or the amount remaining in the portfolio?? currently returning the amount removed
-        return(cashOut);
+        return (cashOut);
     }
     /// <summary>
     /// Removes a given property from the portfolio.
@@ -72,7 +72,7 @@ public class Portfolio
     public int RemoveProperty(Property propertyOut)
     {
         properties.Remove(propertyOut);
-        return(propertyOut.GetValue());
+        return (propertyOut.GetValue());
     }
     /// <summary>
     /// Returns the portfolio's cash.

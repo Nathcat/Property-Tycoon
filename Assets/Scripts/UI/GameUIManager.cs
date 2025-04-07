@@ -1,11 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
 
 public class GameUIManager : MonoBehaviour
 {
@@ -39,6 +35,14 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject auctionMenu;
     /// <summary>
+    /// Timer for the abridged version of the game
+    /// </summary>
+    [SerializeField] private GameObject gameTimer;
+    /// <summary>
+    /// The actual text for the game timer.
+    /// </summary>
+    [SerializeField] private TextMeshProUGUI gameTimerText;
+    /// <summary>
     /// Called on completion of a yes / no prompt
     /// </summary>
     private System.Action<bool> onYesNoResponse;
@@ -61,7 +65,7 @@ public class GameUIManager : MonoBehaviour
     /// <param name="diceRollUI">The desired state of the <see cref="diceRollUI"></param>
     private void SetUIState(bool mainUI, bool helpAndRulesMenu, bool pauseMenu, bool diceRollUI)
     {
-        previousUIState = (bool[]) currentUIState.Clone();
+        previousUIState = (bool[])currentUIState.Clone();
         currentUIState = new bool[] { mainUI, helpAndRulesMenu, pauseMenu, diceRollUI };
     }
 
@@ -70,7 +74,7 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     private void RevertToPreviousUIState()
     {
-        bool[] tmp = (bool[]) currentUIState.Clone();
+        bool[] tmp = (bool[])currentUIState.Clone();
         currentUIState = previousUIState;
         previousUIState = tmp;
     }
@@ -81,6 +85,7 @@ public class GameUIManager : MonoBehaviour
 
         // Disable all but the main UI
         SetUIState(true, false, false, false);
+        this.gameTimer.SetActive(false);
         this.yesNoPromptUI.SetActive(false);
         this.auctionMenu.SetActive(false);
         this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
@@ -93,6 +98,50 @@ public class GameUIManager : MonoBehaviour
         this.helpAndRulesMenu.SetActive(currentUIState[1]);
         this.pauseMenu.SetActive(currentUIState[2]);
         this.diceRollUI.SetActive(currentUIState[3]);
+
+        if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
+    }
+
+    public void SetUpTimer(float inputTimer)
+    {
+        gameTimer.SetActive(true);
+        UpdateTimer(inputTimer);
+        Debug.Log("timer set up");
+    }
+
+    public void UpdateTimer(float inputTimer)
+    {
+        if (inputTimer <= 0) {
+            gameTimerText.text = "Time expired!";
+        } else
+        {
+            float hours = Mathf.FloorToInt(inputTimer / 3600);
+            float mins = Mathf.FloorToInt(inputTimer / 60);
+            float seconds = Mathf.FloorToInt(inputTimer % 60);
+            if (mins < 10)
+            {
+                if (seconds < 10)
+                {
+                    gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":0" + mins + ":0" + seconds;
+                }
+                else
+                {
+                    gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":0" + mins + ":" + seconds;
+                }
+            
+            }
+            else
+            {
+                if (seconds < 10)
+                {
+                    gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":" + mins + ":0" + seconds;
+                }
+                else
+                {
+                    gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":" + mins + ":" + seconds;
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -261,7 +310,8 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// Start an auction
     /// </summary>
-    public void StartAuction() {
+    public void StartAuction()
+    {
         Debug.Log("Starting auction.");
         SetUIState(false, false, false, false);
         previousUIState = new bool[4];
@@ -272,7 +322,8 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// End an auction
     /// </summary>
-    public void FinishAuction() {
+    public void FinishAuction()
+    {
         this.auctionMenu.SetActive(false);
         SetUIState(true, false, false, false);
     }
