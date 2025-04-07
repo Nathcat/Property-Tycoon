@@ -67,16 +67,13 @@ public class GameController : MonoBehaviour
     [HideInInspector] public Cash freeParking = new Cash(0);
 
     /// <summary> A flag to show whether the game is abridged or not. </summary>
-    public bool abridged;
+    public bool abridged { get; private set; }
 
     /// <summary> A float to hold the remaining time (in seconds), if playing the abridged version of the game. </summary>
-    public float timeRemaining;
+    public float timeRemaining { get; private set; }
 
     /// <summary> a flag to show if the timer has expired </summary>
-    public bool timeExpired;
-
-    /// <summary> a flag to show if the abridged version of the game is on its final round. </summary>
-    public bool finalRound;
+    public bool timeExpired { get  { return timeRemaining <= 0; } }
 
 
     [Header("Testing")]
@@ -95,8 +92,6 @@ public class GameController : MonoBehaviour
         SetupCards();
         abridged = true;
         timeRemaining = (65);
-        timeExpired = false;
-        finalRound = false;
         SetupTimer();
         //SetupCounters(new CounterController[6].Select(_ => Instantiate(counterPrefab)).ToArray());
         // this seems to break, but bring back if needed :)
@@ -114,31 +109,15 @@ public class GameController : MonoBehaviour
     /// <summary> Increment <see cref="turnIndex"/> and start the next turn.</summary>
     public void NextTurn()
     {
-
-        if (finalRound && (turnIndex % counters.Length) == 1)
-        {
-            EndGame();
-            Debug.Log("finished final round");
-        }
+        turnIndex = (turnIndex + 1) % counters.Length;
+        
+        if (turnIndex == 0) EndGame();
         else
         {
-            if (timeExpired && (turnIndex % counters.Length) == 1)
-            {
-                finalRound = true;
-                Debug.Log("reached final round");
-                GameUIManager.instance.FinalRound();
-            }
-
-            turnIndex = (turnIndex + 1) % counters.Length;
+            GameUIManager.instance.UpdateUIForNewTurn(turnCounter);
             turnCounter.PlayTurn();
             onNextTurn.Invoke(turnCounter);
-
         }
-
-        turnIndex = (turnIndex + 1) % counters.Length;
-        GameUIManager.instance.UpdateUIForNewTurn(turnCounter);
-        turnCounter.PlayTurn();
-        onNextTurn.Invoke(turnCounter);
     }
 
     /// <summary> Parse board configuration and place spaces. </summary>
@@ -297,20 +276,11 @@ public class GameController : MonoBehaviour
         this.counters = counters;
     }
 
-    /// <summary>
-    /// Decreases the timer if the abridged version is active.
-    /// </summary>
     public void Update()
     {
         if (abridged && !timeExpired)
         {
-            timeRemaining -= Time.deltaTime;
-            GameUIManager.instance.UpdateTimer(timeRemaining);
-            if (timeRemaining <= 0)
-            {
-                timeExpired = true;
-                GameUIManager.instance.EndTimer();
-            }
+            timeRemaining -= Time.deltaTime
         }
 
     }

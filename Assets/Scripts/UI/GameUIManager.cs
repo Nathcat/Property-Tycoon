@@ -106,9 +106,11 @@ public class GameUIManager : MonoBehaviour
 
     public void UpdateTimer(float inputTimer)
     {
-        float hours = (float)System.Math.Truncate(inputTimer / 3600);
-        float mins = (float)System.Math.Truncate(inputTimer / 60);
-        float seconds = (float)System.Math.Truncate(inputTimer % 60);
+        gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = "Time expired!";
+
+        float hours = Mathf.RoundToInt(inputTimer / 3600);
+        float mins = Mathf.RoundToInt(inputTimer / 60);
+        float seconds = Mathf.RoundToInt(inputTimer % 60);
         if (mins < 10)
         {
             if (seconds < 10)
@@ -132,17 +134,6 @@ public class GameUIManager : MonoBehaviour
                 gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":" + mins + ":" + seconds;
             }
         }
-    }
-
-    public void EndTimer()
-    {
-        gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = "Time expired!";
-    }
-
-    public void FinalRound()
-    {
-        gameTimer.transform.Find("Background").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Final Round!";
-        gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
     }
 
     /// <summary>
