@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PayOut : Command
 {
-    public PayOut(string value) : base(value) {}
+    public PayOut(string value) : base(value) { }
 
     override public IEnumerator Execute(CounterController counterController, Argument[] args) {
         Debug.Log(counterController.name + " receives " + args[0].value + " from the bank.");

@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class SpaceController : MonoBehaviour
 {
@@ -9,7 +7,8 @@ public class SpaceController : MonoBehaviour
     public Transform[] waypoints;
     public Space space;
 
-    public void Setup(Space space) {
+    public void Setup(Space space)
+    {
         this.space = space;
         output.text = space.name;
 

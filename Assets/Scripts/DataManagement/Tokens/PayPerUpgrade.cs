@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PayPerUpgrade : Command
@@ -11,7 +9,8 @@ public class PayPerUpgrade : Command
         int hotelCost = int.Parse(args[1].value);
         int totalCost = 0;
 
-        foreach (Property p in counterController.portfolio.GetProperties()) {
+        foreach (Property p in counterController.portfolio.GetProperties())
+        {
             totalCost += p.upgradeLevel == 5 ? hotelCost : (houseCost * p.upgradeLevel);
         }
 
