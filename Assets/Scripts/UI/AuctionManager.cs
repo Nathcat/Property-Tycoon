@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class AuctionManager : MonoBehaviour
 {
@@ -23,7 +22,8 @@ public class AuctionManager : MonoBehaviour
     /// Set the target property of this auction
     /// </summary>
     /// <param name="p">The target property</param>
-    public void SetTargetProperty(Property p) {
+    public void SetTargetProperty(Property p)
+    {
         targetProperty = p;
         transform.Find("Prompt").GetComponent<TextMeshProUGUI>().text = p.name + " is put up for auction, it is worth £" + p.GetValue();
     }
@@ -32,7 +32,8 @@ public class AuctionManager : MonoBehaviour
     /// Start an auction
     /// </summary>
     /// <param name="p">The property up for auction</param>
-    public void StartAuction(Property p) {
+    public void StartAuction(Property p)
+    {
         SetTargetProperty(p);
 
         currentTurn = -1;
@@ -40,7 +41,8 @@ public class AuctionManager : MonoBehaviour
         bids = new Cash[GameController.instance.counters.Length];
         withdrawn = new bool[GameController.instance.counters.Length];
 
-        for (int x = 0; x < bids.Length; x++) {
+        for (int x = 0; x < bids.Length; x++)
+        {
             bids[x] = new Cash();
         }
 
@@ -69,18 +71,21 @@ public class AuctionManager : MonoBehaviour
     {
         currentTurn = (currentTurn + 1) % GameController.instance.counters.Length;
 
-        if (withdrawn[currentTurn]) {
+        if (withdrawn[currentTurn])
+        {
             NextBid();
             return;
         }
 
         // Count the number of remaining players
         int numberOfPlayers = 0;
-        foreach (bool w in withdrawn) {
+        foreach (bool w in withdrawn)
+        {
             if (!w) numberOfPlayers++;
         }
 
-        if (numberOfPlayers == 1) {
+        if (numberOfPlayers == 1)
+        {
             // This is the only remaining player, hence they have won
             targetProperty.AuctionPurchase(currentPlayer, bids[currentTurn]);
             GameUIManager.instance.FinishAuction();
@@ -109,10 +114,12 @@ public class AuctionManager : MonoBehaviour
         {
             if (playerPanel.gameObject.activeSelf)
             {
-                if (!withdrawn[i]) {
+                if (!withdrawn[i])
+                {
                     playerPanel.GetComponent<UnityEngine.UI.Image>().color = new Color(1f, 1f, 1f, 1f);
                 }
-                else {
+                else
+                {
                     playerPanel.GetComponent<UnityEngine.UI.Image>().color = new Color(0f, 0f, 0f, 0.5f);
                 }
             }
@@ -133,7 +140,8 @@ public class AuctionManager : MonoBehaviour
     /// <summary>
     /// Withdraw from bidding
     /// </summary>
-    public void Withdraw() {
+    public void Withdraw()
+    {
         withdrawn[currentTurn] = true;
         NextBid();
     }

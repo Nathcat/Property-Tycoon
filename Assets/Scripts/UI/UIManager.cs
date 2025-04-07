@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -65,7 +62,8 @@ public class UIManager : MonoBehaviour
             Rules.SetActive(false);
             Help.SetActive(false);
 
-            foreach (GameObject d in Dice) {
+            foreach (GameObject d in Dice)
+            {
                 d.SetActive(false);
             }
         }

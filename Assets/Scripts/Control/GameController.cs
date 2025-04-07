@@ -1,9 +1,9 @@
-using Unity.VisualScripting;
-using UnityEngine;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.Events;
-using System.Collections.Generic;
 
 /// <summary> Main script for controlling high level flow of the game. </summary>
 public class GameController : MonoBehaviour
@@ -66,9 +66,17 @@ public class GameController : MonoBehaviour
     /// </summary>
     [HideInInspector] public Cash freeParking = new Cash(0);
 
+    /// <summary> A flag to show whether the game is abridged or not. </summary>
+    public bool abridged { get; private set; }
 
+    /// <summary> A float to hold the remaining time (in seconds), if playing the abridged version of the game. </summary>
+    public float timeRemaining { get; private set; }
 
+    /// <summary> a flag to show if the timer has expired </summary>
+    public bool timeExpired { get  { return timeRemaining <= 0; } }
 
+    /// <summary> a flag to show when the game has ended. </summary>
+    public bool gameOver;
 
     [Header("Testing")]
     [SerializeField] private CounterController counterPrefab;
@@ -80,11 +88,38 @@ public class GameController : MonoBehaviour
         instance = this;
     }
 
+    private void Start()
+    {
+        SetupBoard();
+        SetupCards();
+        abridged = true;
+        timeRemaining = (65);
+        SetupTimer();
+        //SetupCounters(new CounterController[6].Select(_ => Instantiate(counterPrefab)).ToArray());
+        // this seems to break, but bring back if needed :)
+        SetupCounters(new CounterController[6].Select((c, index) =>
+        {
+            CounterController o = Instantiate(counterPrefab);
+            o.gameObject.name = "Player " + index;
+            return o;
+        }).ToArray());
+
+        turnCounter.PlayTurn();
+    }
+
 
     /// <summary> Increment <see cref="turnIndex"/> and start the next turn.</summary>
     public void NextTurn()
     {
         turnIndex = (turnIndex + 1) % counters.Length;
+        
+        if (turnIndex == 0 && timeExpired) EndGame();
+        else
+        {
+            GameUIManager.instance.UpdateUIForNewTurn(turnCounter);
+            turnCounter.PlayTurn();
+            onNextTurn.Invoke(turnCounter);
+        }
         turnCounter.PlayTurn();
         onNextTurn.Invoke(turnCounter);
     }
@@ -111,6 +146,16 @@ public class GameController : MonoBehaviour
         ShufflePotluck();
         //shuffle the opportunity knocks cards
         ShuffleOpportunity();
+    }
+    /// <summary>
+    /// sets up the timer if the game is in 'abridged' mode.
+    /// </summary>
+    public void SetupTimer()
+    {
+        if (abridged)
+        {
+            GameUIManager.instance.SetUpTimer(timeRemaining);
+        }
     }
 
     /// <summary> Shuffle the given card deck using a BogoSort style method. </summary>
@@ -286,5 +331,35 @@ public class GameController : MonoBehaviour
             o.gameObject.name = "Player " + index;
             return o;
         }).ToArray();
+    }
+
+    public void Update()
+    {
+        if (abridged && !timeExpired) timeRemaining -= Time.deltaTime;
+
+    }
+
+    /// <summary>
+    /// Displays the winner of the game.
+    /// </summary>
+    public void EndGame()
+    {
+        int[] totals = new int[counters.Length];
+        Debug.Log("number of players: " + counters.Length);
+        for (int i = 0; i < counters.Length; i++)
+        {
+            totals[i] = counters[i].portfolio.TotalValue();
+            Debug.Log("player " + i + " got a score of " + totals[i]);
+        }
+        int winner = 0;
+        for (int i = 0; i < totals.Length; i++)
+        {
+            if (totals[i] > totals[winner])
+            {
+                winner = i;
+            }
+        }
+        GameUIManager.instance.EndGame(counters[winner].name , totals[winner]);
+
     }
 }
