@@ -48,12 +48,17 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private TextMeshProUGUI gameTimerText;
     /// <summary>
+    /// Popup to show the player has a get out of jail free card available
+    /// </summary>
+    [SerializeField] private GameObject GetOutOfJailFree;
+    /// <summary>
     /// Called on completion of a yes / no prompt
     /// </summary>
     private System.Action<bool> onYesNoResponse;
     /// <summary>
     /// The player cards displayed in the main UI
     /// </summary>
+    
     [SerializeField] private GameObject[] playerCardElements;
     /// <summary>
     /// The state the UI was in before its current state
@@ -92,6 +97,7 @@ public class GameUIManager : MonoBehaviour
         SetUIState(true, false, false, false);
         this.gameTimer.SetActive(false);
         this.yesNoPromptUI.SetActive(false);
+        this.GetOutOfJailFree.SetActive(false);
         this.auctionMenu.SetActive(false);
         this.gameEndScreen.SetActive(false);
         this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
@@ -154,6 +160,15 @@ public class GameUIManager : MonoBehaviour
                 }
             }
         }
+        bool GOJF = GameController.instance.turnCounter.getOutOfJailFree;
+        if (GOJF)
+        {
+            this.GetOutOfJailFree.SetActive(true);
+        }
+        else
+        {
+            this.GetOutOfJailFree.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -187,6 +202,7 @@ public class GameUIManager : MonoBehaviour
     private void SetCurrentTurnLabel(CounterController counterController)
     {
         mainUI.transform.Find("CurrentTurn").GetChild(0).GetComponent<TextMeshProUGUI>().text = counterController.name + "'s turn";
+        
     }
 
     /// <summary>
