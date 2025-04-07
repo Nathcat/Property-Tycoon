@@ -135,6 +135,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Card
       objectReference: {fileID: 0}
+    - target: {fileID: 1689547824612464654, guid: 568e06962480964478d533f3989c8697,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1999392309836042175, guid: 568e06962480964478d533f3989c8697,
         type: 3}
       propertyPath: m_Pivot.x
@@ -252,6 +257,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PauseMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 31997533618227653, guid: d20dac7c4d449d1468c2fe065cebf9d0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6609171673271008350, guid: d20dac7c4d449d1468c2fe065cebf9d0,
         type: 3}
@@ -713,6 +723,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameEndScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 2265801674520463334, guid: 7eef5126481c3224a85437a5232a0571,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3476643613401792573, guid: 7eef5126481c3224a85437a5232a0571,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -771,6 +786,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Total
+      objectReference: {fileID: 0}
+    - target: {fileID: 3954283029484638320, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3954283029484638320, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 3954283029484638320, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 4283942678057700548, guid: b3262473a34b79e44afd2fba60fd7bf4,
         type: 3}
@@ -917,10 +947,15 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 4869729697429520292, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -75
+      objectReference: {fileID: 0}
     - target: {fileID: 6951211839660040855, guid: b3262473a34b79e44afd2fba60fd7bf4,
         type: 3}
       propertyPath: m_text
-      value: Roll dice
+      value: Move
       objectReference: {fileID: 0}
     - target: {fileID: 6951211839660040855, guid: b3262473a34b79e44afd2fba60fd7bf4,
         type: 3}
@@ -941,6 +976,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DiceRoll
+      objectReference: {fileID: 0}
+    - target: {fileID: 7062306109327773231, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1111,6 +1151,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 1317425423071381311, guid: 49c80b1f13bed1445a42b3bbe87ad200,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7102475624222267368, guid: 49c80b1f13bed1445a42b3bbe87ad200,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1126,18 +1171,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49c80b1f13bed1445a42b3bbe87ad200, type: 3}
---- !u!114 &1521783795 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4410947553547154710, guid: facb0f13274b77042b9894a695a7f4b3,
-    type: 3}
-  m_PrefabInstance: {fileID: 2035618204}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1214997481 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1689547824612464654, guid: 568e06962480964478d533f3989c8697,
@@ -1156,6 +1189,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GetOutOfJailFree
+      objectReference: {fileID: 0}
+    - target: {fileID: 2934884401768927188, guid: 52fcc682ff4e8e1469f0b2fdaabd8ed5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7993552985489477536, guid: 52fcc682ff4e8e1469f0b2fdaabd8ed5,
         type: 3}
@@ -1262,6 +1300,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52fcc682ff4e8e1469f0b2fdaabd8ed5, type: 3}
+--- !u!114 &1521783795 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4410947553547154710, guid: facb0f13274b77042b9894a695a7f4b3,
+    type: 3}
+  m_PrefabInstance: {fileID: 2035618204}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1624594557
 GameObject:
   m_ObjectHideFlags: 0
@@ -1534,12 +1584,12 @@ MonoBehaviour:
   diceRollUI: {fileID: 265649385}
   yesNoPromptUI: {fileID: 675902784}
   auctionMenu: {fileID: 4810318590633796378}
-  gameTimer: {fileID: 1902556588}
-  gameEndScreen: {fileID: 1122920914}
-  gameTimerText: {fileID: 1521783795}
   cardUI: {fileID: 1214997481}
   cardTitle: {fileID: 278517466}
   cardDesc: {fileID: 353131993}
+  gameTimer: {fileID: 1902556588}
+  gameEndScreen: {fileID: 1122920914}
+  gameTimerText: {fileID: 1521783795}
   GetOutOfJailFree: {fileID: 1691175716}
   playerCardElements:
   - {fileID: 162970411}
@@ -1670,6 +1720,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameTimer
       objectReference: {fileID: 0}
+    - target: {fileID: 6981060770075909958, guid: facb0f13274b77042b9894a695a7f4b3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1693,6 +1748,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AuctionMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 3947309532310751139, guid: ef29eafee97c60049bfc096bb829d3df,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8942699757229672686, guid: ef29eafee97c60049bfc096bb829d3df,
         type: 3}
@@ -1811,6 +1871,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: YesNoPrompt
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911069735959178253, guid: b22dc07fb0431c246b51bce1a822966c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6501612542949339049, guid: b22dc07fb0431c246b51bce1a822966c,
         type: 3}
@@ -2024,17 +2089,17 @@ PrefabInstance:
     - target: {fileID: 4654081504860644522, guid: a74c295325e881f4d968fb778642716f,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4654081504860644522, guid: a74c295325e881f4d968fb778642716f,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4654081504860644522, guid: a74c295325e881f4d968fb778642716f,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 4715825312074687296, guid: a74c295325e881f4d968fb778642716f,
         type: 3}
@@ -2046,15 +2111,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: HelpAndRules
       objectReference: {fileID: 0}
-    - target: {fileID: 6495595683189471273, guid: a74c295325e881f4d968fb778642716f,
+    - target: {fileID: 6131303997869509272, guid: a74c295325e881f4d968fb778642716f,
         type: 3}
-      propertyPath: m_AnchorMax.x
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6495595683189471273, guid: a74c295325e881f4d968fb778642716f,
         type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6495595683189471273, guid: a74c295325e881f4d968fb778642716f,
+        type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 0.080376774
       objectReference: {fileID: 0}
     - target: {fileID: 6495595683189471273, guid: a74c295325e881f4d968fb778642716f,
         type: 3}
