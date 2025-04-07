@@ -7,10 +7,11 @@ public class StationRent : Command
     public StationRent(string value) : base(value) {}
 
     override public void Execute(CounterController counterController, Argument[] args) {
-        Space space = GameController.instance.spaces[counterController.position];
+        Space space = GameController.instance.spaces[counterController.position - 1];
 
         if (!(space is Station)) {
             Debug.LogWarning("StationRent must be applied to a station!");
+            Debug.Log("i think the space at " + space.position + " is of type " + space.GetType());
             return;
         }
     

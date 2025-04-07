@@ -193,20 +193,6 @@ public class GameController : MonoBehaviour
 
     }
 
-    /// <summary> Draw and run the action for the top card from the Pot Luck deck. </summary>
-    public void DrawLuck()
-    {
-        if (luckDeck.Count != 0)
-        {
-            Card removed = luckDeck.Dequeue();
-            removed.action.Run(turnCounter);
-            DiscardLuck(removed);
-        }
-        else
-        {
-            Debug.Log("Deck is empty");
-        }
-    }
 
     /// <summary>
     /// Draw and run the action for the top card of the Pot Luck deck on the given counter
@@ -229,31 +215,11 @@ public class GameController : MonoBehaviour
     }
 
 
-
-    /// <summary>
-    /// Draw and run the action for the top card of the Opportunity Knocks deck
-    /// </summary>
-    public Card DrawOpportunity()
-    {
-        if (opportunityDeck.Count != 0)
-        {
-            Card removed = opportunityDeck.Dequeue();
-            removed.action.Run(turnCounter);
-            DiscardOpportunity(removed);
-            return removed;
-        }
-        else
-        {
-            Debug.Log("Deck is empty");
-            return null;
-        }
-    }
-
     /// <summary>
     /// Draw and run the action for the top card of the Opportunity Knocks deck on the given counter
     /// </summary>
     /// <param name="counterController">The counter to run the card action on</param>
-    public void DrawOpportunity(CounterController counterController)
+    public Card DrawOpportunity(CounterController counterController)
     {
         if (opportunityDeck.Count != 0)
         {
@@ -262,10 +228,13 @@ public class GameController : MonoBehaviour
             removed.action.Run(counterController);
 
             DiscardOpportunity(removed);
+            return removed;
+
         }
         else
         {
             Debug.Log("Deck is empty");
+            return null;
         }
     }
 

@@ -107,7 +107,6 @@ public class PropertyTest
         Property property;
         CounterController counter = GameController.instance.turnCounter;
         PropertyGroup thisgroup = GameController.instance.groups[0];
-
         property = (Property)thisgroup.GetProperties()[0];
         counter.portfolio.AddAsset(new Cash(property.GetValue()));
         list.Add(property);
