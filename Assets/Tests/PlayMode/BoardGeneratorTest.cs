@@ -7,6 +7,7 @@ using System.Diagnostics;
 using JetBrains.Annotations;
 using UnityEditor.SearchService;
 using UnityEngine.SceneManagement;
+using UnityEngine.Assertions;
 
 public class BoardGeneratorTest
 {
