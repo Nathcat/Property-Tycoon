@@ -278,10 +278,7 @@ public class GameController : MonoBehaviour
 
     public void Update()
     {
-        if (abridged && !timeExpired)
-        {
-            timeRemaining -= Time.deltaTime
-        }
+        if (abridged && !timeExpired) timeRemaining -= Time.deltaTime;
 
     }
 

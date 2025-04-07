@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -39,6 +38,10 @@ public class GameUIManager : MonoBehaviour
     /// Timer for the abridged version of the game
     /// </summary>
     [SerializeField] private GameObject gameTimer;
+    /// <summary>
+    /// The actual text for the game timer.
+    /// </summary>
+    [SerializeField] private TextMeshProUGUI gameTimerText;
     /// <summary>
     /// Called on completion of a yes / no prompt
     /// </summary>
@@ -95,43 +98,48 @@ public class GameUIManager : MonoBehaviour
         this.helpAndRulesMenu.SetActive(currentUIState[1]);
         this.pauseMenu.SetActive(currentUIState[2]);
         this.diceRollUI.SetActive(currentUIState[3]);
+
+        if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
     }
 
     public void SetUpTimer(float inputTimer)
     {
         gameTimer.SetActive(true);
-        gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = inputTimer.ToString();
+        UpdateTimer(inputTimer);
         Debug.Log("timer set up");
     }
 
     public void UpdateTimer(float inputTimer)
     {
-        gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = "Time expired!";
-
-        float hours = Mathf.RoundToInt(inputTimer / 3600);
-        float mins = Mathf.RoundToInt(inputTimer / 60);
-        float seconds = Mathf.RoundToInt(inputTimer % 60);
-        if (mins < 10)
+        if (inputTimer <= 0) {
+            gameTimerText.text = "Time expired!";
+        } else
         {
-            if (seconds < 10)
+            float hours = Mathf.FloorToInt(inputTimer / 3600);
+            float mins = Mathf.FloorToInt(inputTimer / 60);
+            float seconds = Mathf.FloorToInt(inputTimer % 60);
+            if (mins < 10)
             {
-                gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":0" + mins + ":0" + seconds;
-            }
-            else
-            {
-                gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":0" + mins + ":" + seconds;
-            }
+                if (seconds < 10)
+                {
+                    gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":0" + mins + ":0" + seconds;
+                }
+                else
+                {
+                    gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":0" + mins + ":" + seconds;
+                }
             
-        }
-        else
-        {
-            if (seconds < 10)
-            {
-                gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":" + mins + ":0" + seconds;
             }
             else
             {
-                gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":" + mins + ":" + seconds;
+                if (seconds < 10)
+                {
+                    gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":" + mins + ":0" + seconds;
+                }
+                else
+                {
+                    gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":" + mins + ":" + seconds;
+                }
             }
         }
     }
