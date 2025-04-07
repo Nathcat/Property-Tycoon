@@ -571,6 +571,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameEndScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 3476643613401792573, guid: 7eef5126481c3224a85437a5232a0571,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3476643613401792573, guid: 7eef5126481c3224a85437a5232a0571,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3476643613401792573, guid: 7eef5126481c3224a85437a5232a0571,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1935141333}
+    - target: {fileID: 3476643613401792573, guid: 7eef5126481c3224a85437a5232a0571,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3476643613401792573, guid: 7eef5126481c3224a85437a5232a0571,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: QuitButtonClicked
+      objectReference: {fileID: 0}
+    - target: {fileID: 3476643613401792573, guid: 7eef5126481c3224a85437a5232a0571,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameUIManager, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 3476643613401792573, guid: 7eef5126481c3224a85437a5232a0571,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -590,6 +625,46 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1824369272408911278, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_Name
+      value: Total
+      objectReference: {fileID: 0}
+    - target: {fileID: 4283942678057700548, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4283942678057700548, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4283942678057700548, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1935141333}
+    - target: {fileID: 4283942678057700548, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4283942678057700548, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CompleteDiceRoll
+      objectReference: {fileID: 0}
+    - target: {fileID: 4283942678057700548, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameUIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4283942678057700548, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4515319657960341453, guid: b3262473a34b79e44afd2fba60fd7bf4,
         type: 3}
       propertyPath: m_Pivot.x
@@ -688,6 +763,36 @@ PrefabInstance:
     - target: {fileID: 4515319657960341453, guid: b3262473a34b79e44afd2fba60fd7bf4,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4869729697429520292, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 4869729697429520292, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6951211839660040855, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_text
+      value: Roll dice
+      objectReference: {fileID: 0}
+    - target: {fileID: 6951211839660040855, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 6951211839660040855, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 6951211839660040855, guid: b3262473a34b79e44afd2fba60fd7bf4,
+        type: 3}
+      propertyPath: m_enableAutoSizing
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7062306109327773231, guid: b3262473a34b79e44afd2fba60fd7bf4,
@@ -1292,6 +1397,13 @@ MonoBehaviour:
   - {fileID: 463450035}
   - {fileID: 2086603766}
   - {fileID: 582441981}
+  diceTextures:
+  - {fileID: 2800000, guid: 8a5b106432724144c92641ebf8e381e5, type: 3}
+  - {fileID: 2800000, guid: e57bd2355d762de45b7848f74859775c, type: 3}
+  - {fileID: 2800000, guid: dc91962fb03628b45bde1477e38643b7, type: 3}
+  - {fileID: 2800000, guid: 3561c50199714cc439403a25b5d87a62, type: 3}
+  - {fileID: 2800000, guid: b8209a3fc2a1f224790a9311beee6479, type: 3}
+  - {fileID: 2800000, guid: ba04418ffa235f042b29314117198e35, type: 3}
   previousUIState: 01000000
   currentUIState: 01000000
 --- !u!1001 &2035618204

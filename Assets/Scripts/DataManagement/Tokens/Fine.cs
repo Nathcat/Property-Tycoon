@@ -1,10 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 public class Fine : Command
 {
     public Fine(string value) : base(value) { }
 
-    override public void Execute(CounterController counterController, Argument[] args)
+    override public IEnumerator Execute(CounterController counterController, Argument[] args)
     {
         Cash fine = new Cash(int.Parse(args[0].value));
 
@@ -20,5 +21,7 @@ public class Fine : Command
         }
 
         Debug.Log(counterController.name + " is fined " + args[0].value);
+
+        yield break;
     }
 }

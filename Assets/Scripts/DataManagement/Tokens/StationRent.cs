@@ -1,17 +1,17 @@
+using System.Collections;
 using UnityEngine;
 
 public class StationRent : Command
 {
     public StationRent(string value) : base(value) { }
 
-    override public void Execute(CounterController counterController, Argument[] args)
-    {
+    override public IEnumerator Execute(CounterController counterController, Argument[] args) {
         Space space = GameController.instance.spaces[counterController.position];
 
         if (!(space is Station))
         {
             Debug.LogWarning("StationRent must be applied to a station!");
-            return;
+            yield break;
         }
 
         Station station = (Station)space;
@@ -19,19 +19,19 @@ public class StationRent : Command
         if (station.isMortgaged)
         {
             Debug.LogWarning("Cannot take rent on mortgaged property!");
-            return;
+            yield break;
         }
 
         if (!station.isOwned)
         {
             Debug.LogWarning("Station must be owned for rent to apply!");
-            return;
+            yield break;
         }
 
         if (station.owner.isInJail)
         {
             Debug.LogWarning("Owner is in jail and cannot collect rent!");
-            return;
+            yield break;
         }
 
         int stationsOwned = 0;
