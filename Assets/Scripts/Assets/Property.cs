@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -84,17 +82,20 @@ public class Property : Space, IAsset
     /// Determine whether or not you can unmortgage this property.
     /// </summary>
     /// <returns>True if the owner of this property can afford to unmortgage it, false otherwise</returns>
-    public bool CanUnMortgage() {
+    public bool CanUnMortgage()
+    {
         return owner != null && owner.portfolio.GetCashBalance() >= (cost / 2);
     }
 
     /// <summary>
     /// Unmortgage this property, if possible
     /// </summary>
-    public void UnMortgage() {
+    public void UnMortgage()
+    {
         if (!CanUnMortgage()) return;
 
-        if (owner.portfolio.GetCashBalance() >= (cost / 2)) {
+        if (owner.portfolio.GetCashBalance() >= (cost / 2))
+        {
             isMortgaged = false;
             owner.portfolio.RemoveCash(new Cash(cost / 2));
         }
@@ -124,7 +125,8 @@ public class Property : Space, IAsset
             return false;
         }
 
-        if (owner.portfolio.GetCashBalance() < (upgradeLevel == 4 ? hotelCost : upgradeCost)) {
+        if (owner.portfolio.GetCashBalance() < (upgradeLevel == 4 ? hotelCost : upgradeCost))
+        {
             return false;
         }
 
@@ -203,6 +205,18 @@ public class Property : Space, IAsset
         owner = counter;
         counter.portfolio.AddAsset(this);
         counter.portfolio.RemoveCash(new Cash(cost));
+    }
+
+    /// <summary>
+    /// Purchase this property in the context of an auction
+    /// </summary>
+    /// <param name="counter">The winning player</param>
+    /// <param name="auctionValue">The value of their bid</param>
+    public void AuctionPurchase(CounterController counter, Cash auctionValue)
+    {
+        owner = counter;
+        counter.portfolio.AddAsset(this);
+        counter.portfolio.RemoveCash(auctionValue);
     }
 
     /// <summary>

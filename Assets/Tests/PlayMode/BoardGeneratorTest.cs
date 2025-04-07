@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using NUnit.Framework;
 using System.IO;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -9,6 +7,7 @@ using System.Diagnostics;
 using JetBrains.Annotations;
 using UnityEditor.SearchService;
 using UnityEngine.SceneManagement;
+using UnityEngine.Assertions;
 
 public class BoardGeneratorTest
 {

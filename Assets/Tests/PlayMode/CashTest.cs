@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEngine;
 using UnityEngine.TestTools;
 
 public class CashTest
@@ -15,8 +13,8 @@ public class CashTest
         Assert.AreEqual(0, cash.GetValue());
     }
 
-        [Test]
-        public void CashAddTest()
+    [Test]
+    public void CashAddTest()
     {
         // Use the Assert class to test conditions
         Cash cash = new Cash(0);
@@ -26,8 +24,8 @@ public class CashTest
         Assert.AreEqual(50, cash.GetValue());
     }
 
-        [Test]
-        public void CashRemoveTest()
+    [Test]
+    public void CashRemoveTest()
     {
         // Use the Assert class to test conditions
         Cash cash = new Cash(0);
