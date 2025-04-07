@@ -175,6 +175,16 @@ public class GameUIManager : MonoBehaviour
         this.diceRollUI.SetActive(currentUIState[3]);
 
         if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
+
+        bool GOJF = GameController.instance.turnCounter.getOutOfJailFree;
+        if (GOJF)
+        {
+            this.GetOutOfJailFree.SetActive(true);
+        }
+        else
+        {
+            this.GetOutOfJailFree.SetActive(false);
+        }
     }
     /// <summary>
     /// Set up the timer.
@@ -222,15 +232,6 @@ public class GameUIManager : MonoBehaviour
                     gameTimerText.text = hours + ":" + mins + ":" + seconds;
                 }
             }
-        }
-        bool GOJF = GameController.instance.turnCounter.getOutOfJailFree;
-        if (GOJF)
-        {
-            this.GetOutOfJailFree.SetActive(true);
-        }
-        else
-        {
-            this.GetOutOfJailFree.SetActive(false);
         }
     }
 
