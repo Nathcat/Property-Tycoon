@@ -2,6 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEditor.MPE;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 
@@ -27,7 +28,7 @@ public class CounterController : MonoBehaviour
     /// <summary>
     /// Stores the last roll performed by this counter
     /// </summary>
-    public RollData lastRoll { get; private set; }
+    public GameUIManager.RollData lastRoll { get { return GameUIManager.instance.lastDiceRoll; } }
 
     public bool isInJail { get; private set; }
 
@@ -119,7 +120,8 @@ public class CounterController : MonoBehaviour
         if (!isInJail)
         {
             // Roll three times
-            lastRoll = RollDice();
+            yield return GameUIManager.instance.RollDice();
+
             MoveCounter(lastRoll.dice1, lastRoll.dice2);
             int doubles = 0;
             while (lastRoll.doubleRoll)
@@ -131,7 +133,8 @@ public class CounterController : MonoBehaviour
                     break;
                 }
 
-                lastRoll = RollDice();
+                yield return GameUIManager.instance.RollDice();
+
                 MoveCounter(lastRoll.dice1, lastRoll.dice2);
             }
 
@@ -230,33 +233,11 @@ public class CounterController : MonoBehaviour
         Move();
     }
 
-    /// <summary>
-    /// Rolls two dice, and returns them, along with whether the dice rolls are the same.
-    /// </summary>
-    /// <returns> a record containing the two dice rolls as integers, as well as a boolean to denote whether the dice rolls were the same. </returns>
-    public RollData RollDice()
-    {
-        // Gets the first dice's value
-        int dice1 = Random.Range(1, 7);
-        // Gets the second dice's value
-        int dice2 = Random.Range(1, 7);
-
-        return new RollData(dice1, dice2, dice1 == dice2);
-    }
-
-
-
     /// <summary> Move this counter to the space specified in <see cref="position"/> </summary>
     private void Move()
     {
         transform.position = GameController.instance.spaceControllers[position].waypoints[order].position;
-    }
 
-    /// <summary>
-    /// A record used to return dice roll data.
-    /// </summary>
-    /// <param name="dice1"> First dice value. </param>
-    /// <param name="dice2"> Second dice value. </param>
-    /// <param name="doubleRoll"> Whether the dice rolls are the same. </param>
-    public record RollData(int dice1, int dice2, bool doubleRoll);
+        GameController.instance.onCounterMove.Invoke(this);
+    }
 }

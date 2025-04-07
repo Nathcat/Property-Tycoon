@@ -2,14 +2,32 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class GameUIManager : MonoBehaviour
 {
+
+    /// <summary>
+    /// A record used to return dice roll data.
+    /// </summary>
+    /// <param name="dice1"> First dice value. </param>
+    /// <param name="dice2"> Second dice value. </param>
+    /// <param name="doubleRoll"> Whether the dice rolls are the same. </param>
+    public record RollData(int dice1, int dice2, bool doubleRoll);
+
+    /// <summary>
+    /// Used to represent the current state of a yes / no prompt
+    /// </summary>
+    /// <param name="waiting">Whether or not we are currently waiting for a response</param>
+    /// <param name="response">The actual response itself</param>
+    public record PromptState(bool waiting, bool response);
+
     /// <summary>
     /// The active instance of this class
     /// </summary>
@@ -44,21 +62,37 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject[] playerCardElements;
     /// <summary>
+    /// The textures used to display the dice roll
+    /// </summary>
+    [SerializeField] private Texture[] diceTextures;
+    /// <summary>
     /// The state the UI was in before its current state
     /// </summary>
     [SerializeField] private bool[] previousUIState = new bool[] { true, false, false, false };
     [SerializeField] private bool[] currentUIState = new bool[] { true, false, false, false };
-
-    public record PromptState(bool waiting, bool response);
 
     /// <summary>
     /// The last response from a yes / no prompt
     /// </summary>
     [HideInInspector] public PromptState promptState { get; private set; } = null;
 
-    public class WaitForPromptReply : CustomYieldInstruction
+    [HideInInspector] public RollData lastDiceRoll { get; private set; } = null;
+    [HideInInspector] public bool waitingForDiceRollComplete { get; private set; } = false;
+
+    /// <summary>
+    /// Used to wait for a yes / no prompt to complete
+    /// </summary>
+    private class WaitForPromptReply : CustomYieldInstruction
     {
         public override bool keepWaiting { get { return instance.promptState.waiting; } }
+    }
+
+    /// <summary>
+    /// Used to wait for the dice roll to complete
+    /// </summary>
+    private class WaitForDiceRoll : CustomYieldInstruction
+    {
+        public override bool keepWaiting { get { return instance.waitingForDiceRollComplete; } }
     }
 
     /// <summary>
@@ -70,7 +104,7 @@ public class GameUIManager : MonoBehaviour
     /// <param name="diceRollUI">The desired state of the <see cref="diceRollUI"></param>
     private void SetUIState(bool mainUI, bool helpAndRulesMenu, bool pauseMenu, bool diceRollUI)
     {
-        previousUIState = (bool[]) currentUIState.Clone();
+        previousUIState = (bool[])currentUIState.Clone();
         currentUIState = new bool[] { mainUI, helpAndRulesMenu, pauseMenu, diceRollUI };
     }
 
@@ -79,7 +113,7 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     private void RevertToPreviousUIState()
     {
-        bool[] tmp = (bool[]) currentUIState.Clone();
+        bool[] tmp = (bool[])currentUIState.Clone();
         currentUIState = previousUIState;
         previousUIState = tmp;
     }
@@ -272,7 +306,8 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// Start an auction
     /// </summary>
-    public void StartAuction() {
+    public void StartAuction()
+    {
         Debug.Log("Starting auction.");
         SetUIState(false, false, false, false);
         previousUIState = new bool[4];
@@ -283,8 +318,47 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// End an auction
     /// </summary>
-    public void FinishAuction() {
+    public void FinishAuction()
+    {
         this.auctionMenu.SetActive(false);
         SetUIState(true, false, false, false);
+    }
+
+    /// <summary>
+    /// Rolls two dice, and returns them, along with whether the dice rolls are the same.
+    /// </summary>
+    /// <returns> a record containing the two dice rolls as integers, as well as a boolean to denote whether the dice rolls were the same. </returns>
+    private RollData DoDiceRoll()
+    {
+        // Gets the first dice's value
+        int dice1 = UnityEngine.Random.Range(1, 7);
+        // Gets the second dice's value
+        int dice2 = UnityEngine.Random.Range(1, 7);
+
+        return new RollData(dice1, dice2, dice1 == dice2);
+    }
+
+    /// <summary>
+    /// Start a dice roll through the UI
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator RollDice()
+    {
+        waitingForDiceRollComplete = true;
+        SetUIState(false, false, false, true);
+        lastDiceRoll = DoDiceRoll();
+        diceRollUI.transform.GetChild(0).GetComponent<RawImage>().texture = diceTextures[lastDiceRoll.dice1 - 1];
+        diceRollUI.transform.GetChild(1).GetComponent<RawImage>().texture = diceTextures[lastDiceRoll.dice2 - 1];
+        diceRollUI.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = lastDiceRoll.dice1 + lastDiceRoll.dice2 + (lastDiceRoll.doubleRoll ? "\nDouble! Roll again!" : "");
+
+        yield return new WaitForDiceRoll();
+    }
+
+    /// <summary>
+    /// Complete a dice roll
+    /// </summary>
+    public void CompleteDiceRoll() {
+        SetUIState(true, false, false, false);
+        waitingForDiceRollComplete = false;
     }
 }

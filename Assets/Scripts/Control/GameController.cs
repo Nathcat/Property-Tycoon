@@ -25,6 +25,10 @@ public class GameController : MonoBehaviour
 
     /// <summary> Event invoked when the next turn is started. </summary>
     public readonly UnityEvent<CounterController> onNextTurn = new UnityEvent<CounterController>();
+    /// <summary>
+    /// Invoked when a counter is physically moved
+    /// </summary>
+    public readonly UnityEvent<CounterController> onCounterMove = new UnityEvent<CounterController>();
 
     /// <summary> List of all <see cref="CounterController"/> particiapting in the game. </summary>
     public CounterController[] counters { get; private set; }
@@ -91,7 +95,8 @@ public class GameController : MonoBehaviour
             return o;
         }).ToArray());
         
-        StartCoroutine(turnCounter.PlayTurn());
+        turnIndex = -1;
+        NextTurn();
     }
 
     /// <summary> Increment <see cref="turnIndex"/> and start the next turn.</summary>
