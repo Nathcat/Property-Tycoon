@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
-using Unity.VisualScripting.ReorderableList.Element_Adder_Menu;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class AuctionManager : MonoBehaviour
 {
