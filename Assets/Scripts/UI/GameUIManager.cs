@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Codice.Client.BaseCommands;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -38,6 +39,10 @@ public class GameUIManager : MonoBehaviour
     /// Timer for the abridged version of the game
     /// </summary>
     [SerializeField] private GameObject gameTimer;
+    /// <summary>
+    /// Screen used when the game ends.
+    /// </summary>
+    [SerializeField] private GameObject gameEndScreen;
     /// <summary>
     /// The actual text for the game timer.
     /// </summary>
@@ -88,6 +93,7 @@ public class GameUIManager : MonoBehaviour
         this.gameTimer.SetActive(false);
         this.yesNoPromptUI.SetActive(false);
         this.auctionMenu.SetActive(false);
+        this.gameEndScreen.SetActive(false);
         this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
         this.helpAndRulesMenu.transform.GetChild(1).gameObject.SetActive(false);
     }
@@ -101,14 +107,20 @@ public class GameUIManager : MonoBehaviour
 
         if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
     }
-
+    /// <summary>
+    /// Set up the timer.
+    /// </summary>
+    /// <param name="inputTimer"></param>
     public void SetUpTimer(float inputTimer)
     {
         gameTimer.SetActive(true);
         UpdateTimer(inputTimer);
         Debug.Log("timer set up");
     }
-
+    /// <summary>
+    /// Update the timer to show the current remaining time, in hours, mins and seconds.
+    /// </summary>
+    /// <param name="inputTimer"></param>
     public void UpdateTimer(float inputTimer)
     {
         if (inputTimer <= 0) {
@@ -122,11 +134,11 @@ public class GameUIManager : MonoBehaviour
             {
                 if (seconds < 10)
                 {
-                    gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":0" + mins + ":0" + seconds;
+                    gameTimerText.text = hours + ":0" + mins + ":0" + seconds;
                 }
                 else
                 {
-                    gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":0" + mins + ":" + seconds;
+                    gameTimerText.text = hours + ":0" + mins + ":" + seconds;
                 }
             
             }
@@ -134,11 +146,11 @@ public class GameUIManager : MonoBehaviour
             {
                 if (seconds < 10)
                 {
-                    gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":" + mins + ":0" + seconds;
+                    gameTimerText.text = hours + ":" + mins + ":0" + seconds;
                 }
                 else
                 {
-                    gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":" + mins + ":" + seconds;
+                    gameTimerText.text = hours + ":" + mins + ":" + seconds;
                 }
             }
         }
@@ -326,5 +338,29 @@ public class GameUIManager : MonoBehaviour
     {
         this.auctionMenu.SetActive(false);
         SetUIState(true, false, false, false);
+    }
+
+    /// <summary>
+    /// Brings up the game end screen, and displays the winner & their score.
+    /// </summary>
+    /// <param name="winner"> name of the winner. </param>
+    /// <param name="score"> score of the winner. </param>
+    public void EndGame(string winner, int score)
+    {
+        // hode everything but the end screen
+        this.gameEndScreen.SetActive(true);
+        SetUIState(false, false, false, false);
+        this.gameTimer.SetActive(false);
+        this.yesNoPromptUI.SetActive(false);
+        this.auctionMenu.SetActive(false);
+        gameEndScreen.transform.Find("winner").GetComponent<TextMeshProUGUI>().text = winner + " with a score of " + score;
+    }
+
+    /// <summary>
+    /// Returns to the main menu.
+    /// </summary>
+    public void EndMenuClicked()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }

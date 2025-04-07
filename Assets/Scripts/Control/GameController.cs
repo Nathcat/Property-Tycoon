@@ -75,6 +75,8 @@ public class GameController : MonoBehaviour
     /// <summary> a flag to show if the timer has expired </summary>
     public bool timeExpired { get  { return timeRemaining <= 0; } }
 
+    /// <summary> a flag to show when the game has ended. </summary>
+    public bool gameOver;
 
     [Header("Testing")]
     [SerializeField] private CounterController counterPrefab;
@@ -111,7 +113,7 @@ public class GameController : MonoBehaviour
     {
         turnIndex = (turnIndex + 1) % counters.Length;
         
-        if (turnIndex == 0) EndGame();
+        if (turnIndex == 0 && timeExpired) EndGame();
         else
         {
             GameUIManager.instance.UpdateUIForNewTurn(turnCounter);
@@ -143,7 +145,9 @@ public class GameController : MonoBehaviour
         //shuffle the opportunity knocks cards
         //Shuffle(opportunityDeck);
     }
-
+    /// <summary>
+    /// sets up the timer if the game is in 'abridged' mode.
+    /// </summary>
     public void SetupTimer()
     {
         if (abridged)
@@ -283,7 +287,7 @@ public class GameController : MonoBehaviour
     }
 
     /// <summary>
-    /// Prints the winner of the game.
+    /// Displays the winner of the game.
     /// </summary>
     public void EndGame()
     {
@@ -302,8 +306,7 @@ public class GameController : MonoBehaviour
                 winner = i;
             }
         }
-
-        Debug.Log("Winner is " + counters[winner].name + " with a score of " + totals[winner]);
+        GameUIManager.instance.EndGame(counters[winner].name , totals[winner]);
 
     }
 }
