@@ -2,6 +2,12 @@ using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.TestTools;
+using System;
+using System.Diagnostics;
+using JetBrains.Annotations;
+using UnityEditor.SearchService;
+using UnityEngine.SceneManagement;
+using UnityEngine.Assertions;
 
 public class BoardGeneratorTest
 {
@@ -12,19 +18,15 @@ public class BoardGeneratorTest
     [UnityTest]
     public IEnumerator TestBoardGeneration()
     {
-        // Use the Assert class to test conditions.
-        // Use yield to skip a frame.
-        try
-        {
-            var data = FileManager.ReadBoardCSV(Path.Combine(Application.dataPath, "board.csv"));
-            BoardGenerator.GenerateBoard(null, 2, 1, normalSpace, cornerSpace, data.spaces);
-        }
-        catch
-        {
-
-        }
-
-
+        SceneManager.LoadScene("Game");
         yield return null;
+        try 
+        {
+            GameController.instance.SetupBoard();
+            Assert.AreEqual(1, 1);
+        } catch 
+        {
+            Assert.AreEqual(1,2);
+        }
     }
 }

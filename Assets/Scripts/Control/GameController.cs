@@ -125,6 +125,8 @@ public class GameController : MonoBehaviour
             StartCoroutine(turnCounter.PlayTurn());
             onNextTurn.Invoke(turnCounter);
         }
+        turnCounter.PlayTurn();
+        onNextTurn.Invoke(turnCounter);
     }
 
     /// <summary> Parse board configuration and place spaces. </summary>
@@ -146,9 +148,9 @@ public class GameController : MonoBehaviour
         luckDeck = cards.luck;
         opportunityDeck = cards.opportunity;
         //shuffle the pot luck cards
-        //Shuffle(luckDeck);
+        ShufflePotluck();
         //shuffle the opportunity knocks cards
-        //Shuffle(opportunityDeck);
+        ShuffleOpportunity();
     }
     /// <summary>
     /// sets up the timer if the game is in 'abridged' mode.
@@ -188,63 +190,86 @@ public class GameController : MonoBehaviour
 
     }
 
-    /// <summary> Draw and run the action for the top card from the Pot Luck deck. </summary>
-    public void DrawLuck()
+    /// <summary> Shuffle the opportunitydeck card deck using a BogoSort style method. </summary>
+    public void ShuffleOpportunity()
     {
-        if (luckDeck.Count != 0)
+        int random;
+        Card temp = null;
+        Card[] cards = new Card[opportunityDeck.Count];
+        for (int i = 0; i < opportunityDeck.Count; i++)
         {
-            Card removed = luckDeck.Dequeue();
-            removed.action.Run(turnCounter);
-            DiscardLuck(removed);
+            cards[i] = opportunityDeck.Dequeue();
         }
-        else
+
+        for (int i = 0; i < cards.Length; i++)
         {
-            Debug.Log("Deck is empty");
+            random = Random.Range(i, cards.Length);
+            temp = cards[random];
+            cards[random] = cards[i];
+            cards[i] = temp;
         }
+
+        for (int i = 0; i < cards.Length; i++)
+        {
+            opportunityDeck.Enqueue(cards[i]);
+        }
+
     }
+
+
+    /// <summary> Shuffle the potluck deck card deck using a BogoSort style method. </summary>
+    public void ShufflePotluck()
+    {
+        int random;
+        Card temp = null;
+        Card[] cards = new Card[luckDeck.Count];
+        for (int i = 0; i < luckDeck.Count; i++)
+        {
+            cards[i] = luckDeck.Dequeue();
+        }
+
+        for (int i = 0; i < cards.Length; i++)
+        {
+            random = Random.Range(i, cards.Length);
+            temp = cards[random];
+            cards[random] = cards[i];
+            cards[i] = temp;
+        }
+
+        for (int i = 0; i < cards.Length; i++)
+        {
+            luckDeck.Enqueue(cards[i]);
+        }
+
+    }
+
 
     /// <summary>
     /// Draw and run the action for the top card of the Pot Luck deck on the given counter
     /// </summary>
     /// <param name="counterController">The counter to run the card action on</param>
-    public void DrawLuck(CounterController counterController)
+    public Card DrawLuck(CounterController counterController)
     {
         if (luckDeck.Count != 0)
         {
             Card removed = luckDeck.Dequeue();
             removed.action.Run(counterController);
             DiscardLuck(removed);
+            return removed;
         }
         else
         {
             Debug.Log("Deck is empty");
+            return null;
         }
     }
 
-    /// <summary>
-    /// Draw and run the action for the top card of the Opportunity Knocks deck
-    /// </summary>
-    public void DrawOpportunity()
-    {
-        if (opportunityDeck.Count != 0)
-        {
-            Card removed = opportunityDeck.Dequeue();
-
-            removed.action.Run(turnCounter);
-
-            DiscardOpportunity(removed);
-        }
-        else
-        {
-            Debug.Log("Deck is empty");
-        }
-    }
 
     /// <summary>
     /// Draw and run the action for the top card of the Opportunity Knocks deck on the given counter
     /// </summary>
     /// <param name="counterController">The counter to run the card action on</param>
-    public void DrawOpportunity(CounterController counterController)
+    public Card DrawOpportunity(CounterController counterController)
     {
         if (opportunityDeck.Count != 0)
         {
@@ -253,11 +278,34 @@ public class GameController : MonoBehaviour
             removed.action.Run(counterController);
 
             DiscardOpportunity(removed);
+            return removed;
+
         }
         else
         {
             Debug.Log("Deck is empty");
+            return null;
         }
+    }
+
+    ///#
+    /// <summary>
+    /// Peek at the next card to be drawn from the Pot Luck deck; For the purposes of testing, should not be called otherwise.
+    /// 
+    /// </summary>
+    /// <returns>the next card to be drawn from the Pot Luck deck</returns>
+    public Card PeekLuck()
+    {
+        return luckDeck.Peek();
+    }
+
+    /// <summary>
+    /// peek at the next card to be drawn from the Opportunity Knocks deck; For the purposes of testing, should not be called otherwise.
+    /// </summary>
+    /// <returns>the next card to be drawn from the Opportunity Knocks deck</returns>
+    public Card PeekOpportunity()
+    {
+        return opportunityDeck.Peek();
     }
 
     /// <summary> Place a card onto the bottom of the Pot Luck deck. </summary>
@@ -277,7 +325,20 @@ public class GameController : MonoBehaviour
 
 
     /// <summary>
-    /// Register <paramref name="counters"/> to the game.
+    /// Register counters to the game.
+    /// </summary>
+    public void SetupCounters()
+    {
+        this.counters = new CounterController[6].Select((c, index) =>
+        {
+            CounterController o = Instantiate(counterPrefab);
+            o.gameObject.name = "Player " + index;
+            return o;
+        }).ToArray();
+    }
+
+    /// <summary>
+    /// Register counters to the game.
     /// </summary>
     /// <param name="counters">An array of the counters in this game.</param>
     public void SetupCounters(CounterController[] counters)
