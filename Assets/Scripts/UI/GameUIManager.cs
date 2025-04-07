@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Codice.Client.BaseCommands;
 using TMPro;
@@ -44,6 +43,10 @@ public class GameUIManager : MonoBehaviour
     /// Screen used when the game ends.
     /// </summary>
     [SerializeField] private GameObject gameEndScreen;
+    /// <summary>
+    /// The actual text for the game timer.
+    /// </summary>
+    [SerializeField] private TextMeshProUGUI gameTimerText;
     /// <summary>
     /// Called on completion of a yes / no prompt
     /// </summary>
@@ -101,6 +104,8 @@ public class GameUIManager : MonoBehaviour
         this.helpAndRulesMenu.SetActive(currentUIState[1]);
         this.pauseMenu.SetActive(currentUIState[2]);
         this.diceRollUI.SetActive(currentUIState[3]);
+
+        if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
     }
     /// <summary>
     /// Set up the timer.
@@ -109,7 +114,7 @@ public class GameUIManager : MonoBehaviour
     public void SetUpTimer(float inputTimer)
     {
         gameTimer.SetActive(true);
-        gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = inputTimer.ToString();
+        UpdateTimer(inputTimer);
         Debug.Log("timer set up");
     }
     /// <summary>
@@ -118,47 +123,37 @@ public class GameUIManager : MonoBehaviour
     /// <param name="inputTimer"></param>
     public void UpdateTimer(float inputTimer)
     {
-        float hours = (float)System.Math.Truncate(inputTimer / 3600);
-        float mins = (float)System.Math.Truncate(inputTimer / 60);
-        float seconds = (float)System.Math.Truncate(inputTimer % 60);
-        if (mins < 10)
+        if (inputTimer <= 0) {
+            gameTimerText.text = "Time expired!";
+        } else
         {
-            if (seconds < 10)
+            float hours = Mathf.FloorToInt(inputTimer / 3600);
+            float mins = Mathf.FloorToInt(inputTimer / 60);
+            float seconds = Mathf.FloorToInt(inputTimer % 60);
+            if (mins < 10)
             {
-                gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":0" + mins + ":0" + seconds;
-            }
-            else
-            {
-                gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":0" + mins + ":" + seconds;
-            }
+                if (seconds < 10)
+                {
+                    gameTimerText.text = hours + ":0" + mins + ":0" + seconds;
+                }
+                else
+                {
+                    gameTimerText.text = hours + ":0" + mins + ":" + seconds;
+                }
             
-        }
-        else
-        {
-            if (seconds < 10)
-            {
-                gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":" + mins + ":0" + seconds;
             }
             else
             {
-                gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = hours + ":" + mins + ":" + seconds;
+                if (seconds < 10)
+                {
+                    gameTimerText.text = hours + ":" + mins + ":0" + seconds;
+                }
+                else
+                {
+                    gameTimerText.text = hours + ":" + mins + ":" + seconds;
+                }
             }
         }
-    }
-    /// <summary>
-    /// Sets the timer to show the time limit has expired.
-    /// </summary>
-    public void EndTimer()
-    {
-        gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = "Time expired!";
-    }
-    /// <summary>
-    /// Sets the timer to show that the final round has been reached.
-    /// </summary>
-    public void FinalRound()
-    {
-        gameTimer.transform.Find("Background").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Final Round!";
-        gameTimer.transform.Find("Background").GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
     }
 
     /// <summary>

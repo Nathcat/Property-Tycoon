@@ -18,7 +18,7 @@ public class CounterController : MonoBehaviour
     /// <summary>
     /// The name of the game object this controller is attached to
     /// </summary>
-    public string name { get { return gameObject.name; } }
+    new public string name { get { return gameObject.name; } }
 
     /// <summary>
     /// Stores the last roll performed by this counter
