@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -39,10 +40,6 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject auctionMenu;
     /// <summary>
-    /// Called on completion of a yes / no prompt
-    /// </summary>
-    private System.Action<bool> onYesNoResponse;
-    /// <summary>
     /// The player cards displayed in the main UI
     /// </summary>
     [SerializeField] private GameObject[] playerCardElements;
@@ -51,6 +48,18 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private bool[] previousUIState = new bool[] { true, false, false, false };
     [SerializeField] private bool[] currentUIState = new bool[] { true, false, false, false };
+
+    public record PromptState(bool waiting, bool response);
+
+    /// <summary>
+    /// The last response from a yes / no prompt
+    /// </summary>
+    [HideInInspector] public PromptState promptState { get; private set; } = null;
+
+    public class WaitForPromptReply : CustomYieldInstruction
+    {
+        public override bool keepWaiting { get { return instance.promptState.waiting; } }
+    }
 
     /// <summary>
     /// Set the state of the UI displays (active or inactive)
@@ -228,12 +237,14 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     /// <param name="prompt">The prompt message to display to the user</param>
     /// <param name="onResponse">The callback to execute once the user has replied</param>
-    public void YesNoPrompt(string prompt, System.Action<bool> onResponse)
+    public CustomYieldInstruction YesNoPrompt(string prompt)
     {
+        promptState = new PromptState(true, false);
         SetUIState(true, false, false, false);
         this.yesNoPromptUI.transform.Find("Prompt").GetComponent<TextMeshProUGUI>().text = prompt;
         this.yesNoPromptUI.SetActive(true);
-        this.onYesNoResponse = onResponse;
+
+        return new WaitForPromptReply();
     }
 
     /// <summary>
@@ -241,8 +252,8 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     public void PromptReplyYes()
     {
-        onYesNoResponse(true);
-        onYesNoResponse = null;
+        //onYesNoResponse(true);
+        promptState = new PromptState(false, true);
         this.yesNoPromptUI.SetActive(false);
         RevertToPreviousUIState();
     }
@@ -252,8 +263,8 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     public void PromptReplyNo()
     {
-        onYesNoResponse(false);
-        onYesNoResponse = null;
+        //onYesNoResponse(false);
+        promptState = new PromptState(false, false);
         this.yesNoPromptUI.SetActive(false);
         RevertToPreviousUIState();
     }

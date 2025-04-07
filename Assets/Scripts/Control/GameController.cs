@@ -91,7 +91,7 @@ public class GameController : MonoBehaviour
             return o;
         }).ToArray());
         
-        turnCounter.PlayTurn();
+        StartCoroutine(turnCounter.PlayTurn());
     }
 
     /// <summary> Increment <see cref="turnIndex"/> and start the next turn.</summary>
@@ -99,7 +99,7 @@ public class GameController : MonoBehaviour
     {
         turnIndex = (turnIndex + 1) % counters.Length;
         GameUIManager.instance.UpdateUIForNewTurn(turnCounter);
-        turnCounter.PlayTurn();
+        StartCoroutine(turnCounter.PlayTurn());
         onNextTurn.Invoke(turnCounter);
     }
 

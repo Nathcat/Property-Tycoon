@@ -6,7 +6,7 @@ public class Collect : Command
 {
     public Collect(string value) : base(value) {}
 
-    override public void Execute(CounterController counterController, Argument[] args) {
+    override public IEnumerator Execute(CounterController counterController, Argument[] args) {
         Cash cost = new Cash(int.Parse(args[0].value));
         Cash total = new Cash(0);
         foreach (CounterController counter in GameController.instance.counters) {
@@ -21,5 +21,7 @@ public class Collect : Command
         counterController.portfolio.AddAsset(total);
 
         Debug.Log(counterController.gameObject.name + " collects " + cost.GetValue() + " from each player, for a total of " + total.GetValue());
+
+        yield break;
     }
 }

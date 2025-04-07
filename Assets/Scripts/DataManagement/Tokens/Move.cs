@@ -6,7 +6,7 @@ public class Move : Command
 {
     public Move(string value) : base(value) {}
 
-    override public void Execute(CounterController counterController, Argument[] args) {
+    override public IEnumerator Execute(CounterController counterController, Argument[] args) {
         if (args[0].value.ToLower() == "absolute") {
             counterController.MoveAbsolute(int.Parse(args[1].value));
             Debug.Log(counterController.name + " moves to space number " + args[1].value);
@@ -18,5 +18,7 @@ public class Move : Command
         else {
             Debug.LogError("Invalid arguments");
         }
+
+        yield break;
     }
 }

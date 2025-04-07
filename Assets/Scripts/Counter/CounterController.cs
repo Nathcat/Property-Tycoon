@@ -1,5 +1,8 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEditor.MPE;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 /// <summary>
@@ -40,10 +43,6 @@ public class CounterController : MonoBehaviour
     /// Determines whether or not the player can currently buy properties
     /// </summary>
     public bool canPurchaseProperties { get; private set; } = false;
-    /// <summary>
-    /// True if the player is currently determining whether or not they should be in jail.
-    /// </summary>
-    private bool determiningJailState = false;
 
     // Start is called before the first frame update
     void Start()
@@ -57,9 +56,8 @@ public class CounterController : MonoBehaviour
 
     }
 
-    public void GoToJail()
+    public IEnumerator GoToJail()
     {
-        determiningJailState = true;
         MoveAbsolute(GameController.instance.jailSpace.position);
 
         Debug.Log(name + " has gone to jail, can they pay?");
@@ -68,44 +66,40 @@ public class CounterController : MonoBehaviour
         {
             Debug.Log("... they have a get out of jail free card!");
             //Utils.RunAfter(1, GameController.instance.NextTurn);
-            return;
+            yield return new WaitForSeconds(1f);
         }
 
         if (portfolio.GetCashBalance() >= 50)
         {
             Debug.Log("... they can pay, asking if they want to...");
 
-            GameUIManager.instance.YesNoPrompt("Pay £50 to get out of jail?", (reply) =>
+            yield return GameUIManager.instance.YesNoPrompt("Pay £50 to get out of jail?");
+            bool reply = GameUIManager.instance.promptState.response;
+
+            if (reply)
             {
-                determiningJailState = false;
-                if (reply)
-                {
-                    Cash fine = new Cash(50);
-                    portfolio.RemoveCash(fine);
-                    GameController.instance.freeParking.AddCash(fine);
-                    Debug.Log(name + " pays to leave jail!");
+                Cash fine = new Cash(50);
+                portfolio.RemoveCash(fine);
+                GameController.instance.freeParking.AddCash(fine);
+                Debug.Log(name + " pays to leave jail!");
 
-                    //Utils.RunAfter(1, GameController.instance.NextTurn);
-                    TurnPostMove();
-                }
-                else
-                {
-                    isInJail = true;
-                    Debug.Log(name + " is now in jail! Jail space is at position " + GameController.instance.jailSpace.position);
+                //Utils.RunAfter(1, GameController.instance.NextTurn);
+            }
+            else
+            {
+                isInJail = true;
+                Debug.Log(name + " is now in jail! Jail space is at position " + GameController.instance.jailSpace.position);
 
-                    //Utils.RunAfter(1, GameController.instance.NextTurn);
-                    TurnPostMove();
-                }
-            });
-
+                //Utils.RunAfter(1, GameController.instance.NextTurn);
+            }
         }
         else
         {
-            determiningJailState = false;
             Debug.Log("... they cannot pay.");
             isInJail = true;
             Debug.Log(name + " is now in jail! Jail space is at position " + GameController.instance.jailSpace.position);
             //Utils.RunAfter(1, GameController.instance.NextTurn);
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -118,98 +112,58 @@ public class CounterController : MonoBehaviour
     }
 
     /// <summary>
-    /// Ask the player if they want to pay to leave jail
-    /// </summary>
-    /// <returns></returns>
-    public bool AskIfPayForJail()
-    {
-        // TODO Implement this with UI
-        Debug.LogWarning("The player would be asked to pay to leave jail here!");
-        return false;
-    }
-
-    /// <summary>
     /// Rolls both dice, and moves the counter. If the roll is a double roll, the dice are rolled again and counter moved again.
     /// </summary>
-    public void PlayTurn()
+    public IEnumerator PlayTurn()
     {
         if (!isInJail)
         {
-            RollData roll = RollDice();
-            lastRoll = roll;
-            MoveCounter(roll.dice1, roll.dice2);
-            if (roll.doubleRoll)
+            // Roll three times
+            lastRoll = RollDice();
+            MoveCounter(lastRoll.dice1, lastRoll.dice2);
+            int doubles = 0;
+            while (lastRoll.doubleRoll)
             {
-                Debug.Log("Double roll");
-                roll = RollDice();
-                lastRoll = roll;
-                MoveCounter(roll.dice1, roll.dice2);
+                doubles++;
 
-                if (roll.doubleRoll)
+                if (doubles == 3)
                 {
-                    Debug.Log("Another double roll!");
-                    roll = RollDice();
-                    lastRoll = roll;
-
-                    if (roll.doubleRoll)
-                    {
-                        Debug.Log("Triple double roll, player goes to jail!");
-                        GoToJail();
-                        return;
-                    }
-                    else
-                    {
-                        MoveCounter(roll.dice1, roll.dice2);
-                    }
+                    break;
                 }
+
+                lastRoll = RollDice();
+                MoveCounter(lastRoll.dice1, lastRoll.dice2);
             }
 
-            // Call the action when landing on a new space, if the counter is moved to a new space as a result of the action
+            // If 3 doubles have been rolled, go to jail
+            if (doubles == 3)
+            {
+                Debug.Log(name + " has rolled 3 doubles, going to jail!");
+                yield return GoToJail();
+                yield break;
+            }
+
             int oldPos = position;
             do
             {
                 oldPos = position;
-                GameController.instance.spaces[position].action.Run(this);
+                yield return GameController.instance.spaces[position].action.Run(this);
             } while (oldPos != position);
 
-            if (!determiningJailState) TurnPostMove();
-        }
-        else
-        {
-            // Wait for 2 turns to leave jail
-            turnsInJail++;
 
-            Debug.Log(name + " has been in jail for " + turnsInJail + " turns.");
+            Space space = GameController.instance.spaces[position];
 
-            if (turnsInJail == 2)
+            if (space is Property)
             {
-                Debug.Log(name + " is leaving jail! They have done " + turnsInJail + " turns while imprisoned!");
-                LeaveJail();
-                return;
-            }
+                Property p = space as Property;
 
-            //Utils.RunAfter(1, GameController.instance.NextTurn);
-        }
-    }
-
-    /// <summary>
-    /// Play the remainder of the turn, after the player has moved. This should be called after all player movement has concluded for this turn.
-    /// The player should be settled on a space.
-    /// </summary>
-    public void TurnPostMove()
-    {
-        Space space = GameController.instance.spaces[position];
-
-        if (space is Property)
-        {
-            Property p = space as Property;
-
-            if (!p.isOwned && canPurchaseProperties)
-            {
-                if (p.CanPurchase(this))
+                if (!p.isOwned && canPurchaseProperties)
                 {
-                    GameUIManager.instance.YesNoPrompt("Would you like to buy " + p.name + " for £" + p.GetValue() + "?", (reply) =>
+                    if (p.CanPurchase(this))
                     {
+                        yield return GameUIManager.instance.YesNoPrompt("Would you like to buy " + p.name + " for £" + p.GetValue() + "?");
+
+                        bool reply = GameUIManager.instance.promptState.response;
                         if (reply)
                         {
                             p.Purchase(this);
@@ -219,12 +173,23 @@ public class CounterController : MonoBehaviour
                         {
                             GameUIManager.instance.StartAuction();
                         }
-                    });
+                    }
+                    else
+                    {
+                        GameUIManager.instance.StartAuction();
+                    }
                 }
-                else
-                {
-                    GameUIManager.instance.StartAuction();
-                }
+            }
+        }
+        else
+        {
+            turnsInJail++;
+
+            Debug.Log(name + " has been in jail for " + turnsInJail + " turns");
+            if (turnsInJail == 2)
+            {
+                Debug.Log(name + " has done their time in jail!");
+                LeaveJail();
             }
         }
     }

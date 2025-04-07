@@ -6,7 +6,7 @@ public class PayIn : Command
 {
     public PayIn(string value) : base(value) { }
 
-    override public void Execute(CounterController counterController, Argument[] args)
+    override public IEnumerator Execute(CounterController counterController, Argument[] args)
     {
         Cash fine = new Cash(int.Parse(args[0].value));
 
@@ -20,5 +20,7 @@ public class PayIn : Command
             // TODO Should ask the player to sell their assets here
             Debug.LogWarning(counterController.name + " must pay " + args[0].value + " to the bank, but they cannot afford it!");
         }
+
+        yield break;
     }
 }
