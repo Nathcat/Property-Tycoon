@@ -1,17 +1,17 @@
+using System.Collections;
 using UnityEngine;
 
 public class PropertyRent : Command
 {
     public PropertyRent(string value) : base(value) { }
 
-    override public void Execute(CounterController counterController, Argument[] args)
-    {
+    override public IEnumerator Execute(CounterController counterController, Argument[] args) {
         Space space = GameController.instance.spaces[counterController.position];
 
         if (!(space is Property))
         {
             Debug.LogWarning("PropertyRent must be applied to a property!");
-            return;
+            yield break;
         }
 
         Property property = (Property)space;
@@ -19,19 +19,19 @@ public class PropertyRent : Command
         if (property.isMortgaged)
         {
             Debug.LogWarning("Cannot take rent on mortgaged property!");
-            return;
+            yield break;
         }
 
         if (property.owner == null)
         {
             Debug.LogWarning("Property must be owned for rent to be taken!");
-            return;
+            yield break;
         }
 
         if (property.owner.isInJail)
         {
             Debug.LogWarning("Owner is in jail and cannot collect rent!");
-            return;
+            yield break;
         }
 
         int rent = int.Parse(args[property.upgradeLevel].value);
@@ -46,5 +46,7 @@ public class PropertyRent : Command
             // TODO Here we should ask the player to sell their assets!
             Debug.LogWarning("Incident player does not have enough money to pay rent!");
         }
+
+        yield break;
     }
 }

@@ -15,6 +15,7 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         GameController.instance.onNextTurn.AddListener(c => UpdateCamera(c.gameObject));
+        GameController.instance.onCounterMove.AddListener(c => UpdateCamera(c.gameObject));
     }
 
     //a method to move the camera to a target gameobject
@@ -50,7 +51,7 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("No offset is valid");
+            Debug.LogWarning("No offset is valid");
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -50,8 +51,7 @@ public class Action
     /// Execute the action specified by the action string given to this object
     /// </summary>
     /// <param name="counterController">The CounterController which initiated the action</param>
-    public void Run(CounterController counterController)
-    {
+    public IEnumerator Run(CounterController counterController) {
         List<Token> commandState = new List<Token>();
         string processedString = "";
 
@@ -87,12 +87,12 @@ public class Action
                 }
 
                 commandState = new List<Token>();
-                c.Execute(counterController, args);
+                yield return c.Execute(counterController, args);
 
                 if (i != commandStringLexed.Length - 1)
                 {
                     Debug.LogWarning("First command has been executed, but there are more commands in this action string and will be ignored!");
-                    return;
+                    yield break;
                 }
             }
             else if (commandState[commandState.Count - 1] is Command || commandState[commandState.Count - 1] is Argument)
