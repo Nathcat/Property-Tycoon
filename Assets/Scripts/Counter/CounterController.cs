@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 
@@ -21,10 +22,23 @@ public class CounterController : MonoBehaviour
     public string name { get { return gameObject.name; } }
 
     /// <summary>
+    /// Stores the models of each counter
+    /// </summary>
+    [SerializeField] private GameObject[] models;
+
+    /// <summary>
+    /// Stores the current counter's model
+    /// </summary>
+    private GameObject currentModel;
+
+    /// <summary>
     /// Stores the last roll performed by this counter
     /// </summary>
     public RollData lastRoll { get; private set; }
 
+    /// <summary>
+    /// Stores if the player is in jail
+    /// </summary>
     public bool isInJail { get; private set; }
 
     /// <summary>
@@ -42,6 +56,19 @@ public class CounterController : MonoBehaviour
     void Update()
     {
 
+    }
+
+    /// <summary>
+    /// This makes the counter's model the model of its index
+    /// </summary>
+    public void PickModel(int modelNum)
+    {
+        if (currentModel != null)
+        {
+            Destroy(currentModel);
+        }
+        currentModel = models[modelNum];
+        Instantiate(currentModel, transform);
     }
 
     public void GoToJail()
@@ -196,7 +223,26 @@ public class CounterController : MonoBehaviour
     /// <summary> Move this counter to the space specified in <see cref="position"/> </summary>
     private void Move()
     {
+        float boardPosition = 0;
         transform.position = GameController.instance.spaceControllers[position].waypoints[order].position;
+        boardPosition = position;
+        boardPosition = boardPosition / GameController.instance.spaces.Count();
+        if (boardPosition < 0.25)
+        {
+            transform.rotation = Quaternion.Euler(transform.rotation.x, 90, transform.rotation.z);
+        }
+        else if (boardPosition < 0.50)
+        {
+            transform.rotation = Quaternion.Euler(transform.rotation.x, 180, transform.rotation.z);
+        }
+        else if (boardPosition < 0.75)
+        {
+            transform.rotation = Quaternion.Euler(transform.rotation.x, 270, transform.rotation.z);
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(transform.rotation.x, 0, transform.rotation.z);
+        }
     }
     /// <summary>
     /// A record used to return dice roll data.
