@@ -1,11 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
+using Codice.Client.BaseCommands;
 using TMPro;
-using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
 
 public class GameUIManager : MonoBehaviour
 {
@@ -39,6 +36,18 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject auctionMenu;
     /// <summary>
+    /// Timer for the abridged version of the game
+    /// </summary>
+    [SerializeField] private GameObject gameTimer;
+    /// <summary>
+    /// Screen used when the game ends.
+    /// </summary>
+    [SerializeField] private GameObject gameEndScreen;
+    /// <summary>
+    /// The actual text for the game timer.
+    /// </summary>
+    [SerializeField] private TextMeshProUGUI gameTimerText;
+    /// <summary>
     /// Popup to show the player has a get out of jail free card available
     /// </summary>
     [SerializeField] private GameObject GetOutOfJailFree;
@@ -66,7 +75,7 @@ public class GameUIManager : MonoBehaviour
     /// <param name="diceRollUI">The desired state of the <see cref="diceRollUI"></param>
     private void SetUIState(bool mainUI, bool helpAndRulesMenu, bool pauseMenu, bool diceRollUI)
     {
-        previousUIState = (bool[]) currentUIState.Clone();
+        previousUIState = (bool[])currentUIState.Clone();
         currentUIState = new bool[] { mainUI, helpAndRulesMenu, pauseMenu, diceRollUI };
     }
 
@@ -75,7 +84,7 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     private void RevertToPreviousUIState()
     {
-        bool[] tmp = (bool[]) currentUIState.Clone();
+        bool[] tmp = (bool[])currentUIState.Clone();
         currentUIState = previousUIState;
         previousUIState = tmp;
     }
@@ -86,9 +95,11 @@ public class GameUIManager : MonoBehaviour
 
         // Disable all but the main UI
         SetUIState(true, false, false, false);
+        this.gameTimer.SetActive(false);
         this.yesNoPromptUI.SetActive(false);
         this.GetOutOfJailFree.SetActive(false);
         this.auctionMenu.SetActive(false);
+        this.gameEndScreen.SetActive(false);
         this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
         this.helpAndRulesMenu.transform.GetChild(1).gameObject.SetActive(false);
     }
@@ -99,6 +110,56 @@ public class GameUIManager : MonoBehaviour
         this.helpAndRulesMenu.SetActive(currentUIState[1]);
         this.pauseMenu.SetActive(currentUIState[2]);
         this.diceRollUI.SetActive(currentUIState[3]);
+
+        if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
+    }
+    /// <summary>
+    /// Set up the timer.
+    /// </summary>
+    /// <param name="inputTimer"></param>
+    public void SetUpTimer(float inputTimer)
+    {
+        gameTimer.SetActive(true);
+        UpdateTimer(inputTimer);
+        Debug.Log("timer set up");
+    }
+    /// <summary>
+    /// Update the timer to show the current remaining time, in hours, mins and seconds.
+    /// </summary>
+    /// <param name="inputTimer"></param>
+    public void UpdateTimer(float inputTimer)
+    {
+        if (inputTimer <= 0) {
+            gameTimerText.text = "Time expired!";
+        } else
+        {
+            float hours = Mathf.FloorToInt(inputTimer / 3600);
+            float mins = Mathf.FloorToInt(inputTimer / 60);
+            float seconds = Mathf.FloorToInt(inputTimer % 60);
+            if (mins < 10)
+            {
+                if (seconds < 10)
+                {
+                    gameTimerText.text = hours + ":0" + mins + ":0" + seconds;
+                }
+                else
+                {
+                    gameTimerText.text = hours + ":0" + mins + ":" + seconds;
+                }
+            
+            }
+            else
+            {
+                if (seconds < 10)
+                {
+                    gameTimerText.text = hours + ":" + mins + ":0" + seconds;
+                }
+                else
+                {
+                    gameTimerText.text = hours + ":" + mins + ":" + seconds;
+                }
+            }
+        }
         bool GOJF = GameController.instance.turnCounter.getOutOfJailFree;
         if (GOJF)
         {
@@ -277,7 +338,8 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// Start an auction
     /// </summary>
-    public void StartAuction() {
+    public void StartAuction()
+    {
         Debug.Log("Starting auction.");
         SetUIState(false, false, false, false);
         previousUIState = new bool[4];
@@ -288,8 +350,33 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// End an auction
     /// </summary>
-    public void FinishAuction() {
+    public void FinishAuction()
+    {
         this.auctionMenu.SetActive(false);
         SetUIState(true, false, false, false);
+    }
+
+    /// <summary>
+    /// Brings up the game end screen, and displays the winner & their score.
+    /// </summary>
+    /// <param name="winner"> name of the winner. </param>
+    /// <param name="score"> score of the winner. </param>
+    public void EndGame(string winner, int score)
+    {
+        // hode everything but the end screen
+        this.gameEndScreen.SetActive(true);
+        SetUIState(false, false, false, false);
+        this.gameTimer.SetActive(false);
+        this.yesNoPromptUI.SetActive(false);
+        this.auctionMenu.SetActive(false);
+        gameEndScreen.transform.Find("winner").GetComponent<TextMeshProUGUI>().text = winner + " with a score of " + score;
+    }
+
+    /// <summary>
+    /// Returns to the main menu.
+    /// </summary>
+    public void EndMenuClicked()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }

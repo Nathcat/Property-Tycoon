@@ -1,17 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Collect : Command
 {
-    public Collect(string value) : base(value) {}
+    public Collect(string value) : base(value) { }
 
-    override public void Execute(CounterController counterController, Argument[] args) {
+    override public void Execute(CounterController counterController, Argument[] args)
+    {
         Cash cost = new Cash(int.Parse(args[0].value));
         Cash total = new Cash(0);
-        foreach (CounterController counter in GameController.instance.counters) {
+        foreach (CounterController counter in GameController.instance.counters)
+        {
             if (counter == counterController) continue;
-            else if (counter.portfolio.GetCashBalance() < cost.GetValue()) {
+            else if (counter.portfolio.GetCashBalance() < cost.GetValue())
+            {
                 // TODO Ask player to sell assets to meet cost
             }
 

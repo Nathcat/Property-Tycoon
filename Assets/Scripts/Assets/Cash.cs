@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 /// <summary>
 /// Cash: A subclass of asset, used to represent any money used in Property Tycoon.
 /// </summary>
@@ -16,7 +13,8 @@ public class Cash : IAsset
         this.value = value;
     }
 
-    public Cash() {
+    public Cash()
+    {
         this.value = 0;
     }
 
