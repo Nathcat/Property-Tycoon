@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -24,10 +25,23 @@ public class CounterController : MonoBehaviour
     new public string name { get { return gameObject.name; } }
 
     /// <summary>
+    /// Stores the models of each counter
+    /// </summary>
+    [SerializeField] private GameObject[] models;
+
+    /// <summary>
+    /// Stores the current counter's model
+    /// </summary>
+    private GameObject currentModel;
+
+    /// <summary>
     /// Stores the last roll performed by this counter
     /// </summary>
     public GameUIManager.RollData lastRoll { get { return GameUIManager.instance.lastDiceRoll; } }
 
+    /// <summary>
+    /// Stores if the player is in jail
+    /// </summary>
     public bool isInJail { get; private set; }
 
     /// <summary>
@@ -53,6 +67,19 @@ public class CounterController : MonoBehaviour
     void Update()
     {
 
+    }
+
+    /// <summary>
+    /// This makes the counter's model the model of its index
+    /// </summary>
+    public void PickModel(int modelNum)
+    {
+        if (currentModel != null)
+        {
+            Destroy(currentModel);
+        }
+        currentModel = models[modelNum];
+        Instantiate(currentModel, transform);
     }
 
     public IEnumerator GoToJail()
@@ -234,8 +261,26 @@ public class CounterController : MonoBehaviour
     /// <summary> Move this counter to the space specified in <see cref="position"/> </summary>
     private void Move()
     {
-        Debug.Log("for player " + name + ", the position is " + position + " and the order is " + order);
+        float boardPosition = 0;
         transform.position = GameController.instance.spaceControllers[position].waypoints[order].position;
+        boardPosition = position;
+        boardPosition = boardPosition / GameController.instance.spaces.Count();
+        if (boardPosition < 0.25)
+        {
+            transform.rotation = Quaternion.Euler(transform.rotation.x, 90, transform.rotation.z);
+        }
+        else if (boardPosition < 0.50)
+        {
+            transform.rotation = Quaternion.Euler(transform.rotation.x, 180, transform.rotation.z);
+        }
+        else if (boardPosition < 0.75)
+        {
+            transform.rotation = Quaternion.Euler(transform.rotation.x, 270, transform.rotation.z);
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(transform.rotation.x, 0, transform.rotation.z);
+        }
 
         GameController.instance.onCounterMove.Invoke(this);
     }

@@ -344,6 +344,10 @@ public class GameController : MonoBehaviour
     public void SetupCounters(CounterController[] counters)
     {
         this.counters = counters;
+        for (int i = 0; i < counters.Length; i++)
+        {
+            counters[i].PickModel(i);
+        }
     }
 
     public void Update()
