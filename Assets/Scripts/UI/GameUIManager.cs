@@ -39,6 +39,18 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject auctionMenu;
     /// <summary>
+    /// UI for displaying cards
+    /// </summary>
+    [SerializeField] private GameObject cardUI;
+    /// <summary>
+    /// Card title
+    /// </summary>
+    [SerializeField] private TextMeshProUGUI cardTitle;
+    /// <summary>
+    /// Card description
+    /// </summary>
+    [SerializeField] private TextMeshProUGUI cardDesc;
+    /// <summary>
     /// Called on completion of a yes / no prompt
     /// </summary>
     private System.Action<bool> onYesNoResponse;
@@ -83,6 +95,7 @@ public class GameUIManager : MonoBehaviour
         SetUIState(true, false, false, false);
         this.yesNoPromptUI.SetActive(false);
         this.auctionMenu.SetActive(false);
+        this.cardUI.SetActive(false);
         this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
         this.helpAndRulesMenu.transform.GetChild(1).gameObject.SetActive(false);
     }
@@ -267,6 +280,18 @@ public class GameUIManager : MonoBehaviour
         previousUIState = new bool[4];
         this.auctionMenu.SetActive(true);
         this.auctionMenu.GetComponent<AuctionManager>().StartAuction(GameController.instance.spaces[GameController.instance.turnCounter.position] as Property);
+    }
+
+    public void ShowCard(string type, Card input)
+    {
+        this.cardUI.SetActive(true);
+        this.cardTitle.text = type;
+        this.cardDesc.text = input.description;
+    }
+
+    public void CloseCard()
+    {
+        this.cardUI.SetActive(false);
     }
 
     /// <summary>

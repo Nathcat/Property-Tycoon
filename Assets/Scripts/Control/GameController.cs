@@ -233,6 +233,7 @@ public class GameController : MonoBehaviour
             Card removed = luckDeck.Dequeue();
             removed.action.Run(counterController);
             DiscardLuck(removed);
+            GameUIManager.instance.ShowCard("Pot Luck", removed);
             return removed;
         }
         else
@@ -267,7 +268,7 @@ public class GameController : MonoBehaviour
     /// Draw and run the action for the top card of the Opportunity Knocks deck on the given counter
     /// </summary>
     /// <param name="counterController">The counter to run the card action on</param>
-    public void DrawOpportunity(CounterController counterController)
+    public Card DrawOpportunity(CounterController counterController)
     {
         if (opportunityDeck.Count != 0)
         {
@@ -276,10 +277,14 @@ public class GameController : MonoBehaviour
             removed.action.Run(counterController);
 
             DiscardOpportunity(removed);
+            GameUIManager.instance.ShowCard("Opportunity Knocks", removed);
+
+            return removed;
         }
         else
         {
             Debug.Log("Deck is empty");
+            return null;
         }
     }
 
@@ -331,5 +336,10 @@ public class GameController : MonoBehaviour
             o.gameObject.name = "Player " + index;
             return o;
         }).ToArray();
+    }
+
+    public void SetupCounters(CounterController[] arr)
+    {
+        this.counters = arr;
     }
 }
