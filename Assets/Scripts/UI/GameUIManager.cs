@@ -203,7 +203,7 @@ public class GameUIManager : MonoBehaviour
     public void UpdateTimer(float inputTimer)
     {
         if (inputTimer <= 0) {
-            gameTimerText.text = "Time expired!";
+            gameTimerText.text = "Last Round";
         } else
         {
             float hours = Mathf.FloorToInt(inputTimer / 3600);
