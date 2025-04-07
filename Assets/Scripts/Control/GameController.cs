@@ -322,7 +322,6 @@ public class GameController : MonoBehaviour
     /// <summary>
     /// Register counters to the game.
     /// </summary>
-    /// <param name="counters">An array of the counters in this game.</param>
     public void SetupCounters()
     {
         this.counters = new CounterController[6].Select((c, index) =>
@@ -331,6 +330,15 @@ public class GameController : MonoBehaviour
             o.gameObject.name = "Player " + index;
             return o;
         }).ToArray();
+    }
+
+    /// <summary>
+    /// Register counters to the game.
+    /// </summary>
+    /// <param name="counters">An array of the counters in this game.</param>
+    public void SetupCounters(CounterController[] counters)
+    {
+        this.counters = counters;
     }
 
     public void Update()
