@@ -34,6 +34,7 @@ public class AuctionManager : MonoBehaviour
     /// <param name="p">The property up for auction</param>
     public void StartAuction(Property p)
     {
+
         SetTargetProperty(p);
 
         currentTurn = -1;

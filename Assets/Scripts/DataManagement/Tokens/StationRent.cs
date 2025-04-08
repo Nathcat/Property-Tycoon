@@ -6,7 +6,7 @@ public class StationRent : Command
     public StationRent(string value) : base(value) { }
 
     override public IEnumerator Execute(CounterController counterController, Argument[] args) {
-        Space space = GameController.instance.spaces[counterController.position];
+        Space space = GameController.instance.spaces[counterController.position - 1 ];
 
         if (!(space is Station))
         {

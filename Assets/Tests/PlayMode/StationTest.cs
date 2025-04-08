@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
 using UnityEngine;
@@ -35,18 +36,21 @@ public class StationTest
                 break;
             }
             i++;
-           
         }
         Debug.Log(thisgroup.name);
-        victim.MoveAbsolute(6);
+        counter.MoveAbsolute(thisgroup.GetProperties()[i].position);
+        Debug.Log(thisgroup.GetProperties().Length);
         for (i = 0; i < thisgroup.GetProperties().Length; i++)
         {
+
             property = (Station)thisgroup.GetProperties()[i];
-            counter.portfolio.AddAsset(new Cash(property.GetValue()));
+            victim.MoveAbsolute(thisgroup.GetProperties()[i].position);
             list.Add(property);
+            counter.portfolio.AddAsset(new Cash(property.GetValue()));
             property.Purchase(counter);
-            property.action.Run(victim);
-            //check if theres (i) less  money in the victim
+            victim.StartCoroutine(property.action.Run(victim));
+            Debug.Log(victim.portfolio.GetCashBalance());
+            //check if theres (i) less money in the victim
         }
         Assert.AreEqual(625, victim.portfolio.GetCashBalance());  
     }
@@ -79,13 +83,13 @@ public class StationTest
 
         }
         Debug.Log(thisgroup.name);
-        victim.MoveAbsolute(6);
-        
+        victim.MoveAbsolute(thisgroup.GetProperties()[0].position);
+
         property = (Station)thisgroup.GetProperties()[0];
         counter.portfolio.AddAsset(new Cash(property.GetValue()));
         list.Add(property);
         property.Purchase(counter);
-        property.action.Run(victim);
+        victim.StartCoroutine(property.action.Run(victim));
         
         Assert.AreEqual(975, victim.portfolio.GetCashBalance());
     }

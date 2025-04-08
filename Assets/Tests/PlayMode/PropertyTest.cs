@@ -31,6 +31,7 @@ public class PropertyTest
         Assert.AreEqual(cash.GetValue(), (property.GetValue()));
         Assert.AreEqual(value / 2, (property.GetValue()));
         Assert.IsTrue(property.isMortgaged);
+        counter.portfolio.AddAsset(new Cash(property.GetValue()));
         Assert.IsTrue(property.CanUnMortgage());
     }
 
@@ -50,7 +51,7 @@ public class PropertyTest
         counter.portfolio.AddAsset(new Cash(property.GetValue()));
         property.Purchase(counter);
         Cash cash = property.Mortgage();
-
+        counter.portfolio.AddAsset(new Cash(property.GetValue()));
         property.UnMortgage();
         Assert.AreNotEqual(value, (property.GetValue()) * 2);
     }
@@ -170,7 +171,6 @@ public class PropertyTest
             i += 1;
         }
         list[0].Upgrade();
-
 
         Assert.IsFalse(list[1].CanDowngrade());
         Assert.IsTrue(list[0].CanDowngrade());

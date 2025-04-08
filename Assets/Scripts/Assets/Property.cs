@@ -200,11 +200,15 @@ public class Property : Space, IAsset
     /// <param name="counter">The <see cref="CounterController"/> purchasing the property.</param>
     public void Purchase(CounterController counter)
     {
-        if (!CanPurchase(counter)) return;
-
+        if (!CanPurchase(counter))
+        {
+            Debug.Log("cant purchase for some reason :/");
+            return;
+        }
         owner = counter;
         counter.portfolio.AddAsset(this);
         counter.portfolio.RemoveCash(new Cash(cost));
+
     }
 
     /// <summary>
