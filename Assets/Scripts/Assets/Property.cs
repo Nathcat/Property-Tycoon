@@ -54,6 +54,8 @@ public class Property : Space, IAsset
     /// </summary>
     public int hotelCost { get { return upgradeCost * 5; } }
 
+    public int mortgageValue { get { return cost / 2; } }
+
     /// <summary>
     /// Initialise a property with the given information.
     /// </summary>
@@ -76,7 +78,7 @@ public class Property : Space, IAsset
     /// <returns>Cash from mortgaging the property.</returns>
     public Cash Mortgage()
     {
-        Cash output = new Cash(cost / 2);
+        Cash output = new Cash(mortgageValue);
         isMortgaged = true;
         return output;
     }
@@ -86,7 +88,7 @@ public class Property : Space, IAsset
     /// </summary>
     /// <returns>True if the owner of this property can afford to unmortgage it, false otherwise</returns>
     public bool CanUnMortgage() {
-        return owner != null && owner.portfolio.GetCashBalance() >= (cost / 2);
+        return owner != null && owner.portfolio.GetCashBalance() >= (mortgageValue);
     }
 
     /// <summary>
@@ -95,9 +97,9 @@ public class Property : Space, IAsset
     public void UnMortgage() {
         if (!CanUnMortgage()) return;
 
-        if (owner.portfolio.GetCashBalance() >= (cost / 2)) {
+        if (owner.portfolio.GetCashBalance() >= (mortgageValue)) {
             isMortgaged = false;
-            owner.portfolio.RemoveCash(new Cash(cost / 2));
+            owner.portfolio.RemoveCash(new Cash(mortgageValue));
         }
     }
 
@@ -108,7 +110,7 @@ public class Property : Space, IAsset
     /// <returns>The current value of the property.</returns>
     public int GetValue()
     {
-        if (isMortgaged) { return cost / 2; } else { return cost + (upgradeLevel == 5 ? hotelCost : (upgradeLevel * upgradeCost)); }
+        if (isMortgaged) { return mortgageValue; } else { return cost + (upgradeLevel == 5 ? hotelCost : (upgradeLevel * upgradeCost)); }
     }
 
     /// <summary>
@@ -180,7 +182,7 @@ public class Property : Space, IAsset
             throw new Action.SyntaxError("Action string for space '" + name + "' is invalid, PropertyRent should have 6 arguments!");
         }
 
-        return "Undeveloped: �" + args[0].value + "\n1 house: �" + args[1] + "\n2 houses: �" + args[2] + "\n3 houses: �" + args[3] + "\n4 houses: " + args[4] + "\nHotel: �" + args[5];
+        return "Undeveloped: £" + args[0].value + "\n1 house: £" + args[1].value + "\n2 houses: £" + args[2].value + "\n3 houses: £" + args[3].value + "\n4 houses: " + args[4].value + "\nHotel: £" + args[5].value;
     }
 
     /// <summary>
@@ -263,7 +265,7 @@ public class Property : Space, IAsset
     {
         if (!CanSell()) return;
 
-        owner.portfolio.AddAsset(new Cash(isMortgaged ? (cost / 2) : cost));
+        owner.portfolio.AddAsset(new Cash(isMortgaged ? (mortgageValue) : cost));
         owner.portfolio.RemoveProperty(this);
         owner = null;
     }
