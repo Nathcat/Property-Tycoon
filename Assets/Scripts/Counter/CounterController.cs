@@ -196,15 +196,18 @@ public class CounterController : MonoBehaviour
                         {
                             p.Purchase(this);
                             Debug.Log(name + " has purchased " + p.name);
+                            yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
                         }
                         else
                         {
                             yield return GameUIManager.instance.StartAuction();
+                            yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
                         }
                     }
                     else
                     {
                         yield return GameUIManager.instance.StartAuction();
+                        yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
                     }
                 }
             }
