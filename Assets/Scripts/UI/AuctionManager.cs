@@ -181,6 +181,7 @@ public class AuctionManager : MonoBehaviour
 
         bids[currentTurn].AddCash(1);
         transform.Find("PlayerPanels").GetChild(currentTurn).GetChild(1).GetComponent<TextMeshProUGUI>().text = "£" + bids[currentTurn].GetValue();
+        NextBid();
     }
 
     /// <summary>
@@ -197,6 +198,7 @@ public class AuctionManager : MonoBehaviour
 
         bids[currentTurn].AddCash(5);
         transform.Find("PlayerPanels").GetChild(currentTurn).GetChild(1).GetComponent<TextMeshProUGUI>().text = "£" + bids[currentTurn].GetValue();
+        NextBid();
     }
 
     /// <summary>
@@ -213,6 +215,7 @@ public class AuctionManager : MonoBehaviour
 
         bids[currentTurn].AddCash(10);
         transform.Find("PlayerPanels").GetChild(currentTurn).GetChild(1).GetComponent<TextMeshProUGUI>().text = "£" + bids[currentTurn].GetValue();
+        NextBid();
     }
 
     /// <summary>
@@ -229,6 +232,7 @@ public class AuctionManager : MonoBehaviour
 
         bids[currentTurn].AddCash(20);
         transform.Find("PlayerPanels").GetChild(currentTurn).GetChild(1).GetComponent<TextMeshProUGUI>().text = "£" + bids[currentTurn].GetValue();
+        NextBid();
     }
 
     /// <summary>
@@ -245,6 +249,7 @@ public class AuctionManager : MonoBehaviour
 
         bids[currentTurn].AddCash(50);
         transform.Find("PlayerPanels").GetChild(currentTurn).GetChild(1).GetComponent<TextMeshProUGUI>().text = "£" + bids[currentTurn].GetValue();
+        NextBid();
     }
 
     /// <summary>
@@ -261,5 +266,6 @@ public class AuctionManager : MonoBehaviour
 
         bids[currentTurn].AddCash(100);
         transform.Find("PlayerPanels").GetChild(currentTurn).GetChild(1).GetComponent<TextMeshProUGUI>().text = "£" + bids[currentTurn].GetValue();
+        NextBid();
     }
 }
