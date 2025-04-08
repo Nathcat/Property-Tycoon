@@ -125,15 +125,18 @@ public class HumanCounter : CounterController
                         {
                             p.Purchase(this);
                             Debug.Log(name + " has purchased " + p.name);
+                            yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
                         }
                         else
                         {
-                            GameUIManager.instance.StartAuction();
+                            yield return GameUIManager.instance.StartAuction();
+                            yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
                         }
                     }
                     else
                     {
-                        GameUIManager.instance.StartAuction();
+                        yield return GameUIManager.instance.StartAuction();
+                        yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
                     }
                 }
             }
