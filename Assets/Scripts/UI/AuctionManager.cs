@@ -18,6 +18,12 @@ public class AuctionManager : MonoBehaviour
     private CounterController currentPlayer { get { return GameController.instance.counters[currentTurn]; } }
     private Property targetProperty;
 
+    private bool auctioning = false;
+    private class WaitForComplete : CustomYieldInstruction
+    {
+        public override bool keepWaiting { get { return GameUIManager.instance.auctionManager.auctioning; } }
+    }
+
     /// <summary>
     /// Set the target property of this auction
     /// </summary>
@@ -34,6 +40,7 @@ public class AuctionManager : MonoBehaviour
     /// <param name="p">The property up for auction</param>
     public void StartAuction(Property p)
     {
+        auctioning = true;
         SetTargetProperty(p);
 
         currentTurn = -1;
@@ -44,6 +51,7 @@ public class AuctionManager : MonoBehaviour
         for (int x = 0; x < bids.Length; x++)
         {
             bids[x] = new Cash();
+            withdrawn[x] = false;
         }
 
         int i = 0;
@@ -53,7 +61,7 @@ public class AuctionManager : MonoBehaviour
             {
                 playerPanel.gameObject.SetActive(false);
                 i++;
-                return;
+                break;
             }
 
             playerPanel.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
@@ -62,6 +70,14 @@ public class AuctionManager : MonoBehaviour
         }
 
         NextBid();
+    }
+
+    /// <summary>
+    /// Restart the currently active auction.
+    /// </summary>
+    private IEnumerator RestartAuction() {
+        yield return GameUIManager.instance.OkPrompt(currentPlayer.name + " cannot afford their bid, the auction for " + targetProperty.name + " will restart!");
+        StartAuction(targetProperty);
     }
 
     /// <summary>
@@ -87,13 +103,26 @@ public class AuctionManager : MonoBehaviour
         if (numberOfPlayers == 1)
         {
             // This is the only remaining player, hence they have won
-            targetProperty.AuctionPurchase(currentPlayer, bids[currentTurn]);
-            GameUIManager.instance.FinishAuction();
             Debug.Log(currentPlayer.name + " wins " + targetProperty.name + " for " + bids[currentTurn].GetValue());
+
+            if (currentPlayer.portfolio.GetCashBalance() >= bids[currentTurn].GetValue()) {
+                targetProperty.AuctionPurchase(currentPlayer, bids[currentTurn]);
+                Debug.Log(currentPlayer.name + " obtains " + targetProperty.name);
+                GameUIManager.instance.FinishAuction();
+            }
+            else {
+                // TODO Ok prompt?
+                Debug.Log(currentPlayer.name + " cannot afford their bid!");
+                StartCoroutine(RestartAuction());
+            }
+
             return;
         }
 
         // Disable bid buttons which the playe cannot afford
+        // Removing this because players should be able to bid as much as they want, regardless of their
+        // current assets
+        /*
         foreach (Transform button in transform.Find("BidButtons"))
         {
             int value = int.Parse(button.name);
@@ -105,7 +134,7 @@ public class AuctionManager : MonoBehaviour
             {
                 button.GetComponent<UnityEngine.UI.Image>().color = new Color(1f, 1f, 1f, 1f);
             }
-        }
+        }*/
 
         // Highlight the player card of the player whose bidding turn it currently is and reset all the others
         // back to the default color
@@ -151,14 +180,16 @@ public class AuctionManager : MonoBehaviour
     /// </summary>
     public void Bid1()
     {
+        /*
         if (currentPlayer.portfolio.GetCashBalance() < 1)
         {
             Debug.LogWarning(currentPlayer.name + " cannot afford this bid!");
             return;
-        }
+        }*/
 
         bids[currentTurn].AddCash(1);
         transform.Find("PlayerPanels").GetChild(currentTurn).GetChild(1).GetComponent<TextMeshProUGUI>().text = "£" + bids[currentTurn].GetValue();
+        NextBid();
     }
 
     /// <summary>
@@ -166,14 +197,16 @@ public class AuctionManager : MonoBehaviour
     /// </summary>
     public void Bid5()
     {
+        /*
         if (currentPlayer.portfolio.GetCashBalance() < 5)
         {
             Debug.LogWarning(currentPlayer.name + " cannot afford this bid!");
             return;
-        }
+        }*/
 
         bids[currentTurn].AddCash(5);
         transform.Find("PlayerPanels").GetChild(currentTurn).GetChild(1).GetComponent<TextMeshProUGUI>().text = "£" + bids[currentTurn].GetValue();
+        NextBid();
     }
 
     /// <summary>
@@ -181,14 +214,16 @@ public class AuctionManager : MonoBehaviour
     /// </summary>
     public void Bid10()
     {
+        /*
         if (currentPlayer.portfolio.GetCashBalance() < 10)
         {
             Debug.LogWarning(currentPlayer.name + " cannot afford this bid!");
             return;
-        }
+        }*/
 
         bids[currentTurn].AddCash(10);
         transform.Find("PlayerPanels").GetChild(currentTurn).GetChild(1).GetComponent<TextMeshProUGUI>().text = "£" + bids[currentTurn].GetValue();
+        NextBid();
     }
 
     /// <summary>
@@ -196,14 +231,16 @@ public class AuctionManager : MonoBehaviour
     /// </summary>
     public void Bid20()
     {
+        /*
         if (currentPlayer.portfolio.GetCashBalance() < 20)
         {
             Debug.LogWarning(currentPlayer.name + " cannot afford this bid!");
             return;
-        }
+        }*/
 
         bids[currentTurn].AddCash(20);
         transform.Find("PlayerPanels").GetChild(currentTurn).GetChild(1).GetComponent<TextMeshProUGUI>().text = "£" + bids[currentTurn].GetValue();
+        NextBid();
     }
 
     /// <summary>
@@ -211,14 +248,16 @@ public class AuctionManager : MonoBehaviour
     /// </summary>
     public void Bid50()
     {
+        /*
         if (currentPlayer.portfolio.GetCashBalance() < 50)
         {
             Debug.LogWarning(currentPlayer.name + " cannot afford this bid!");
             return;
-        }
+        }*/
 
         bids[currentTurn].AddCash(50);
         transform.Find("PlayerPanels").GetChild(currentTurn).GetChild(1).GetComponent<TextMeshProUGUI>().text = "£" + bids[currentTurn].GetValue();
+        NextBid();
     }
 
     /// <summary>
@@ -226,13 +265,15 @@ public class AuctionManager : MonoBehaviour
     /// </summary>
     public void Bid100()
     {
+        /*
         if (currentPlayer.portfolio.GetCashBalance() < 100)
         {
             Debug.LogWarning(currentPlayer.name + " cannot afford this bid!");
             return;
-        }
+        }*/
 
         bids[currentTurn].AddCash(100);
         transform.Find("PlayerPanels").GetChild(currentTurn).GetChild(1).GetComponent<TextMeshProUGUI>().text = "£" + bids[currentTurn].GetValue();
+        NextBid();
     }
 }
