@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Codice.Client.BaseCommands;
 using TMPro;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Mathematics;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -57,6 +58,7 @@ public class GameUIManager : MonoBehaviour
     /// Menu controlling the auction process
     /// </summary>
     [SerializeField] private GameObject auctionMenu;
+    [HideInInspector] public AuctionManager auctionManager { get { return auctionMenu.GetComponent<AuctionManager>(); } }
     /// <summary>
     /// UI for displaying cards
     /// </summary>
@@ -111,6 +113,7 @@ public class GameUIManager : MonoBehaviour
 
     [HideInInspector] public RollData lastDiceRoll { get; private set; } = null;
     [HideInInspector] public bool waitingForDiceRollComplete { get; private set; } = false;
+    [HideInInspector] public bool waitingForAuction { get; private set; } = false;
 
     /// <summary>
     /// Used to wait for a yes / no prompt to complete
@@ -126,6 +129,13 @@ public class GameUIManager : MonoBehaviour
     private class WaitForDiceRoll : CustomYieldInstruction
     {
         public override bool keepWaiting { get { return instance.waitingForDiceRollComplete; } }
+    }
+
+    /// <summary>
+    /// Used to wait for an auction to complete
+    /// </summary>
+    private class WaitForAuction : CustomYieldInstruction {
+        public override bool keepWaiting { get { return instance.waitingForAuction; } }
     }
 
     /// <summary>
@@ -404,13 +414,15 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// Start an auction
     /// </summary>
-    public void StartAuction()
+    public IEnumerator StartAuction()
     {
         Debug.Log("Starting auction.");
         SetUIState(false, false, false, false);
         previousUIState = new bool[4];
         this.auctionMenu.SetActive(true);
         this.auctionMenu.GetComponent<AuctionManager>().StartAuction(GameController.instance.spaces[GameController.instance.turnCounter.position] as Property);
+        waitingForAuction = true;
+        yield return new WaitForAuction();
     }
 
     public void ShowCard(string type, Card input)
@@ -432,6 +444,7 @@ public class GameUIManager : MonoBehaviour
     {
         this.auctionMenu.SetActive(false);
         SetUIState(true, false, false, false);
+        waitingForAuction = false;
     }
 
     /// <summary>

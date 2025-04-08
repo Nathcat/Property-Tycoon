@@ -199,12 +199,12 @@ public class CounterController : MonoBehaviour
                         }
                         else
                         {
-                            GameUIManager.instance.StartAuction();
+                            yield return GameUIManager.instance.StartAuction();
                         }
                     }
                     else
                     {
-                        GameUIManager.instance.StartAuction();
+                        yield return GameUIManager.instance.StartAuction();
                     }
                 }
             }
