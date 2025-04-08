@@ -73,6 +73,14 @@ public class AuctionManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Restart the currently active auction.
+    /// </summary>
+    private IEnumerator RestartAuction() {
+        yield return GameUIManager.instance.OkPrompt(currentPlayer.name + " cannot afford their bid, the auction for " + targetProperty.name + " will restart!");
+        StartAuction(targetProperty);
+    }
+
+    /// <summary>
     /// Move to the next bidding turn and update the UI accordingly
     /// </summary>
     public void NextBid()
@@ -105,7 +113,7 @@ public class AuctionManager : MonoBehaviour
             else {
                 // TODO Ok prompt?
                 Debug.Log(currentPlayer.name + " cannot afford their bid!");
-                StartAuction(targetProperty);
+                StartCoroutine(RestartAuction());
             }
 
             return;

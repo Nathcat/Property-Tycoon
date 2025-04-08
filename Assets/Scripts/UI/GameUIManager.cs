@@ -55,6 +55,10 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject yesNoPromptUI;
     /// <summary>
+    /// The Ok prompt UI
+    /// </summary>
+    [SerializeField] private GameObject okPromptUI;
+    /// <summary>
     /// Menu controlling the auction process
     /// </summary>
     [SerializeField] private GameObject auctionMenu;
@@ -94,7 +98,7 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// The player cards displayed in the main UI
     /// </summary>
-    
+
     [SerializeField] private GameObject[] playerCardElements;
     /// <summary>
     /// The textures used to display the dice roll
@@ -134,7 +138,8 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// Used to wait for an auction to complete
     /// </summary>
-    private class WaitForAuction : CustomYieldInstruction {
+    private class WaitForAuction : CustomYieldInstruction
+    {
         public override bool keepWaiting { get { return instance.waitingForAuction; } }
     }
 
@@ -169,6 +174,7 @@ public class GameUIManager : MonoBehaviour
         SetUIState(true, false, false, false);
         this.gameTimer.SetActive(false);
         this.yesNoPromptUI.SetActive(false);
+        this.okPromptUI.SetActive(false);
         this.GetOutOfJailFree.SetActive(false);
         this.auctionMenu.SetActive(false);
         this.cardUI.SetActive(false);
@@ -212,9 +218,11 @@ public class GameUIManager : MonoBehaviour
     /// <param name="inputTimer"></param>
     public void UpdateTimer(float inputTimer)
     {
-        if (inputTimer <= 0) {
+        if (inputTimer <= 0)
+        {
             gameTimerText.text = "Last Round";
-        } else
+        }
+        else
         {
             float hours = Mathf.FloorToInt(inputTimer / 3600);
             float mins = Mathf.FloorToInt(inputTimer / 60);
@@ -229,7 +237,7 @@ public class GameUIManager : MonoBehaviour
                 {
                     gameTimerText.text = hours + ":0" + mins + ":" + seconds;
                 }
-            
+
             }
             else
             {
@@ -276,7 +284,7 @@ public class GameUIManager : MonoBehaviour
     private void SetCurrentTurnLabel(CounterController counterController)
     {
         mainUI.transform.Find("CurrentTurn").GetChild(0).GetComponent<TextMeshProUGUI>().text = counterController.name + "'s turn";
-        
+
     }
 
     /// <summary>
@@ -379,7 +387,7 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     /// <param name="prompt">The prompt message to display to the user</param>
     /// <param name="onResponse">The callback to execute once the user has replied</param>
-    public CustomYieldInstruction YesNoPrompt(string prompt)
+    public IEnumerator YesNoPrompt(string prompt)
     {
         promptState = new PromptState(true, false);
         SetUIState(true, false, false, false);
@@ -408,6 +416,31 @@ public class GameUIManager : MonoBehaviour
         //onYesNoResponse(false);
         promptState = new PromptState(false, false);
         this.yesNoPromptUI.SetActive(false);
+        RevertToPreviousUIState();
+    }
+
+    /// <summary>
+    /// Create a prompt with a simple Ok prompt.
+    /// </summary>
+    /// <param name="prompt"></param>
+    /// <returns></returns>
+    public IEnumerator OkPrompt(string prompt)
+    {
+        promptState = new PromptState(true, false);
+        SetUIState(false, false, false, false);
+        this.okPromptUI.transform.Find("Prompt").GetComponent<TextMeshProUGUI>().text = prompt;
+        this.okPromptUI.SetActive(true);
+
+        return new WaitForPromptReply();
+    }
+
+    /// <summary>
+    /// End an OK prompt
+    /// </summary>
+    public void EndOkPrompt()
+    {
+        promptState = new PromptState(false, false);
+        this.okPromptUI.SetActive(false);
         RevertToPreviousUIState();
     }
 
@@ -480,7 +513,8 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// Complete a dice roll
     /// </summary>
-    public void CompleteDiceRoll() {
+    public void CompleteDiceRoll()
+    {
         SetUIState(true, false, false, false);
         waitingForDiceRollComplete = false;
     }
