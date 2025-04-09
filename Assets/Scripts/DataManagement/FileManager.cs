@@ -143,7 +143,7 @@ public class FileManager
                 if (g.name == PropertyGroup.STATION_GROUP_NAME)
                 {
                     s = new Station(
-                        Int32.Parse(elements[0]),
+                        Int32.Parse(elements[0]) - 1,
                         elements[1],
                         g,
                         new Action(elements[4]),
@@ -153,7 +153,7 @@ public class FileManager
                 else if (g.name == PropertyGroup.UTILITY_GROUP_NAME)
                 {
                     s = new Utility(
-                        Int32.Parse(elements[0]),
+                        Int32.Parse(elements[0]) - 1,
                         elements[1],
                         g,
                         new Action(elements[4]),
@@ -164,7 +164,7 @@ public class FileManager
                 else
                 {
                     s = new Property(
-                        Int32.Parse(elements[0]),
+                        Int32.Parse(elements[0]) -1,
                         elements[1],
                         g,
                         new Action(elements[4]),

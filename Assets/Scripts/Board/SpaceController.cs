@@ -7,6 +7,9 @@ public class SpaceController : MonoBehaviour
     public Transform[] waypoints;
     public Space space;
 
+    /// <summary> The position of this space controller on the board. </summary>
+    public int position { get {  return space.position; } }
+
     public void Setup(Space space)
     {
         this.space = space;

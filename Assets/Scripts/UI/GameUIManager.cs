@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Codice.Client.BaseCommands;
 using TMPro;
 using Unity.Collections.LowLevel.Unsafe;
@@ -31,8 +32,9 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// The active instance of this class
     /// </summary>
-    public static GameUIManager instance { get; private set; }
+    [HideInInspector] public static GameUIManager instance { get; private set; }
 
+    [Header("UI Root Elements")]
     /// <summary>
     /// This is the help and rules menu canvas
     /// </summary>
@@ -89,20 +91,40 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// Popup to show the player has a get out of jail free card available
     /// </summary>
-    [SerializeField] private GameObject GetOutOfJailFree;
+    [SerializeField] private GameObject getOutOfJailFree;
+    /// <summary>
+    /// Popup containing details of the currently selected property
+    /// </summary>
+    [SerializeField] private GameObject propertyDetails;
+    /// <summary>
+    /// End turn button
+    /// </summary>
+    [SerializeField] private GameObject endTurnButton;
     /// <summary>
     /// Called on completion of a yes / no prompt
     /// </summary>
     private System.Action<bool> onYesNoResponse;
     /// <summary>
+    /// Forefit button
+    /// </summary>
+    [SerializeField] private GameObject forefitButton;
+    /// <summary>
+    /// Debt notification
+    /// </summary>
+    [SerializeField] private GameObject debtNotification;
+
+    [Header("Misc. Data")]
+    /// <summary>
     /// The player cards displayed in the main UI
     /// </summary>
-
     [SerializeField] private GameObject[] playerCardElements;
     /// <summary>
     /// The textures used to display the dice roll
     /// </summary>
     [SerializeField] private Texture[] diceTextures;
+    [SerializeField] private float diceRollTimeout = 3f;
+
+
     /// <summary>
     /// Default names list, to replace missing names.
     /// </summary>
@@ -166,6 +188,11 @@ public class GameUIManager : MonoBehaviour
     [HideInInspector] public bool waitingForAuction { get; private set; } = false;
 
     /// <summary>
+    /// <see cref="true"/> if the current turn can be ended.
+    /// </summary>
+    private bool endable;
+
+    /// <summary>
     /// Used to wait for a yes / no prompt to complete
     /// </summary>
     private class WaitForPromptReply : CustomYieldInstruction
@@ -221,7 +248,7 @@ public class GameUIManager : MonoBehaviour
         this.gameTimer.SetActive(false);
         this.yesNoPromptUI.SetActive(false);
         this.okPromptUI.SetActive(false);
-        this.GetOutOfJailFree.SetActive(false);
+        this.getOutOfJailFree.SetActive(false);
         this.auctionMenu.SetActive(false);
         this.cardUI.SetActive(false);
         this.gameEndScreen.SetActive(false);
@@ -240,7 +267,7 @@ public class GameUIManager : MonoBehaviour
         this.gameTimer.SetActive(false);
         this.yesNoPromptUI.SetActive(false);
         this.okPromptUI.SetActive(false);
-        this.GetOutOfJailFree.SetActive(false);
+        this.getOutOfJailFree.SetActive(false);
         this.auctionMenu.SetActive(false);
         this.cardUI.SetActive(false);
         this.gameEndScreen.SetActive(false);
@@ -254,20 +281,25 @@ public class GameUIManager : MonoBehaviour
         if (gameStarted)
         {
             this.mainUI.SetActive(currentUIState[0]);
+            this.propertyDetails.SetActive(currentUIState[0]);
             this.helpAndRulesMenu.SetActive(currentUIState[1]);
             this.pauseMenu.SetActive(currentUIState[2]);
             this.diceRollUI.SetActive(currentUIState[3]);
+
+            this.endTurnButton.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() >= 0);
+            this.debtNotification.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() < 0);
+            this.forefitButton.SetActive(endable);
 
             if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
 
             bool GOJF = GameController.instance.turnCounter.getOutOfJailFree;
             if (GOJF)
             {
-                this.GetOutOfJailFree.SetActive(true);
+                this.getOutOfJailFree.SetActive(true);
             }
             else
             {
-                this.GetOutOfJailFree.SetActive(false);
+                this.getOutOfJailFree.SetActive(false);
             }
         }
     }
@@ -328,9 +360,18 @@ public class GameUIManager : MonoBehaviour
     /// <param name="currentTurn">The player whose turn it is now</param>
     public void UpdateUIForNewTurn(CounterController currentTurn)
     {
+        endable = false;
         SetUIState(true, false, false, false);
-        UpdateAllPlayerCardData();
         SetCurrentTurnLabel(currentTurn);
+        updatePlayers();
+    }
+
+    /// <summary>
+    /// Updates the UI for all the players
+    /// </summary>
+    public void updatePlayers()
+    {
+        UpdateAllPlayerCardData();
         UpdateLeaderboard();
     }
 
@@ -339,10 +380,23 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     private void UpdateAllPlayerCardData()
     {
-        for (int i = 0; i < GameController.instance.counters.Length; i++)
+        for (int i = 0; i < playerCardElements.Length; i++)
         {
-            playerCardElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
-            playerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].portfolio.GetCashBalance().ToString();
+            if (i >= GameController.instance.counters.Length)
+            {
+                playerCardElements[i].SetActive(false);
+            }
+            else
+            {
+                playerCardElements[i].SetActive(true);
+                playerCardElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
+                playerCardElements[i].transform.Find("Icon").GetComponent<UnityEngine.UI.Image>().sprite = GameController.instance.counters[i].icon;
+
+                int balance = GameController.instance.counters[i].portfolio.GetCashBalance();
+                string label = $"{(balance < 0 ? "-" : "")}£{Mathf.Abs(balance)}";
+                playerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = label;
+            }
+
         }
     }
 
@@ -353,6 +407,7 @@ public class GameUIManager : MonoBehaviour
     private void SetCurrentTurnLabel(CounterController counterController)
     {
         mainUI.transform.Find("CurrentTurn").GetChild(0).GetComponent<TextMeshProUGUI>().text = counterController.name + "'s turn";
+        mainUI.transform.Find("CurrentTurn").GetChild(1).GetComponent<UnityEngine.UI.Image>().sprite = counterController.icon;
 
     }
 
@@ -384,7 +439,9 @@ public class GameUIManager : MonoBehaviour
         i = 1;
         foreach (CounterController counterController in order)
         {
-            s += i.ToString() + (i == 1 ? "st" : (i == 2 ? "nd" : (i == 3 ? "rd" : "th"))) + " " + counterController.name + ": " + counterController.portfolio.TotalValue() + "\n";
+            int value = counterController.portfolio.TotalValue();
+            string score = $"{(value < 0 ? "-" : "")}£{Mathf.Abs(value)}";
+            s += i.ToString() + (i == 1 ? "st" : (i == 2 ? "nd" : (i == 3 ? "rd" : "th"))) + " " + counterController.name + ": " + score + "\n";
             i++;
         }
 
@@ -522,9 +579,9 @@ public class GameUIManager : MonoBehaviour
         SetUIState(false, false, false, false);
         previousUIState = new bool[4];
         this.auctionMenu.SetActive(true);
-        this.auctionMenu.GetComponent<AuctionManager>().StartAuction(GameController.instance.spaces[GameController.instance.turnCounter.position] as Property);
         waitingForAuction = true;
-        yield return new WaitForAuction();
+        this.auctionMenu.GetComponent<AuctionManager>().StartAuction(GameController.instance.spaces[GameController.instance.turnCounter.position] as Property);
+        return new WaitForAuction();
     }
 
     public void ShowCard(string type, Card input)
@@ -544,9 +601,10 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     public void FinishAuction()
     {
-        this.auctionMenu.SetActive(false);
         SetUIState(true, false, false, false);
-        waitingForAuction = false;
+        instance.waitingForAuction = false;
+        Debug.Log("Finished auction");
+        this.auctionMenu.SetActive(false);
     }
 
     /// <summary>
@@ -570,14 +628,21 @@ public class GameUIManager : MonoBehaviour
     public IEnumerator RollDice()
     {
         waitingForDiceRollComplete = true;
-        SetUIState(false, false, false, true);
+        SetUIState(true, false, false, true);
         lastDiceRoll = DoDiceRoll();
         Debug.Log("dicetextures:" + diceTextures.Length);
         diceRollUI.transform.GetChild(0).GetComponent<RawImage>().texture = diceTextures[lastDiceRoll.dice1 - 1];
         diceRollUI.transform.GetChild(1).GetComponent<RawImage>().texture = diceTextures[lastDiceRoll.dice2 - 1];
         diceRollUI.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = lastDiceRoll.dice1 + lastDiceRoll.dice2 + (lastDiceRoll.doubleRoll ? "\nDouble! Roll again!" : "");
 
-        yield return new WaitForDiceRoll();
+        diceRollUI.transform.GetChild(3).gameObject.SetActive(GameController.instance.turnCounter.isControllable);
+
+        if (GameController.instance.turnCounter.isControllable) yield return new WaitForDiceRoll();
+        else
+        {
+            yield return new WaitForSeconds(diceRollTimeout);
+            CompleteDiceRoll();
+        }
     }
 
     /// <summary>
@@ -635,11 +700,11 @@ public class GameUIManager : MonoBehaviour
         Player5Type = Player5TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
         Player6Type = Player6TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
         Gamemode = GamemodeInput.GetComponent<TMP_Dropdown>().value.ToString();
-       
 
 
-        string[] playerNames = {Player1Name,Player2Name,Player3Name,Player4Name,Player5Name,Player6Name};
-        for(int i = 0;  i < playerNames.Length; i++)
+
+        string[] playerNames = { Player1Name, Player2Name, Player3Name, Player4Name, Player5Name, Player6Name };
+        for (int i = 0; i < playerNames.Length; i++)
         {
             if (playerNames[i].Equals(""))
             {
@@ -648,9 +713,9 @@ public class GameUIManager : MonoBehaviour
                 defaultNames.Remove(defaultNames[randNum]);
             }
         }
-        
 
-        int[] playerTypes = {int.Parse(Player1Type), int.Parse(Player2Type), int.Parse(Player3Type), int.Parse(Player4Type), int.Parse(Player5Type), int.Parse(Player6Type)};
+
+        int[] playerTypes = { int.Parse(Player1Type), int.Parse(Player2Type), int.Parse(Player3Type), int.Parse(Player4Type), int.Parse(Player5Type), int.Parse(Player6Type) };
         bool mode = (Gamemode.Equals("0"));
         Debug.Log(mode + ":" + Hour + ":" + Min + ":" + Sec + ":" + boardCSV + ":" + cardCSV);
         Debug.Log(Player1Name + ":" + Player1Type);
@@ -665,8 +730,8 @@ public class GameUIManager : MonoBehaviour
         {
             time = (int.Parse(Hour) * 3600) + (int.Parse(Min) * 60) + int.Parse(Sec);
         }
-        
-        
+
+
         GameController.instance.StartGame(playerNames, playerTypes, mode, time, boardCSV, cardCSV);
 
         // Disable all but the main UI
@@ -675,11 +740,36 @@ public class GameUIManager : MonoBehaviour
         SetUIState(true, false, false, false);
         this.yesNoPromptUI.SetActive(false);
         this.okPromptUI.SetActive(false);
-        this.GetOutOfJailFree.SetActive(false);
+        this.getOutOfJailFree.SetActive(false);
         this.auctionMenu.SetActive(false);
         this.cardUI.SetActive(false);
         this.gameEndScreen.SetActive(false);
         this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
         this.helpAndRulesMenu.transform.GetChild(1).gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Modify the UI for a particular counter type
+    /// </summary>
+    /// <param name="isControllable">Whether or not this counter is controllable. If false, UI elements which allow the user to control the turn will be disabled</param>
+    private void ModifyUIForCounterType(bool isControllable)
+    {
+        mainUI.transform.Find("EndTurnButton").gameObject.SetActive(isControllable);
+    }
+
+    /// <summary>
+    /// When bankrupt clicked
+    /// </summary>
+    public void ForefitClicked()
+    {
+        GameController.instance.forefit(GameController.instance.turnCounter);
+    }
+
+    /// <summary>
+    /// Allows the turn to be ended.
+    /// </summary>
+    public void Endable()
+    {
+        endable = true;
     }
 }
