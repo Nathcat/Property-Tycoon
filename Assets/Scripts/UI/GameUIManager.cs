@@ -288,6 +288,7 @@ public class GameUIManager : MonoBehaviour
         for (int i = 0; i < GameController.instance.counters.Length; i++)
         {
             playerCardElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
+            playerCardElements[i].transform.Find("Icon").GetComponent<UnityEngine.UI.Image>().sprite = GameController.instance.counters[i].icon;
             playerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = $"£{GameController.instance.counters[i].portfolio.GetCashBalance()}";
         }
     }
