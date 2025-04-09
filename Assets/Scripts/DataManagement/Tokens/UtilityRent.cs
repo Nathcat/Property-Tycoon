@@ -49,15 +49,7 @@ public class UtilityRent : Command
             default: Debug.LogWarning("The owner of the incident utility owns more than 2 utilities, or no stations, this should be impossible!"); break;
         }
 
-        if (counterController.portfolio.GetCashBalance() >= rent)
-        {
-            utility.owner.portfolio.AddAsset(counterController.portfolio.RemoveCash(new Cash(rent)));
-            Debug.Log(counterController.name + " pays " + rent + " in rent to " + utility.owner.name + " for utility " + utility.name);
-        }
-        else
-        {
-            // TODO Here we should ask the player to sell their assets!
-            Debug.LogWarning("Incident player does not have enough money to pay rent!");
-        }
+        utility.owner.portfolio.AddAsset(counterController.portfolio.RemoveCash(new Cash(rent)));
+        Debug.Log(counterController.name + " pays " + rent + " in rent to " + utility.owner.name + " for utility " + utility.name);
     }
 }
