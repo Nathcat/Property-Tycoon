@@ -98,7 +98,7 @@ public class GameController : MonoBehaviour
         SetupBoard();
         SetupCards();
         abridged = true;
-        timeRemaining = (65);
+        timeRemaining = (108000);
         SetupTimer();
         //SetupCounters(new CounterController[6].Select(_ => Instantiate(counterPrefab)).ToArray());
         // this seems to break, but bring back if needed :)

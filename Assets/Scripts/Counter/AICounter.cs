@@ -109,7 +109,7 @@ public class AICounter : CounterController
                             Debug.Log(name + " has purchased " + p.name);
                             yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
                             Develop();
-                            GameController.instance.NextTurn();
+                            EndTurn();
 
                         }
                         else
@@ -118,7 +118,7 @@ public class AICounter : CounterController
                             Debug.Log(p.name);
                             yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
                             Develop();
-                            GameController.instance.NextTurn();
+                            EndTurn();
                         }
                     }
                     else
@@ -126,17 +126,17 @@ public class AICounter : CounterController
                         yield return GameUIManager.instance.StartAuction();
                         yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
                         Develop();
-                        GameController.instance.NextTurn();
+                        EndTurn();
                     }
                 }
                 else
                 {
-                    GameController.instance.NextTurn();
+                    EndTurn();
                 }
             }
             else
             {
-                GameController.instance.NextTurn();
+                EndTurn();
             }
         }
         else
@@ -231,6 +231,10 @@ public class AICounter : CounterController
         {
             Debug.Log(i);
             Property p = properties[i];
+            if (p.CanUnMortgage())
+            {
+                p.UnMortgage();
+            }
             if (p.CanUpgrade())
             {
                 int percentage = GetPercentage(p.upgradeCost, portfolio.GetCashBalance());
@@ -239,9 +243,44 @@ public class AICounter : CounterController
                 {
                     p.Upgrade();
                 }
+
             }
         }
     }
+    public void EndTurn() 
+    {
+        while (portfolio.GetCashBalance() < 0) 
+        {
+            bool sold = false;
+            List<Property> properties = portfolio.GetProperties();
+            for (int i = 0; i == properties.Count - 1; i++)
+            {
+                Debug.Log(i);
+                Property p = properties[i];
+                if (p.CanDowngrade())
+                {
+                    p.Downgrade();
+                    sold = true;
+                }
+                else if (!p.CanUnMortgage())
+                {
+                    p.Mortgage();
+                    sold = true;
+                }
+                else if (p.CanSell())
+                {
+                    p.Sell();
+                    sold = true;
+                }
+            }
+            if (sold == false) 
+            { 
+                //bankrupt
+            }
+        }
+        GameController.instance.NextTurn();
+    }
+
 
     public int GetPercentage(int value1, int value2)
     {
