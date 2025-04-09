@@ -142,20 +142,20 @@ public class AICounter : CounterController
                 GameController.instance.NextTurn();
             }
         }
-        
+
     }
 
-    override public IEnumerator DoAuctionTurn() 
+    override public IEnumerator DoAuctionTurn()
     {
         AuctionManager auction = GameUIManager.instance.auctionManager;
         Property p = auction.targetProperty;
         int percentage = GetPercentage(p.GetValue(), portfolio.GetCashBalance());
         if (percentage < 80)
         {
-           int offset = Random.Range(-20, 20);
-           int bid = Mathf.RoundToInt(((p.GetValue() * 0.7f) + offset));
+            int offset = Random.Range(-20, 20);
+            int bid = Mathf.RoundToInt(((p.GetValue() * 0.7f) + offset));
             int chance = Random.Range(1, 100);
-            if (bid >= 100 && chance > 70) 
+            if (bid >= 100 && chance > 70)
             {
                 auction.Bid100();
                 yield return null;
@@ -193,24 +193,24 @@ public class AICounter : CounterController
             }
 
         }
-        else 
+        else
         {
             auction.Withdraw();
             yield return null;
         }
     }
-    public void Develop() 
-    { 
+    public void Develop()
+    {
         List<Property> properties = portfolio.GetProperties();
-        for (int i = 0; i == properties.Count - 1; i++) 
+        for (int i = 0; i == properties.Count - 1; i++)
         {
             Debug.Log(i);
             Property p = properties[i];
-            if (p.CanUpgrade()) 
+            if (p.CanUpgrade())
             {
                 int percentage = GetPercentage(p.upgradeCost, portfolio.GetCashBalance());
                 int chance = Random.Range(1, 100);
-                if (percentage < 25 && chance > 50) 
+                if (percentage < 25 && chance > 50)
                 {
                     p.Upgrade();
                 }
@@ -223,4 +223,4 @@ public class AICounter : CounterController
         return Mathf.RoundToInt((value2 / value1) * 100);
     }
 
-    }
+}
