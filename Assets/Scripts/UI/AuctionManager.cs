@@ -16,7 +16,7 @@ public class AuctionManager : MonoBehaviour
     /// </summary>
     private int currentTurn = 0;
     private CounterController currentPlayer { get { return GameController.instance.counters[currentTurn]; } }
-    private Property targetProperty;
+    public Property targetProperty;
 
     private bool auctioning = false;
     private class WaitForComplete : CustomYieldInstruction
