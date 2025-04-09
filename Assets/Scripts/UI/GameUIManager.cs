@@ -109,6 +109,10 @@ public class GameUIManager : MonoBehaviour
     /// Forefit button
     /// </summary>
     [SerializeField] private GameObject forefitButton;
+    /// <summary>
+    /// Debt notification
+    /// </summary>
+    [SerializeField] private GameObject debtNotification;
 
     [Header("Misc. Data")]
     /// <summary>
@@ -214,7 +218,8 @@ public class GameUIManager : MonoBehaviour
         this.pauseMenu.SetActive(currentUIState[2]);
         this.diceRollUI.SetActive(currentUIState[3]);
 
-        this.endTurnButton.SetActive(endable);
+        this.endTurnButton.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() >= 0);
+        this.debtNotification.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() < 0);
         this.forefitButton.SetActive(endable);
 
         if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
@@ -316,7 +321,10 @@ public class GameUIManager : MonoBehaviour
                 playerCardElements[i].SetActive(true);
                 playerCardElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
                 playerCardElements[i].transform.Find("Icon").GetComponent<UnityEngine.UI.Image>().sprite = GameController.instance.counters[i].icon;
-                playerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = $"�{GameController.instance.counters[i].portfolio.GetCashBalance()}";
+
+                int balance = GameController.instance.counters[i].portfolio.GetCashBalance();
+                string label = $"{(balance < 0 ? "-" : "")}£{Mathf.Abs(balance)}";
+                playerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = label;
             }
 
         }
@@ -361,7 +369,9 @@ public class GameUIManager : MonoBehaviour
         i = 1;
         foreach (CounterController counterController in order)
         {
-            s += i.ToString() + (i == 1 ? "st" : (i == 2 ? "nd" : (i == 3 ? "rd" : "th"))) + " " + counterController.name + ": " + counterController.portfolio.TotalValue() + "\n";
+            int value = counterController.portfolio.TotalValue();
+            string score = $"{(value < 0 ? "-" : "")}£{Mathf.Abs(value)}";
+            s += i.ToString() + (i == 1 ? "st" : (i == 2 ? "nd" : (i == 3 ? "rd" : "th"))) + " " + counterController.name + ": " + score + "\n";
             i++;
         }
 

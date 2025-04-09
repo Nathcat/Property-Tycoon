@@ -123,7 +123,7 @@ public class GameController : MonoBehaviour
     {
         turnIndex = (turnIndex + 1) % counters.Length;
         
-        if (turnIndex == 0 && timeExpired) EndGame();
+        if (counters.Length == 1 || (turnIndex == 0 && timeExpired)) EndGame();
         else
         {
             GameUIManager.instance.UpdateUIForNewTurn(turnCounter);

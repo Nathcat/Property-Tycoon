@@ -9,16 +9,8 @@ public class Fine : Command
     {
         Cash fine = new Cash(int.Parse(args[0].value));
 
-        if (counterController.portfolio.GetCashBalance() >= fine.GetValue())
-        {
-            counterController.portfolio.RemoveCash(fine);
-            GameController.instance.freeParking.AddCash(fine);
-        }
-        else
-        {
-            // TODO Ask the player to sell their assets to meet the fine here
-            Debug.LogWarning(counterController.name + " is fined " + args[0].value + ", but they cannot afford it!");
-        }
+        counterController.portfolio.RemoveCash(fine);
+        GameController.instance.freeParking.AddCash(fine);
 
         Debug.Log(counterController.name + " is fined " + args[0].value);
 

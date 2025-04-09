@@ -51,15 +51,7 @@ public class StationRent : Command
             default: Debug.LogWarning("The owner of the incident station owns more than 4 stations, or no stations, this should be impossible!"); break;
         }
 
-        if (counterController.portfolio.GetCashBalance() >= rent)
-        {
-            station.owner.portfolio.AddAsset(counterController.portfolio.RemoveCash(new Cash(rent)));
-            Debug.Log(counterController.name + " pays " + rent + " in rent to " + station.owner.name + " for station " + station.name);
-        }
-        else
-        {
-            // TODO Here we should ask the player to sell their assets!
-            Debug.LogWarning("Incident player does not have enough money to pay rent!");
-        }
+        station.owner.portfolio.AddAsset(counterController.portfolio.RemoveCash(new Cash(rent)));
+        Debug.Log(counterController.name + " pays " + rent + " in rent to " + station.owner.name + " for station " + station.name);
     }
 }
