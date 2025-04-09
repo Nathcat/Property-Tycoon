@@ -155,7 +155,12 @@ public class AICounter : CounterController
     {
         AuctionManager auction = GameUIManager.instance.auctionManager;
         Property p = auction.targetProperty;
-        int percentage = GetPercentage(p.GetValue(), portfolio.GetCashBalance());
+        int percentage = 100;
+        if (portfolio.GetCashBalance() > 0)
+        {
+            percentage = GetPercentage(p.GetValue(), portfolio.GetCashBalance());
+        }
+
         if (percentage < 80)
         {
             int offset = Random.Range(-20, 20);
