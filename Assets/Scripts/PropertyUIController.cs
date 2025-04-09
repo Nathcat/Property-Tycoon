@@ -13,26 +13,41 @@ public class PropertyUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI propertyRentDescriptionUI;
     [SerializeField] private GameObject needsOwenership;
     [SerializeField] private TextMeshProUGUI mortgageButtonText;
-    private Property space;
+    [SerializeField] private GameObject propertyDetails;
+    private Property property;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        CameraController.onUpdateCamera.AddListener(GetPropertyDetails);
+        CameraController.onUpdateCamera.AddListener(updateCamera);
     }
 
-    public void GetPropertyDetails(CameraController camera)
+    public void updateCamera(CameraController camera)
     {
-        space = camera.property;
+        if (camera.space == null) return;
+        Space space = camera.space.space;
 
-        propertyNameUI.text = space.name;
-        propertyPriceUI.text = $"Value:\n£{space.cost}";
-        propertyColorUI.color = space.propertyGroup.GetColor();
-        propertyMortgageUI.text = $"Mortgage value: £{space.mortgageValue}";
-        mortgageButtonText.text = space.isMortgaged ? "Unmortgage" : "Mortgage";
-        propertyRentDescriptionUI.text = space.GetRentDescription();
-        if (space.owner == GameController.instance.turnCounter)
+        if (space is not Property)
+        {
+            propertyNameUI.text = space.name;
+            propertyColorUI.color = Color.gray;
+            propertyDetails.SetActive(false);
+        } else updatePropertyDetails(space as Property);
+    }
+
+    public void updatePropertyDetails(Property property)
+    {
+        this.property = property;
+        propertyDetails.SetActive(true);
+
+        propertyNameUI.text = property.name;
+        propertyPriceUI.text = $"Value:\n£{property.cost}";
+        propertyColorUI.color = property.propertyGroup.GetColor();
+        propertyMortgageUI.text = $"Mortgage value: £{property.mortgageValue}";
+        mortgageButtonText.text = property.isMortgaged ? "Unmortgage" : "Mortgage";
+        propertyRentDescriptionUI.text = property.GetRentDescription();
+        if (property.owner == GameController.instance.turnCounter)
         {
             needsOwenership.SetActive(true);
         }
@@ -41,9 +56,9 @@ public class PropertyUIController : MonoBehaviour
             needsOwenership.SetActive(false);
         }
 
-        if (camera.property is not Station && camera.property is not Utility)
+        if (property is not Station && property is not Utility)
         {
-            propertyHouseValueUI.text = $"Upgrade:\n£{space.upgradeCost}";
+            propertyHouseValueUI.text = $"Upgrade:\n£{property.upgradeCost}";
             propertyHouseValueUI.gameObject.SetActive(true);
         }
         else
@@ -52,35 +67,31 @@ public class PropertyUIController : MonoBehaviour
         }
     }
 
-    public void AddHouse()
+    public void addHouse()
     {
-        if (space.CanUpgrade())
-        {
-            space.Upgrade();
-        }
+        property.Upgrade();
+        updatePropertyDetails(property);
     }
-    public void DowngradeHouse()
+    public void downgradeHouse()
     {
-        if (space.CanDowngrade()) 
-        {
-            space.Downgrade();
-        }
+        property.Downgrade();
+        updatePropertyDetails(property);
     }
-    public void Mortgage() 
+    public void mortgage() 
     {
-        if (space.isMortgaged)
+        if (property.isMortgaged)
         {
-            space.UnMortgage();
+            property.UnMortgage();
         } else
         {
-            space.Mortgage();
+            property.Mortgage();
         }
+        
+        updatePropertyDetails(property);
     }
-    public void Sell() 
+    public void sell() 
     {
-        if (space.CanSell()) 
-        {
-            space.Sell();
-        }
+        property.Sell();
+        updatePropertyDetails(property);
     }
 }

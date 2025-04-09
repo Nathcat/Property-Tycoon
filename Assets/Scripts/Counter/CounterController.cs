@@ -216,6 +216,8 @@ public class CounterController : MonoBehaviour
                     }
                 }
             }
+
+            CameraController.instance.UpdateCamera(spaceController.gameObject);
         }
         else
         {

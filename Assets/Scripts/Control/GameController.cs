@@ -36,6 +36,9 @@ public class GameController : MonoBehaviour
     /// <summary> Array of <see cref="Space"/> objects the board consists of. </summary>
     public Space[] spaces { get { return board.spaces; } }
 
+    /// <summary> The number of spaces in the board. </summary>
+    public int boardLength { get { return spaces.Length; } }
+
     /// <summary>
     /// Get the jail space on the board
     /// </summary>

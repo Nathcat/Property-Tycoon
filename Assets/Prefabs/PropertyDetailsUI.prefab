@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1039142556063015417}
   - component: {fileID: 7046148341102162246}
   - component: {fileID: 6490962865662711175}
-  - component: {fileID: 1389506236496449712}
+  - component: {fileID: 5061680387695083151}
   m_Layer: 5
   m_Name: PropertyDetailsUI
   m_TagString: Untagged
@@ -103,18 +103,27 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!225 &1389506236496449712
-CanvasGroup:
+--- !u!114 &5061680387695083151
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 78121678833249948}
   m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a63da04866816974b8cc965d112250c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  propertyNameUI: {fileID: 1751066639433620488}
+  propertyColorUI: {fileID: 9001949601232957625}
+  propertyPriceUI: {fileID: 6997911646704320419}
+  propertyMortgageUI: {fileID: 413809282892566814}
+  propertyHouseValueUI: {fileID: 4689024170739446865}
+  propertyRentDescriptionUI: {fileID: 2272249085140052741}
+  needsOwenership: {fileID: 8957393537293728727}
+  mortgageButtonText: {fileID: 7025544707318118150}
+  propertyDetails: {fileID: 2547310219478424147}
 --- !u!1 &177793882271155735
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,9 +646,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5061680387695083151}
         m_TargetAssemblyTypeName: PropertyUIController, Scripts
-        m_MethodName: AddHouse
+        m_MethodName: addHouse
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1005,7 +1014,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9163997566794344877}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Property Details
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1425,9 +1434,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5061680387695083151}
         m_TargetAssemblyTypeName: PropertyUIController, Scripts
-        m_MethodName: Sell
+        m_MethodName: sell
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1692,9 +1701,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5061680387695083151}
         m_TargetAssemblyTypeName: PropertyUIController, Scripts
-        m_MethodName: Mortgage
+        m_MethodName: mortgage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2150,7 +2159,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 19.7
+  m_fontSize: 18
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2446,9 +2455,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5061680387695083151}
         m_TargetAssemblyTypeName: PropertyUIController, Scripts
-        m_MethodName: DowngradeHouse
+        m_MethodName: downgradeHouse
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
