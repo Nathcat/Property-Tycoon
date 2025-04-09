@@ -176,7 +176,7 @@ public class PropertyTest
         Assert.IsTrue(list[0].CanDowngrade());
         list[0].Downgrade();
         Assert.AreEqual(1, list[0].upgradeLevel);
-        Assert.AreEqual(counter.portfolio.GetCashBalance(), list[1].upgradeCost);
+        Assert.AreEqual(counter.portfolio.GetCashBalance(), list[1].upgradeCost + Portfolio.STARTING_CASH);
         Assert.IsTrue(list[1].CanDowngrade());
 
 

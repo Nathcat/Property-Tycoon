@@ -52,7 +52,7 @@ public class StationTest
             Debug.Log(victim.portfolio.GetCashBalance());
             //check if theres (i) less money in the victim
         }
-        Assert.AreEqual(625, victim.portfolio.GetCashBalance());  
+        Assert.AreEqual(625 + Portfolio.STARTING_CASH, victim.portfolio.GetCashBalance());  
     }
 
     [UnityTest]
@@ -91,6 +91,6 @@ public class StationTest
         property.Purchase(counter);
         victim.StartCoroutine(property.action.Run(victim));
         
-        Assert.AreEqual(975, victim.portfolio.GetCashBalance());
+        Assert.AreEqual(975 + Portfolio.STARTING_CASH, victim.portfolio.GetCashBalance());
     }
 }

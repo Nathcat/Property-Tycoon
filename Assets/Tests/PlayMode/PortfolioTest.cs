@@ -17,7 +17,7 @@ public class PortfolioTest
         GameController.instance.SetupCounters();
         CounterController counter = GameController.instance.turnCounter;
         counter.portfolio.AddAsset(new Cash(500));
-        Assert.AreEqual(counter.portfolio.GetCashBalance(), 500);
+        Assert.AreEqual(counter.portfolio.GetCashBalance(), 500 + Portfolio.STARTING_CASH);
     }
 
     [UnityTest]

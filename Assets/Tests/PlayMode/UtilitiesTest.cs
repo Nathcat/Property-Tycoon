@@ -43,7 +43,7 @@ public class UtilitiesTest
         property.Purchase(counter);
         victim.StartCoroutine(property.action.Run(victim));
 
-        Assert.AreEqual((1000 - (victim.lastRoll.dice1 + victim.lastRoll.dice2) * 4), victim.portfolio.GetCashBalance());
+        Assert.AreEqual((1000 - (victim.lastRoll.dice1 + victim.lastRoll.dice2) * 4) + Portfolio.STARTING_CASH, victim.portfolio.GetCashBalance());
     }
 
     [UnityTest]
@@ -90,6 +90,6 @@ public class UtilitiesTest
         int twoutilityrent = ((victim.lastRoll.dice1 + victim.lastRoll.dice2) * 10);
 
 
-        Assert.AreEqual((1000 - (oneutilityrent + twoutilityrent)), victim.portfolio.GetCashBalance());
+        Assert.AreEqual((1000 - (oneutilityrent + twoutilityrent)) + Portfolio.STARTING_CASH, victim.portfolio.GetCashBalance());
     }
 }
