@@ -134,6 +134,8 @@ public class HumanCounter : CounterController
                     }
                 }
             }
+
+            CameraController.instance.SetTarget(spaceController.gameObject);
         }
         else
         {
@@ -146,5 +148,7 @@ public class HumanCounter : CounterController
                 LeaveJail();
             }
         }
+
+        GameUIManager.instance.Endable();
     }
 }
