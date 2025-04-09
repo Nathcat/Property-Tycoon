@@ -109,6 +109,7 @@ public class AICounter : CounterController
                             p.Purchase(this);
                             Debug.Log(name + " has purchased " + p.name);
                             yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
+                            Debug.Log("balls");
                             Develop();
                             EndTurn();
 
@@ -116,8 +117,9 @@ public class AICounter : CounterController
                         else
                         {
                             yield return GameUIManager.instance.StartAuction();
-                            Debug.Log(p.name);
+                            Debug.Log("hey");
                             yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
+                            Debug.Log("balls");
                             Develop();
                             EndTurn();
                         }
@@ -125,18 +127,24 @@ public class AICounter : CounterController
                     else
                     {
                         yield return GameUIManager.instance.StartAuction();
+                        Debug.Log("hey");
                         yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
+                        Debug.Log("balls");
                         Develop();
                         EndTurn();
                     }
                 }
                 else
                 {
+                    Debug.Log("hey");
+                    Develop();
                     EndTurn();
                 }
             }
             else
             {
+                Debug.Log("hey");
+                Develop();
                 EndTurn();
             }
         }
@@ -227,6 +235,7 @@ public class AICounter : CounterController
     }
     public void Develop()
     {
+        Debug.Log("developing");
         List<Property> properties = portfolio.GetProperties();
         for (int i = 0; i == properties.Count - 1; i++)
         {
@@ -237,10 +246,13 @@ public class AICounter : CounterController
                 Debug.Log(this.name + "unmortgaged" + p.name);
                 p.UnMortgage();
             }
+            Debug.Log(p.CanUpgrade());
             if (p.CanUpgrade())
             {
                 int percentage = GetPercentage(p.upgradeCost, portfolio.GetCashBalance());
+                Debug.Log(percentage);
                 int chance = Random.Range(1, 100);
+                Debug.Log(chance);
                 if (percentage < 25 && chance > 50)
                 {
                     Debug.Log(this.name + "upgraded" + p.name);
@@ -252,6 +264,7 @@ public class AICounter : CounterController
     }
     public void EndTurn() 
     {
+        Debug.Log("how?");
         while (portfolio.GetCashBalance() < 0) 
         {
             bool sold = false;
