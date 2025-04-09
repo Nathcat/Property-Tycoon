@@ -195,6 +195,7 @@ public class GameUIManager : MonoBehaviour
         this.helpAndRulesMenu.SetActive(currentUIState[1]);
         this.pauseMenu.SetActive(currentUIState[2]);
         this.diceRollUI.SetActive(currentUIState[3]);
+        this.auctionMenu.SetActive(waitingForAuction);
 
         if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
 
@@ -482,9 +483,11 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     public void FinishAuction()
     {
-        this.auctionMenu.SetActive(false);
+        Debug.Log("Finished auction");
         SetUIState(true, false, false, false);
         waitingForAuction = false;
+        Debug.Log("Unset waiting for auction");
+        //this.auctionMenu.SetActive(false);
     }
 
     /// <summary>

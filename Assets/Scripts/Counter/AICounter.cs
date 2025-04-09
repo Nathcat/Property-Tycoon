@@ -114,7 +114,9 @@ public class AICounter : CounterController
                         }
                         else
                         {
+                            Debug.Log("Can purchase, but starting auction");
                             yield return GameUIManager.instance.StartAuction();
+                            Debug.Log("Finished auction and now if it doesn't do this prompt I will kill myself");
                             yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
                             Develop();
                             GameController.instance.NextTurn();
@@ -122,17 +124,21 @@ public class AICounter : CounterController
                     }
                     else
                     {
+                        Debug.Log("Cannot purchase, but starting auction");
                         yield return GameUIManager.instance.StartAuction();
+                        Debug.Log("Finished auction and now if it doesn't do this prompt I will kill myself");
                         yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
                         Develop();
                         GameController.instance.NextTurn();
                     }
                 }
-                else if (!canPurchaseProperties) {
+                else
+                {
                     GameController.instance.NextTurn();
                 }
             }
-            else {
+            else
+            {
                 GameController.instance.NextTurn();
             }
         }
@@ -145,6 +151,10 @@ public class AICounter : CounterController
             {
                 Debug.Log(name + " has done their time in jail!");
                 LeaveJail();
+                GameController.instance.NextTurn();
+            }
+            else
+            {
                 GameController.instance.NextTurn();
             }
         }
