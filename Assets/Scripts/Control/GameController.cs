@@ -155,7 +155,16 @@ public class GameController : MonoBehaviour
         ShufflePotluck();
         //shuffle the opportunity knocks cards
         ShuffleOpportunity();
+
+        foreach (Card c in luckDeck) {
+            Debug.Log(c);
+        }
+
+        foreach (Card c in opportunityDeck) {
+            Debug.Log(c);
+        }
     }
+
     /// <summary>
     /// sets up the timer if the game is in 'abridged' mode.
     /// </summary>
@@ -167,84 +176,32 @@ public class GameController : MonoBehaviour
         }
     }
 
-    /// <summary> Shuffle the given card deck using a BogoSort style method. </summary>
-    /// <param name="cards"> The card deck to be shuffled. </param>
-    public void Shuffle(Queue<Card> input)
-    {
-        int random;
-        Card temp = null;
-        Card[] cards = new Card[input.Count];
-        for (int i = 0; i < input.Count; i++)
-        {
-            cards[i] = input.Dequeue();
-        }
-
-        for (int i = 0; i < cards.Length; i++)
-        {
-            random = Random.Range(i, cards.Length);
-            temp = cards[random];
-            cards[random] = cards[i];
-            cards[i] = temp;
-        }
-
-        for (int i = 0; i < cards.Length; i++)
-        {
-            input.Enqueue(cards[i]);
-        }
-
-    }
-
     /// <summary> Shuffle the opportunitydeck card deck using a BogoSort style method. </summary>
     public void ShuffleOpportunity()
     {
-        int random;
-        Card temp = null;
-        Card[] cards = new Card[opportunityDeck.Count];
-        for (int i = 0; i < opportunityDeck.Count; i++)
-        {
-            cards[i] = opportunityDeck.Dequeue();
-        }
-
-        for (int i = 0; i < cards.Length; i++)
-        {
-            random = Random.Range(i, cards.Length);
-            temp = cards[random];
-            cards[random] = cards[i];
-            cards[i] = temp;
-        }
-
-        for (int i = 0; i < cards.Length; i++)
-        {
-            opportunityDeck.Enqueue(cards[i]);
-        }
-
+        opportunityDeck = new Queue<Card>(ShuffleList<Card>(opportunityDeck.ToList<Card>()));
     }
-
 
     /// <summary> Shuffle the potluck deck card deck using a BogoSort style method. </summary>
     public void ShufflePotluck()
     {
-        int random;
-        Card temp = null;
-        Card[] cards = new Card[luckDeck.Count];
-        for (int i = 0; i < luckDeck.Count; i++)
-        {
-            cards[i] = luckDeck.Dequeue();
+        luckDeck = new Queue<Card>(ShuffleList<Card>(luckDeck.ToList<Card>()));
+    }
+
+    /// <summary>
+    /// Shuffle the provided list, returning the result. The provided list is not affected
+    /// </summary>
+    /// <typeparam name="T">The type stored by the list</typeparam>
+    /// <param name="l">The list to shuffle</param>
+    /// <returns>The shuffled list</returns>
+    public List<T> ShuffleList<T>(List<T> l) {
+        List<T> res = new List<T>();
+
+        while (res.Count != l.Count) {
+            res.Add(l[Random.Range(0, l.Count)]);
         }
 
-        for (int i = 0; i < cards.Length; i++)
-        {
-            random = Random.Range(i, cards.Length);
-            temp = cards[random];
-            cards[random] = cards[i];
-            cards[i] = temp;
-        }
-
-        for (int i = 0; i < cards.Length; i++)
-        {
-            luckDeck.Enqueue(cards[i]);
-        }
-
+        return res;
     }
 
 
@@ -257,6 +214,7 @@ public class GameController : MonoBehaviour
         if (luckDeck.Count != 0)
         {
             Card removed = luckDeck.Dequeue();
+            StartCoroutine(removed.action.Run(counterController));
             DiscardLuck(removed);
             return removed;
         }
@@ -277,7 +235,7 @@ public class GameController : MonoBehaviour
         if (opportunityDeck.Count != 0)
         {
             Card removed = opportunityDeck.Dequeue();
-
+            StartCoroutine(removed.action.Run(counterController));
             DiscardOpportunity(removed);
             return removed;
 
