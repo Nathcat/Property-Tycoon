@@ -78,6 +78,8 @@ public class CameraController : MonoBehaviour
         do
         {
             i = (i + direction) % GameController.instance.boardLength;
+            if (i < 0) i = GameController.instance.boardLength + i;
+
             space = GameController.instance.spaceControllers[i];
         } while (space.space is not Property);
 
