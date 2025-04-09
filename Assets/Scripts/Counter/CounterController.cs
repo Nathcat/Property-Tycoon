@@ -19,6 +19,14 @@ public class CounterController : MonoBehaviour
     /// <summary> The index of this counter in <see cref="GameController.counters"/>. </summary>
     public int order { get { return System.Array.IndexOf(GameController.instance.counters, this); } }
 
+    /// <summary> The space that the counter is currently on </summary>
+    public Space space { get { return GameController.instance.spaces[position]; } }
+
+    /// <summary> The icon used to represent this counter </summary>
+    public Sprite icon { get { return counterIcons[order]; } }
+
+    /// <summary> The space controller that the counter is currently on </summary>
+    public SpaceController spaceController { get { return GameController.instance.spaceControllers[position]; } }
     /// <summary>
     /// The name of the game object this controller is attached to
     /// </summary>
@@ -28,6 +36,9 @@ public class CounterController : MonoBehaviour
     /// Stores the models of each counter
     /// </summary>
     [SerializeField] private GameObject[] models;
+
+    /// <summary> Icons to represent each counter </summary>
+    public Sprite[] counterIcons;
 
     /// <summary>
     /// Stores the current counter's model
@@ -212,6 +223,8 @@ public class CounterController : MonoBehaviour
                     }
                 }
             }
+
+            CameraController.instance.SetTarget(spaceController.gameObject);
         }
         else
         {
