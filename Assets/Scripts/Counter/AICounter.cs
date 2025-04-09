@@ -82,6 +82,7 @@ public class AICounter : CounterController
                 Debug.Log(name + " has rolled 3 doubles, going to jail!");
                 yield return GoToJail();
                 GameController.instance.NextTurn();
+                yield break;
             }
 
             int oldPos = position;

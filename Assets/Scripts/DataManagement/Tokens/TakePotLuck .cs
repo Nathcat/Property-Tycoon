@@ -7,7 +7,7 @@ public class TakePotLuck : Command
     
     override public IEnumerator Execute(CounterController counterController, Argument[] args) {
         Debug.Log(counterController.name + " plays a Pot Luck card.");
-        GameController.instance.DrawLuck(counterController);
+        yield return GameController.instance.DrawLuck(counterController).action.Run(counterController);
 
         yield break;
     }
