@@ -15,6 +15,7 @@ public class PropertyUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI mortgageButtonText;
     [SerializeField] private GameObject propertyDetails;
     [SerializeField] private GameObject root;
+    [SerializeField] private Image propertyOwner;
     private Property property;
 
 
@@ -38,6 +39,7 @@ public class PropertyUIController : MonoBehaviour
         {
             propertyNameUI.text = space.name;
             propertyColorUI.color = Color.gray;
+            propertyOwner.gameObject.SetActive(false);
             propertyDetails.SetActive(false);
         } else updatePropertyDetails(space as Property);
     }
@@ -53,6 +55,8 @@ public class PropertyUIController : MonoBehaviour
         propertyMortgageUI.text = $"Mortgage value: £{property.mortgageValue}";
         mortgageButtonText.text = property.isMortgaged ? "Unmortgage" : "Mortgage";
         propertyRentDescriptionUI.text = property.GetRentDescription();
+        propertyOwner.gameObject.SetActive(property.isOwned);
+        if (property.isOwned) propertyOwner.sprite = property.owner.icon;
         if (property.owner == GameController.instance.turnCounter)
         {
             needsOwenership.SetActive(true);
