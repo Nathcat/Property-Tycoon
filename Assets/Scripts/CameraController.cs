@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,6 +15,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private int sideOffset = 1;
     [SerializeField] private int heightOffset = 2;
     [SerializeField] private int lengthOffset = 5;
+    [SerializeField] private float moveLerp = 1f;
+    [SerializeField] private float rotateLerp = 2f;
     /// <summary> The currently targeted space, null if the target is not a space. </summary>
     public SpaceController space { get; private set; }
 
@@ -27,8 +30,16 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameController.instance.onNextTurn.AddListener(c => UpdateCamera(c.gameObject));
-        GameController.instance.onCounterMove.AddListener(c => UpdateCamera(c.gameObject));
+        GameController.instance.onNextTurn.AddListener(c => SetTarget(c.gameObject));
+        GameController.instance.onCounterMove.AddListener(c => SetTarget(c.gameObject));
+    }
+
+    private void Update()
+    {
+        transform.position = Vector3.Lerp(transform.position, GetDestination(), Time.deltaTime * moveLerp);
+
+        Quaternion rotation = Quaternion.LookRotation(target.transform.position - transform.position);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * rotateLerp);
     }
 
     //a method to move the camera to a target gameobject
@@ -36,38 +47,36 @@ public class CameraController : MonoBehaviour
     /// The UpdateCamera fuction is called with a target to make it face the specified target with an angle that coressponds to its place on the board
     /// </summary>
     /// <param name="target">what you want the camera to focus on</param>
-    public void UpdateCamera(GameObject target)
+    public void SetTarget(GameObject target)
     {
         this.target = target;
         if (target.TryGetComponent(out SpaceController space)) this.space = space;
         else this.space = null;
 
-        //sets the position to that of the target
-        this.transform.position = target.transform.position;
-
-        //checks where the target is and then moves it based on if its in the N,S,E or W
-        if (this.transform.position.x > boardRadius)
-        {
-            this.transform.position = new Vector3(target.transform.position.x + sideOffset, target.transform.position.y + heightOffset, target.transform.position.z + lengthOffset);
-            this.transform.LookAt(target.transform.position);
-        }
-        else if (this.transform.position.z < -boardRadius)
-        {
-            this.transform.position = new Vector3(target.transform.position.x + lengthOffset, target.transform.position.y + heightOffset, target.transform.position.z - sideOffset);
-            this.transform.LookAt(target.transform.position);
-        }
-        else if (this.transform.position.x < -boardRadius)
-        {
-            this.transform.position = new Vector3(target.transform.position.x - sideOffset, target.transform.position.y + heightOffset, target.transform.position.z - lengthOffset);
-            this.transform.LookAt(target.transform.position);
-        }
-        else if (this.transform.position.z > boardRadius)
-        {
-            this.transform.position = new Vector3(target.transform.position.x - lengthOffset, target.transform.position.y + heightOffset, target.transform.position.z + sideOffset);
-            this.transform.LookAt(target.transform.position);
-        }
-
         onUpdateCamera.Invoke(this);
+    }
+
+    public Vector3 GetDestination()
+    {
+        //checks where the target is and then moves it based on if its in the N,S,E or W
+        if (target.transform.position.x > boardRadius)
+        {
+            return new Vector3(target.transform.position.x + sideOffset, target.transform.position.y + heightOffset, target.transform.position.z + lengthOffset);
+        }
+        else if (target.transform.position.z < -boardRadius)
+        {
+            return new Vector3(target.transform.position.x + lengthOffset, target.transform.position.y + heightOffset, target.transform.position.z - sideOffset);
+        }
+        else if (target.transform.position.x < -boardRadius)
+        {
+            return new Vector3(target.transform.position.x - sideOffset, target.transform.position.y + heightOffset, target.transform.position.z - lengthOffset);
+        }
+        else if (target.transform.position.z > boardRadius)
+        {
+            return new Vector3(target.transform.position.x - lengthOffset, target.transform.position.y + heightOffset, target.transform.position.z + sideOffset);
+        }
+
+        throw new NotImplementedException();
     }
 
     private GameObject nextProperty(int start, int direction)
@@ -87,11 +96,11 @@ public class CameraController : MonoBehaviour
     }
 
     public void nextProperty() {
-        UpdateCamera(nextProperty(space.position, 1));
+        SetTarget(nextProperty(space.position, 1));
     }
 
     public void lastProperty()
     {
-        UpdateCamera(nextProperty(space.position, -1));
+        SetTarget(nextProperty(space.position, -1));
     }
 }
