@@ -195,7 +195,7 @@ public class GameUIManager : MonoBehaviour
         this.helpAndRulesMenu.SetActive(currentUIState[1]);
         this.pauseMenu.SetActive(currentUIState[2]);
         this.diceRollUI.SetActive(currentUIState[3]);
-        this.auctionMenu.SetActive(waitingForAuction);
+        //this.auctionMenu.SetActive(waitingForAuction);
 
         if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
 
@@ -461,8 +461,8 @@ public class GameUIManager : MonoBehaviour
         SetUIState(false, false, false, false);
         previousUIState = new bool[4];
         this.auctionMenu.SetActive(true);
-        this.auctionMenu.GetComponent<AuctionManager>().StartAuction(GameController.instance.spaces[GameController.instance.turnCounter.position] as Property);
         waitingForAuction = true;
+        this.auctionMenu.GetComponent<AuctionManager>().StartAuction(GameController.instance.spaces[GameController.instance.turnCounter.position] as Property);
         return new WaitForAuction();
     }
 
@@ -483,12 +483,9 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     public void FinishAuction()
     {
-        Debug.Log("Finished auction");
         SetUIState(true, false, false, false);
-        waitingForAuction = false;
-        Debug.Log(waitingForAuction);
-        Debug.Log("Unset waiting for auction");
-        //this.auctionMenu.SetActive(false);
+        instance.waitingForAuction = false;
+        this.auctionMenu.SetActive(false);
     }
 
     /// <summary>
@@ -521,7 +518,8 @@ public class GameUIManager : MonoBehaviour
         diceRollUI.transform.GetChild(3).gameObject.SetActive(GameController.instance.turnCounter.isControllable);
 
         if (GameController.instance.turnCounter.isControllable) yield return new WaitForDiceRoll();
-        else {
+        else
+        {
             yield return new WaitForSeconds(diceRollTimeout);
             CompleteDiceRoll();
         }
@@ -564,7 +562,8 @@ public class GameUIManager : MonoBehaviour
     /// Modify the UI for a particular counter type
     /// </summary>
     /// <param name="isControllable">Whether or not this counter is controllable. If false, UI elements which allow the user to control the turn will be disabled</param>
-    private void ModifyUIForCounterType(bool isControllable) {
+    private void ModifyUIForCounterType(bool isControllable)
+    {
         mainUI.transform.Find("EndTurnButton").gameObject.SetActive(isControllable);
     }
 }
