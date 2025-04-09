@@ -142,6 +142,7 @@ public class CounterController : MonoBehaviour
     /// </summary>
     public IEnumerator PlayTurn()
     {
+        
         if (!isInJail)
         {
             // Roll three times
@@ -223,6 +224,7 @@ public class CounterController : MonoBehaviour
                 LeaveJail();
             }
         }
+        
     }
 
     /// <summary>

@@ -92,6 +92,14 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject GetOutOfJailFree;
     /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField] private GameObject AIThinkingUI;
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField] private TextMeshProUGUI AIThinkingText;
+    /// <summary>
     /// Called on completion of a yes / no prompt
     /// </summary>
     private System.Action<bool> onYesNoResponse;
@@ -179,6 +187,7 @@ public class GameUIManager : MonoBehaviour
         this.auctionMenu.SetActive(false);
         this.cardUI.SetActive(false);
         this.gameEndScreen.SetActive(false);
+        this.AIThinkingUI.SetActive(false);
         this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
         this.helpAndRulesMenu.transform.GetChild(1).gameObject.SetActive(false);
     }
@@ -533,6 +542,26 @@ public class GameUIManager : MonoBehaviour
         this.yesNoPromptUI.SetActive(false);
         this.auctionMenu.SetActive(false);
         gameEndScreen.transform.Find("winner").GetComponent<TextMeshProUGUI>().text = winner + " with a score of " + score;
+    }
+
+    /// <summary>
+    /// Clears all UI and shows which AI is thinking
+    /// </summary>
+    /// <param name="name"> name of the AI. </param>
+    public void AIStartThinking(string name)
+    {
+        AIThinkingUI.gameObject.SetActive(true);
+        SetUIState(false, false, false, false);
+        AIThinkingText.text = name + " is thinking...";
+    }
+
+    /// <summary>
+    /// Clears the AI thinking screen and restores previous UI
+    /// </summary>
+    public void AIStopThinking()
+    {
+        RevertToPreviousUIState();
+        AIThinkingUI.gameObject.SetActive(false);
     }
 
     /// <summary>
