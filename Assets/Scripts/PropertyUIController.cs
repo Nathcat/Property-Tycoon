@@ -111,13 +111,13 @@ public class PropertyUIController : MonoBehaviour
             property.UnMortgage();
 
             updatePropertyDetails(property);
-            GameUIManager.instance.OkPrompt($"{property.name} has been unmortgaged");
+            GameUIManager.instance.OkPrompt($"{property.name} has been unmortgaged for £{property.mortgageValue}");
         } else
         {
             property.Mortgage();
             
             updatePropertyDetails(property);
-            GameUIManager.instance.OkPrompt($"{property.name} has been mortgaged");
+            GameUIManager.instance.OkPrompt($"{property.name} has been mortgaged for £{property.mortgageValue}");
         }
         
     }
