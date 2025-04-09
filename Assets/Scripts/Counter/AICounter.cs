@@ -178,24 +178,28 @@ public class AICounter : CounterController
                 auction.Bid100();
                 yield return null;
             }
+            Debug.Log("didnt bid 100");
             chance = Random.Range(1, 100);
             if (bid >= 50 && chance > 70)
             {
                 auction.Bid50();
                 yield return null;
             }
+            Debug.Log("didnt bid 50");
             chance = Random.Range(1, 100);
             if (bid >= 20 && chance > 70)
             {
                 auction.Bid20();
                 yield return null;
             }
+            Debug.Log("didnt bid 20");
             chance = Random.Range(1, 100);
             if (bid >= 10 && chance > 70)
             {
                 auction.Bid10();
                 yield return null;
             }
+            Debug.Log("didnt bid 10");
             chance = Random.Range(1, 100);
             if (bid >= 5 && chance > 70)
             {
@@ -204,11 +208,14 @@ public class AICounter : CounterController
                 yield return null;
 
             }
+            Debug.Log("didnt bid 5");
             if (bid >= 1 && chance > 70)
             {
                 auction.Bid1();
+                Debug.Log("bid 1");
                 yield return null;
             }
+            Debug.Log("How the fuck did you get here");
 
         }
         else
