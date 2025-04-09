@@ -146,7 +146,7 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     private class WaitForAuction : CustomYieldInstruction
     {
-        public override bool keepWaiting { get { Debug.Log("i hace set waiting to false "); return instance.waitingForAuction; } }
+        public override bool keepWaiting { get { return instance.waitingForAuction; } }
     }
 
     /// <summary>
@@ -487,6 +487,7 @@ public class GameUIManager : MonoBehaviour
         Debug.Log("Finished auction");
         SetUIState(true, false, false, false);
         waitingForAuction = false;
+        Debug.Log(waitingForAuction);
         Debug.Log("Unset waiting for auction");
         //this.auctionMenu.SetActive(false);
     }
