@@ -9,14 +9,14 @@ public class AuctionManager : MonoBehaviour
     /// <summary>
     /// The value of each player's current bid
     /// </summary>
-    private Cash[] bids;
+    public Cash[] bids { get; private set; }
     private bool[] withdrawn;
     /// <summary>
     /// The index of the player whose turn it currently is
     /// </summary>
-    private int currentTurn = 0;
+    [HideInInspector] public int currentTurn { get; private set; } = 0;
     private CounterController currentPlayer { get { return GameController.instance.counters[currentTurn]; } }
-    private Property targetProperty;
+    public Property targetProperty;
 
     private bool auctioning = false;
     private class WaitForComplete : CustomYieldInstruction
@@ -111,7 +111,6 @@ public class AuctionManager : MonoBehaviour
                 GameUIManager.instance.FinishAuction();
             }
             else {
-                // TODO Ok prompt?
                 Debug.Log(currentPlayer.name + " cannot afford their bid!");
                 StartCoroutine(RestartAuction());
             }
@@ -164,6 +163,10 @@ public class AuctionManager : MonoBehaviour
 
         // Display the player's current balance
         transform.Find("CurrentBalance").GetComponent<TextMeshProUGUI>().text = "You have £" + GameController.instance.counters[currentTurn].portfolio.GetCashBalance();
+
+        // Enable / disable the bid buttons depending on whether or not the counter is controllable
+        transform.Find("BidButtons").gameObject.SetActive(currentPlayer.isControllable);
+        StartCoroutine(currentPlayer.DoAuctionTurn());
     }
 
     /// <summary>

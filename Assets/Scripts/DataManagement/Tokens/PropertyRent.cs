@@ -36,16 +36,8 @@ public class PropertyRent : Command
 
         int rent = int.Parse(args[property.upgradeLevel].value);
 
-        if (counterController.portfolio.GetCashBalance() >= rent)
-        {
-            property.owner.portfolio.AddAsset(counterController.portfolio.RemoveCash(new Cash(rent)));
-            Debug.Log(counterController.name + " pays " + rent + " to " + property.owner.name + " in rent for property " + property.name);
-        }
-        else
-        {
-            // TODO Here we should ask the player to sell their assets!
-            Debug.LogWarning("Incident player does not have enough money to pay rent!");
-        }
+        property.owner.portfolio.AddAsset(counterController.portfolio.RemoveCash(new Cash(rent)));
+        Debug.Log(counterController.name + " pays " + rent + " to " + property.owner.name + " in rent for property " + property.name);
 
         yield break;
     }
