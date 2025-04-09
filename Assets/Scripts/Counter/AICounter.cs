@@ -209,7 +209,7 @@ public class AICounter : CounterController
 
             }
             Debug.Log("didnt bid 5");
-            if (bid >= 1 && chance > 70)
+            if (bid >= 1)
             {
                 auction.Bid1();
                 Debug.Log("bid 1");
