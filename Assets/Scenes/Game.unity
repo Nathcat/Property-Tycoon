@@ -1023,6 +1023,8 @@ MonoBehaviour:
   gameOver: 0
   counterPrefab: {fileID: 4270496797090321259, guid: 4d375960808148349a83838f1020f159,
     type: 3}
+  aiCounterPrefab: {fileID: 2538546149042706151, guid: 25083ea9197482b40acccddd8280ce56,
+    type: 3}
 --- !u!4 &1169012768
 Transform:
   m_ObjectHideFlags: 0
@@ -1806,8 +1808,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 3561c50199714cc439403a25b5d87a62, type: 3}
   - {fileID: 2800000, guid: b8209a3fc2a1f224790a9311beee6479, type: 3}
   - {fileID: 2800000, guid: ba04418ffa235f042b29314117198e35, type: 3}
-  previousUIState: 01000000
-  currentUIState: 01000000
+  diceRollTimeout: 0.5
 --- !u!1001 &2035618204
 PrefabInstance:
   m_ObjectHideFlags: 0

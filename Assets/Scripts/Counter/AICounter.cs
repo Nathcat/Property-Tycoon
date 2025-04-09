@@ -128,6 +128,12 @@ public class AICounter : CounterController
                         GameController.instance.NextTurn();
                     }
                 }
+                else if (!canPurchaseProperties) {
+                    GameController.instance.NextTurn();
+                }
+            }
+            else {
+                GameController.instance.NextTurn();
             }
         }
         else
