@@ -36,6 +36,9 @@ public class GameController : MonoBehaviour
     /// <summary> Array of <see cref="Space"/> objects the board consists of. </summary>
     public Space[] spaces { get { return board.spaces; } }
 
+    /// <summary> The number of spaces in the board. </summary>
+    public int boardLength { get { return spaces.Length; } }
+
     /// <summary>
     /// Get the jail space on the board
     /// </summary>
@@ -46,7 +49,7 @@ public class GameController : MonoBehaviour
 
     /// <summary> The <see cref="CounterController"/> who currently has their turn. </summary>
     public CounterController turnCounter { get { return counters[turnIndex]; } }
-
+    
     /// <summary> Array of <see cref="SpaceController"/> objects the board consists of. </summary>
     public SpaceController[] spaceControllers { get; private set; }
 
@@ -71,16 +74,16 @@ public class GameController : MonoBehaviour
     [HideInInspector] public Cash freeParking = new Cash(0);
 
     /// <summary> A flag to show whether the game is abridged or not. </summary>
-    public bool abridged { get; private set; }
+    [HideInInspector] public bool abridged { get; private set; }
 
     /// <summary> A float to hold the remaining time (in seconds), if playing the abridged version of the game. </summary>
-    public float timeRemaining { get; private set; }
+    [HideInInspector] public float timeRemaining { get; private set; }
 
     /// <summary> a flag to show if the timer has expired </summary>
-    public bool timeExpired { get  { return timeRemaining <= 0; } }
+    [HideInInspector] public bool timeExpired { get  { return timeRemaining <= 0; } }
 
     /// <summary> a flag to show when the game has ended. </summary>
-    public bool gameOver;
+    [HideInInspector] public bool gameOver;
 
     [Header("Testing")]
     [SerializeField] private CounterController counterPrefab;
@@ -126,7 +129,7 @@ public class GameController : MonoBehaviour
             StartCoroutine(turnCounter.PlayTurn());
             onNextTurn.Invoke(turnCounter);
         }
-        turnCounter.PlayTurn();
+
         onNextTurn.Invoke(turnCounter);
     }
 
@@ -379,5 +382,23 @@ public class GameController : MonoBehaviour
         }
         GameUIManager.instance.EndGame(counters[winner].name , totals[winner]);
 
+    }
+
+    /// <summary>
+    /// Removes the <paramref name="counter"/> from the game.
+    /// </summary>
+    /// <param name="counter">The <see cref="CounterController"/> to remove</param>
+    public void forefit(CounterController counter)
+    {
+        bool current = turnIndex == counter.order;
+
+        counters = counters.RemoveAt(counter.order);
+        counter.portfolio.forefit();
+        counter.gameObject.SetActive(false);
+
+        Debug.Log(counters);
+
+        if (turnIndex > 0) turnIndex--;
+        if (current) NextTurn();
     }
 }

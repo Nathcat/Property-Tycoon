@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Codice.Client.BaseCommands;
 using TMPro;
 using Unity.Collections.LowLevel.Unsafe;
@@ -91,17 +92,28 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// Popup to show the player has a get out of jail free card available
     /// </summary>
-    [SerializeField] private GameObject GetOutOfJailFree;
+    [SerializeField] private GameObject getOutOfJailFree;
+    /// <summary>
+    /// Popup containing details of the currently selected property
+    /// </summary>
+    [SerializeField] private GameObject propertyDetails;
+    /// <summary>
+    /// End turn button
+    /// </summary>
+    [SerializeField] private GameObject endTurnButton;
     /// <summary>
     /// Called on completion of a yes / no prompt
     /// </summary>
     private System.Action<bool> onYesNoResponse;
+    /// <summary>
+    /// Forefit button
+    /// </summary>
+    [SerializeField] private GameObject forefitButton;
 
     [Header("Misc. Data")]
     /// <summary>
     /// The player cards displayed in the main UI
     /// </summary>
-
     [SerializeField] private GameObject[] playerCardElements;
     /// <summary>
     /// The textures used to display the dice roll
@@ -124,6 +136,11 @@ public class GameUIManager : MonoBehaviour
     [HideInInspector] public RollData lastDiceRoll { get; private set; } = null;
     [HideInInspector] public bool waitingForDiceRollComplete { get; private set; } = false;
     [HideInInspector] public bool waitingForAuction { get; private set; } = false;
+
+    /// <summary>
+    /// <see cref="true"/> if the current turn can be ended.
+    /// </summary>
+    private bool endable;
 
     /// <summary>
     /// Used to wait for a yes / no prompt to complete
@@ -181,7 +198,7 @@ public class GameUIManager : MonoBehaviour
         this.gameTimer.SetActive(false);
         this.yesNoPromptUI.SetActive(false);
         this.okPromptUI.SetActive(false);
-        this.GetOutOfJailFree.SetActive(false);
+        this.getOutOfJailFree.SetActive(false);
         this.auctionMenu.SetActive(false);
         this.cardUI.SetActive(false);
         this.gameEndScreen.SetActive(false);
@@ -192,21 +209,24 @@ public class GameUIManager : MonoBehaviour
     void Update()
     {
         this.mainUI.SetActive(currentUIState[0]);
+        this.propertyDetails.SetActive(currentUIState[0]);
         this.helpAndRulesMenu.SetActive(currentUIState[1]);
         this.pauseMenu.SetActive(currentUIState[2]);
         this.diceRollUI.SetActive(currentUIState[3]);
-        //this.auctionMenu.SetActive(waitingForAuction);
+
+        this.endTurnButton.SetActive(endable);
+        this.forefitButton.SetActive(endable);
 
         if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
 
         bool GOJF = GameController.instance.turnCounter.getOutOfJailFree;
         if (GOJF)
         {
-            this.GetOutOfJailFree.SetActive(true);
+            this.getOutOfJailFree.SetActive(true);
         }
         else
         {
-            this.GetOutOfJailFree.SetActive(false);
+            this.getOutOfJailFree.SetActive(false);
         }
     }
     /// <summary>
@@ -266,9 +286,18 @@ public class GameUIManager : MonoBehaviour
     /// <param name="currentTurn">The player whose turn it is now</param>
     public void UpdateUIForNewTurn(CounterController currentTurn)
     {
+        endable = false;
         SetUIState(true, false, false, false);
-        UpdateAllPlayerCardData();
         SetCurrentTurnLabel(currentTurn);
+        updatePlayers();
+    }
+
+    /// <summary>
+    /// Updates the UI for all the players
+    /// </summary>
+    public void updatePlayers()
+    {
+        UpdateAllPlayerCardData();
         UpdateLeaderboard();
         ModifyUIForCounterType(currentTurn.isControllable);
     }
@@ -278,10 +307,19 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     private void UpdateAllPlayerCardData()
     {
-        for (int i = 0; i < GameController.instance.counters.Length; i++)
+        for (int i = 0; i < playerCardElements.Length; i++)
         {
-            playerCardElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
-            playerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].portfolio.GetCashBalance().ToString();
+            if (i >= GameController.instance.counters.Length)
+            {
+                playerCardElements[i].SetActive(false);
+            } else
+            {
+                playerCardElements[i].SetActive(true);
+                playerCardElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
+                playerCardElements[i].transform.Find("Icon").GetComponent<UnityEngine.UI.Image>().sprite = GameController.instance.counters[i].icon;
+                playerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = $"�{GameController.instance.counters[i].portfolio.GetCashBalance()}";
+            }
+
         }
     }
 
@@ -292,6 +330,7 @@ public class GameUIManager : MonoBehaviour
     private void SetCurrentTurnLabel(CounterController counterController)
     {
         mainUI.transform.Find("CurrentTurn").GetChild(0).GetComponent<TextMeshProUGUI>().text = counterController.name + "'s turn";
+        mainUI.transform.Find("CurrentTurn").GetChild(1).GetComponent<UnityEngine.UI.Image>().sprite = counterController.icon;
 
     }
 
@@ -510,7 +549,7 @@ public class GameUIManager : MonoBehaviour
     public IEnumerator RollDice()
     {
         waitingForDiceRollComplete = true;
-        SetUIState(false, false, false, true);
+        SetUIState(true, false, false, true);
         lastDiceRoll = DoDiceRoll();
         diceRollUI.transform.GetChild(0).GetComponent<RawImage>().texture = diceTextures[lastDiceRoll.dice1 - 1];
         diceRollUI.transform.GetChild(1).GetComponent<RawImage>().texture = diceTextures[lastDiceRoll.dice2 - 1];
@@ -566,5 +605,21 @@ public class GameUIManager : MonoBehaviour
     private void ModifyUIForCounterType(bool isControllable)
     {
         mainUI.transform.Find("EndTurnButton").gameObject.SetActive(isControllable);
+    }
+
+    /// <summary>
+    /// When bankrupt clicked
+    /// </summary>
+    public void ForefitClicked()
+    {
+        GameController.instance.forefit(GameController.instance.turnCounter);
+    }
+
+    /// <summary>
+    /// Allows the turn to be ended.
+    /// </summary>
+    public void Endable()
+    {
+        endable = true;
     }
 }

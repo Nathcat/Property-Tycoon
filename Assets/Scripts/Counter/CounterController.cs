@@ -14,6 +14,14 @@ public abstract class CounterController : MonoBehaviour
     /// <summary> The index of this counter in <see cref="GameController.counters"/>. </summary>
     public int order { get { return System.Array.IndexOf(GameController.instance.counters, this); } }
 
+    /// <summary> The space that the counter is currently on </summary>
+    public Space space { get { return GameController.instance.spaces[position]; } }
+
+    /// <summary> The icon used to represent this counter </summary>
+    public Sprite icon { get; private set; }
+
+    /// <summary> The space controller that the counter is currently on </summary>
+    public SpaceController spaceController { get { return GameController.instance.spaceControllers[position]; } }
     /// <summary>
     /// The name of the game object this controller is attached to
     /// </summary>
@@ -23,6 +31,9 @@ public abstract class CounterController : MonoBehaviour
     /// Stores the models of each counter
     /// </summary>
     [SerializeField] protected GameObject[] models;
+
+    /// <summary> Icons to represent each counter </summary>
+    public Sprite[] counterIcons;
 
     /// <summary>
     /// Stores the current counter's model
@@ -68,6 +79,7 @@ public abstract class CounterController : MonoBehaviour
             Destroy(currentModel);
         }
         currentModel = models[modelNum];
+        icon = counterIcons[modelNum];
         Instantiate(currentModel, transform);
     }
 
@@ -102,7 +114,7 @@ public abstract class CounterController : MonoBehaviour
     /// <summary>
     /// Move this counter to the space specified by <paramref name="space"/>
     /// </summary>
-    /// <param name="space">The space to move to</param>
+    /// <param name="space">The index of the space to move to</param>
     public void MoveAbsolute(int space)
     {
         position = space % GameController.instance.spaces.Length;

@@ -6,6 +6,8 @@ using System.Collections.Generic;
 /// </summary>
 public class Portfolio
 {
+    public const int STARTING_CASH = 1500;
+
     /// <param name="cashBalance"> A Cash object used to hold the current cash owned by the counter.</param> 
     private Cash cashBalance;
     /// <param name="properties"> A List of Property objects used to hold the properties owned by the counter.</param> 
@@ -16,7 +18,7 @@ public class Portfolio
     /// </summary>
     public Portfolio()
     {
-        cashBalance = new Cash(1500);
+        cashBalance = new Cash(STARTING_CASH);
         properties = new List<Property>();
     }
 
@@ -51,6 +53,8 @@ public class Portfolio
             properties.Add((Property)newAsset);
         }
 
+        GameUIManager.instance.updatePlayers();
+
     }
     /// <summary>
     /// Removes a given value in cash from the portfolio.
@@ -60,8 +64,8 @@ public class Portfolio
     public Cash RemoveCash(Cash cashOut)
     {
         cashBalance.RemoveCash(cashOut);
-        // should this return the amount removed from the portfolio, or the amount remaining in the portfolio?? currently returning the amount removed
-        return (cashOut);
+        GameUIManager.instance.updatePlayers();
+        return cashOut;
     }
     /// <summary>
     /// Removes a given property from the portfolio.
@@ -72,6 +76,7 @@ public class Portfolio
     public int RemoveProperty(Property propertyOut)
     {
         properties.Remove(propertyOut);
+        GameUIManager.instance.updatePlayers();
         return (propertyOut.GetValue());
     }
     /// <summary>
@@ -89,5 +94,16 @@ public class Portfolio
     public List<Property> GetProperties()
     {
         return properties;
+    }
+
+    /// <summary>
+    /// Forefit all properties in this portfolio.
+    /// </summary>
+    public void forefit()
+    {
+        foreach (Property property in properties)
+        {
+            property.forefit();
+        }
     }
 }
