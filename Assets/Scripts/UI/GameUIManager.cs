@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Codice.Client.BaseCommands;
 using TMPro;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Mathematics;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -54,9 +55,14 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject yesNoPromptUI;
     /// <summary>
+    /// The Ok prompt UI
+    /// </summary>
+    [SerializeField] private GameObject okPromptUI;
+    /// <summary>
     /// Menu controlling the auction process
     /// </summary>
     [SerializeField] private GameObject auctionMenu;
+    [HideInInspector] public AuctionManager auctionManager { get { return auctionMenu.GetComponent<AuctionManager>(); } }
     /// <summary>
     /// UI for displaying cards
     /// </summary>
@@ -92,7 +98,7 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// The player cards displayed in the main UI
     /// </summary>
-    
+
     [SerializeField] private GameObject[] playerCardElements;
     /// <summary>
     /// The textures used to display the dice roll
@@ -111,6 +117,7 @@ public class GameUIManager : MonoBehaviour
 
     [HideInInspector] public RollData lastDiceRoll { get; private set; } = null;
     [HideInInspector] public bool waitingForDiceRollComplete { get; private set; } = false;
+    [HideInInspector] public bool waitingForAuction { get; private set; } = false;
 
     /// <summary>
     /// Used to wait for a yes / no prompt to complete
@@ -126,6 +133,14 @@ public class GameUIManager : MonoBehaviour
     private class WaitForDiceRoll : CustomYieldInstruction
     {
         public override bool keepWaiting { get { return instance.waitingForDiceRollComplete; } }
+    }
+
+    /// <summary>
+    /// Used to wait for an auction to complete
+    /// </summary>
+    private class WaitForAuction : CustomYieldInstruction
+    {
+        public override bool keepWaiting { get { return instance.waitingForAuction; } }
     }
 
     /// <summary>
@@ -159,6 +174,7 @@ public class GameUIManager : MonoBehaviour
         SetUIState(true, false, false, false);
         this.gameTimer.SetActive(false);
         this.yesNoPromptUI.SetActive(false);
+        this.okPromptUI.SetActive(false);
         this.GetOutOfJailFree.SetActive(false);
         this.auctionMenu.SetActive(false);
         this.cardUI.SetActive(false);
@@ -202,9 +218,11 @@ public class GameUIManager : MonoBehaviour
     /// <param name="inputTimer"></param>
     public void UpdateTimer(float inputTimer)
     {
-        if (inputTimer <= 0) {
+        if (inputTimer <= 0)
+        {
             gameTimerText.text = "Last Round";
-        } else
+        }
+        else
         {
             float hours = Mathf.FloorToInt(inputTimer / 3600);
             float mins = Mathf.FloorToInt(inputTimer / 60);
@@ -219,7 +237,7 @@ public class GameUIManager : MonoBehaviour
                 {
                     gameTimerText.text = hours + ":0" + mins + ":" + seconds;
                 }
-            
+
             }
             else
             {
@@ -266,7 +284,7 @@ public class GameUIManager : MonoBehaviour
     private void SetCurrentTurnLabel(CounterController counterController)
     {
         mainUI.transform.Find("CurrentTurn").GetChild(0).GetComponent<TextMeshProUGUI>().text = counterController.name + "'s turn";
-        
+
     }
 
     /// <summary>
@@ -369,7 +387,7 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     /// <param name="prompt">The prompt message to display to the user</param>
     /// <param name="onResponse">The callback to execute once the user has replied</param>
-    public CustomYieldInstruction YesNoPrompt(string prompt)
+    public IEnumerator YesNoPrompt(string prompt)
     {
         promptState = new PromptState(true, false);
         SetUIState(true, false, false, false);
@@ -402,15 +420,42 @@ public class GameUIManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Create a prompt with a simple Ok prompt.
+    /// </summary>
+    /// <param name="prompt"></param>
+    /// <returns></returns>
+    public IEnumerator OkPrompt(string prompt)
+    {
+        promptState = new PromptState(true, false);
+        SetUIState(false, false, false, false);
+        this.okPromptUI.transform.Find("Prompt").GetComponent<TextMeshProUGUI>().text = prompt;
+        this.okPromptUI.SetActive(true);
+
+        return new WaitForPromptReply();
+    }
+
+    /// <summary>
+    /// End an OK prompt
+    /// </summary>
+    public void EndOkPrompt()
+    {
+        promptState = new PromptState(false, false);
+        this.okPromptUI.SetActive(false);
+        RevertToPreviousUIState();
+    }
+
+    /// <summary>
     /// Start an auction
     /// </summary>
-    public void StartAuction()
+    public IEnumerator StartAuction()
     {
         Debug.Log("Starting auction.");
         SetUIState(false, false, false, false);
         previousUIState = new bool[4];
         this.auctionMenu.SetActive(true);
         this.auctionMenu.GetComponent<AuctionManager>().StartAuction(GameController.instance.spaces[GameController.instance.turnCounter.position] as Property);
+        waitingForAuction = true;
+        yield return new WaitForAuction();
     }
 
     public void ShowCard(string type, Card input)
@@ -432,6 +477,7 @@ public class GameUIManager : MonoBehaviour
     {
         this.auctionMenu.SetActive(false);
         SetUIState(true, false, false, false);
+        waitingForAuction = false;
     }
 
     /// <summary>
@@ -467,7 +513,8 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// Complete a dice roll
     /// </summary>
-    public void CompleteDiceRoll() {
+    public void CompleteDiceRoll()
+    {
         SetUIState(true, false, false, false);
         waitingForDiceRollComplete = false;
     }
