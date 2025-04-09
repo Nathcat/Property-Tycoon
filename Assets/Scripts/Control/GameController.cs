@@ -94,6 +94,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        /*
         SetupBoard();
         SetupCards();
         abridged = true;
@@ -110,11 +111,28 @@ public class GameController : MonoBehaviour
         
         turnIndex = -1;
         NextTurn();
+        */
     }
 
-    public void StartGame(string[] names, bool abridged,)
+    public void StartGame(string[] names, bool isAbridged, int time, string directory)
     {
-
+        SetupBoard();
+        SetupCards();
+        abridged = isAbridged;
+        if (abridged)
+        {
+            timeRemaining = time;
+            SetupTimer();
+        }
+        CounterController[] counterControllers = new CounterController[6];
+        for (int i = 0; i < counterControllers.Length; i++)
+        {
+            counterControllers[i] = Instantiate(counterPrefab);
+            counterControllers[i].gameObject.name = names[i];
+        }
+        SetupCounters(counterControllers);
+        turnIndex = -1;
+        NextTurn();
     }
 
 

@@ -148,12 +148,7 @@ public class GameUIManager : MonoBehaviour
     private string Min;
     private string Sec;
 
-
-
-
-
-
-
+    private bool gameStarted;
 
 
     /// <summary>
@@ -214,11 +209,27 @@ public class GameUIManager : MonoBehaviour
 
     void Start()
     {
+        gameStarted = false;
         instance = this;
-        SetUpUI.SetActive(true);
-        
+        this.SetUpUI.SetActive(true);
+        SetUIState(false, false, false, false);
+        this.gameTimer.SetActive(false);
+        this.yesNoPromptUI.SetActive(false);
+        this.okPromptUI.SetActive(false);
+        this.GetOutOfJailFree.SetActive(false);
+        this.auctionMenu.SetActive(false);
+        this.cardUI.SetActive(false);
+        this.gameEndScreen.SetActive(false);
 
 
+
+        this.pauseMenu.SetActive(false);
+        this.mainUI.SetActive(false);
+        this.helpAndRulesMenu.SetActive(false);
+        this.diceRollUI.SetActive(false);
+        Debug.Log("gamestarted = " + gameStarted);
+
+        /*
         // Disable all but the main UI
         SetUIState(true, false, false, false);
         this.gameTimer.SetActive(false);
@@ -230,25 +241,29 @@ public class GameUIManager : MonoBehaviour
         this.gameEndScreen.SetActive(false);
         this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
         this.helpAndRulesMenu.transform.GetChild(1).gameObject.SetActive(false);
+        */
     }
 
     void Update()
     {
-        this.mainUI.SetActive(currentUIState[0]);
-        this.helpAndRulesMenu.SetActive(currentUIState[1]);
-        this.pauseMenu.SetActive(currentUIState[2]);
-        this.diceRollUI.SetActive(currentUIState[3]);
-
-        if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
-
-        bool GOJF = GameController.instance.turnCounter.getOutOfJailFree;
-        if (GOJF)
+        if (gameStarted)
         {
-            this.GetOutOfJailFree.SetActive(true);
-        }
-        else
-        {
-            this.GetOutOfJailFree.SetActive(false);
+            this.mainUI.SetActive(currentUIState[0]);
+            this.helpAndRulesMenu.SetActive(currentUIState[1]);
+            this.pauseMenu.SetActive(currentUIState[2]);
+            this.diceRollUI.SetActive(currentUIState[3]);
+
+            if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
+
+            bool GOJF = GameController.instance.turnCounter.getOutOfJailFree;
+            if (GOJF)
+            {
+                this.GetOutOfJailFree.SetActive(true);
+            }
+            else
+            {
+                this.GetOutOfJailFree.SetActive(false);
+            }
         }
     }
     /// <summary>
@@ -274,7 +289,7 @@ public class GameUIManager : MonoBehaviour
         else
         {
             float hours = Mathf.FloorToInt(inputTimer / 3600);
-            float mins = Mathf.FloorToInt(inputTimer / 60);
+            float mins = Mathf.FloorToInt((inputTimer / 60) % 3600);
             float seconds = Mathf.FloorToInt(inputTimer % 60);
             if (mins < 10)
             {
@@ -552,6 +567,7 @@ public class GameUIManager : MonoBehaviour
         waitingForDiceRollComplete = true;
         SetUIState(false, false, false, true);
         lastDiceRoll = DoDiceRoll();
+        Debug.Log("dicetextures:" + diceTextures.Length);
         diceRollUI.transform.GetChild(0).GetComponent<RawImage>().texture = diceTextures[lastDiceRoll.dice1 - 1];
         diceRollUI.transform.GetChild(1).GetComponent<RawImage>().texture = diceTextures[lastDiceRoll.dice2 - 1];
         diceRollUI.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = lastDiceRoll.dice1 + lastDiceRoll.dice2 + (lastDiceRoll.doubleRoll ? "\nDouble! Roll again!" : "");
@@ -595,8 +611,6 @@ public class GameUIManager : MonoBehaviour
     //----------Game Setup Menu(need to decide where we are putting this)----------
     public void SetupStart()
     {
-        
-        
         Debug.Log("logging");
         Player1Name = Player1NameInput.GetComponent<TMP_InputField>().text;
         Player2Name = Player2NameInput.GetComponent<TMP_InputField>().text;
@@ -615,7 +629,12 @@ public class GameUIManager : MonoBehaviour
         Player5Type = Player5TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
         Player6Type = Player6TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
         Gamemode = GamemodeInput.GetComponent<TMP_Dropdown>().value.ToString();
-        Debug.Log(Gamemode +":" + Hour + ":" + Min + ":" + Sec + ":" + CSV + ":");
+       
+
+
+        string[] playerNames = {Player1Name,Player2Name,Player3Name,Player4Name,Player5Name,Player6Name};
+        bool mode = (Gamemode.Equals("0"));
+        Debug.Log(mode + ":" + Hour + ":" + Min + ":" + Sec + ":" + CSV + ":");
         Debug.Log(Player1Name + ":" + Player1Type);
         Debug.Log(Player2Name + ":" + Player2Type);
         Debug.Log(Player3Name + ":" + Player3Type);
@@ -623,5 +642,26 @@ public class GameUIManager : MonoBehaviour
         Debug.Log(Player5Name + ":" + Player5Type);
         Debug.Log(Player6Name + ":" + Player6Type);
 
+        int time = 0;
+        if (mode)
+        {
+            time = (int.Parse(Hour) * 3600) + (int.Parse(Min) * 60) + int.Parse(Sec);
+        }
+        
+        
+        GameController.instance.StartGame(playerNames, mode, time, CSV);
+
+        // Disable all but the main UI
+        gameStarted = true;
+        this.SetUpUI.SetActive(false);
+        SetUIState(true, false, false, false);
+        this.yesNoPromptUI.SetActive(false);
+        this.okPromptUI.SetActive(false);
+        this.GetOutOfJailFree.SetActive(false);
+        this.auctionMenu.SetActive(false);
+        this.cardUI.SetActive(false);
+        this.gameEndScreen.SetActive(false);
+        this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
+        this.helpAndRulesMenu.transform.GetChild(1).gameObject.SetActive(false);
     }
 }

@@ -44,6 +44,7 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        /*
         Scene = SceneManager.GetActiveScene();
         CurrentScene = Scene.name;
         if (Scene.name == "MainMenu")
@@ -72,6 +73,7 @@ public class UIManager : MonoBehaviour
                 d.SetActive(false);
             }
         }
+        */
     }
 
     // Update is called once per frame
