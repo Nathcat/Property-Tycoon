@@ -254,7 +254,7 @@ public class GameController : MonoBehaviour
         if (luckDeck.Count != 0)
         {
             Card removed = luckDeck.Dequeue();
-            removed.action.Run(counterController);
+            StartCoroutine(removed.action.Run(counterController));
             DiscardLuck(removed);
             return removed;
         }
@@ -276,7 +276,7 @@ public class GameController : MonoBehaviour
         {
             Card removed = opportunityDeck.Dequeue();
 
-            removed.action.Run(counterController);
+            StartCoroutine(removed.action.Run(counterController));
 
             DiscardOpportunity(removed);
             return removed;
