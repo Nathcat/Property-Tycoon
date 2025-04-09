@@ -105,6 +105,10 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject forefitButton;
     /// <summary>
+    /// Debt notification
+    /// </summary>
+    [SerializeField] private GameObject debtNotification;
+    /// <summary>
     /// The player cards displayed in the main UI
     /// </summary>
     [SerializeField] private GameObject[] playerCardElements;
@@ -204,7 +208,8 @@ public class GameUIManager : MonoBehaviour
         this.pauseMenu.SetActive(currentUIState[2]);
         this.diceRollUI.SetActive(currentUIState[3]);
 
-        this.endTurnButton.SetActive(endable);
+        this.endTurnButton.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() >= 0);
+        this.debtNotification.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() < 0);
         this.forefitButton.SetActive(endable);
 
         if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);

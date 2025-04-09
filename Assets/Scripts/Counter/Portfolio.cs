@@ -6,7 +6,7 @@ using System.Collections.Generic;
 /// </summary>
 public class Portfolio
 {
-    public const int STARTING_CASH = 1500;
+    public const int STARTING_CASH = 0;
 
     /// <param name="cashBalance"> A Cash object used to hold the current cash owned by the counter.</param> 
     private Cash cashBalance;
