@@ -299,7 +299,6 @@ public class GameUIManager : MonoBehaviour
     {
         UpdateAllPlayerCardData();
         UpdateLeaderboard();
-        ModifyUIForCounterType(currentTurn.isControllable);
     }
 
     /// <summary>

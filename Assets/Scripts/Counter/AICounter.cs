@@ -274,8 +274,8 @@ public class AICounter : CounterController
                 }
             }
             if (sold == false) 
-            { 
-                //bankrupt
+            {
+                GameController.instance.forefit(this);
             }
         }
         GameController.instance.NextTurn();

@@ -544,8 +544,8 @@ MonoBehaviour:
   sideOffset: 3
   heightOffset: 3
   lengthOffset: 2
-  moveLerp: 2
-  rotateLerp: 5
+  moveLerp: 1
+  rotateLerp: 2
 --- !u!1 &162970411 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2627427420131684192, guid: 49c80b1f13bed1445a42b3bbe87ad200,
