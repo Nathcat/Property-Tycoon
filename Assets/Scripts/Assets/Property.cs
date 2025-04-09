@@ -77,6 +77,7 @@ public class Property : Space, IAsset
     public Cash Mortgage()
     {
         Cash output = new Cash(mortgageValue);
+        owner.portfolio.AddAsset(output);
         isMortgaged = true;
         return output;
     }
@@ -86,7 +87,7 @@ public class Property : Space, IAsset
     /// </summary>
     /// <returns>True if the owner of this property can afford to unmortgage it, false otherwise</returns>
     public bool CanUnMortgage() {
-        return owner != null && owner.portfolio.GetCashBalance() >= (mortgageValue);
+        return isMortgaged && owner != null && owner.portfolio.GetCashBalance() >= (mortgageValue);
     }
 
     /// <summary>
@@ -96,9 +97,9 @@ public class Property : Space, IAsset
     {
         if (!CanUnMortgage()) return;
 
-        if (owner.portfolio.GetCashBalance() >= (mortgageValue)) {
-            isMortgaged = false;
+        if (owner.portfolio.GetCashBalance() >= mortgageValue) {
             owner.portfolio.RemoveCash(new Cash(mortgageValue));
+            isMortgaged = false;
         }
     }
 

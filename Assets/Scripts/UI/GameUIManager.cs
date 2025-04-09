@@ -90,15 +90,14 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// Popup to show the player has a get out of jail free card available
     /// </summary>
-    [SerializeField] private GameObject GetOutOfJailFree;
+    [SerializeField] private GameObject getOutOfJailFree;
     /// <summary>
-    /// Called on completion of a yes / no prompt
+    /// Popup containing details of the currently selected property
     /// </summary>
-    private System.Action<bool> onYesNoResponse;
+    [SerializeField] private GameObject propertyDetails;
     /// <summary>
     /// The player cards displayed in the main UI
     /// </summary>
-
     [SerializeField] private GameObject[] playerCardElements;
     /// <summary>
     /// The textures used to display the dice roll
@@ -175,7 +174,7 @@ public class GameUIManager : MonoBehaviour
         this.gameTimer.SetActive(false);
         this.yesNoPromptUI.SetActive(false);
         this.okPromptUI.SetActive(false);
-        this.GetOutOfJailFree.SetActive(false);
+        this.getOutOfJailFree.SetActive(false);
         this.auctionMenu.SetActive(false);
         this.cardUI.SetActive(false);
         this.gameEndScreen.SetActive(false);
@@ -186,6 +185,7 @@ public class GameUIManager : MonoBehaviour
     void Update()
     {
         this.mainUI.SetActive(currentUIState[0]);
+        this.propertyDetails.SetActive(currentUIState[0]);
         this.helpAndRulesMenu.SetActive(currentUIState[1]);
         this.pauseMenu.SetActive(currentUIState[2]);
         this.diceRollUI.SetActive(currentUIState[3]);
@@ -195,11 +195,11 @@ public class GameUIManager : MonoBehaviour
         bool GOJF = GameController.instance.turnCounter.getOutOfJailFree;
         if (GOJF)
         {
-            this.GetOutOfJailFree.SetActive(true);
+            this.getOutOfJailFree.SetActive(true);
         }
         else
         {
-            this.GetOutOfJailFree.SetActive(false);
+            this.getOutOfJailFree.SetActive(false);
         }
     }
     /// <summary>
@@ -260,8 +260,16 @@ public class GameUIManager : MonoBehaviour
     public void UpdateUIForNewTurn(CounterController currentTurn)
     {
         SetUIState(true, false, false, false);
-        UpdateAllPlayerCardData();
         SetCurrentTurnLabel(currentTurn);
+        updatePlayers();
+    }
+
+    /// <summary>
+    /// Updates the UI for all the players
+    /// </summary>
+    public void updatePlayers()
+    {
+        UpdateAllPlayerCardData();
         UpdateLeaderboard();
     }
 

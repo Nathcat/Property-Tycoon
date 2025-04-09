@@ -124,6 +124,7 @@ MonoBehaviour:
   needsOwenership: {fileID: 8957393537293728727}
   mortgageButtonText: {fileID: 7025544707318118150}
   propertyDetails: {fileID: 2547310219478424147}
+  root: {fileID: 6082618216983709376}
 --- !u!1 &177793882271155735
 GameObject:
   m_ObjectHideFlags: 0
@@ -1725,7 +1726,7 @@ GameObject:
   - component: {fileID: 559257959181004888}
   - component: {fileID: 4245639259124138387}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

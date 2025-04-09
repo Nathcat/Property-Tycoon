@@ -14,6 +14,7 @@ public class PropertyUIController : MonoBehaviour
     [SerializeField] private GameObject needsOwenership;
     [SerializeField] private TextMeshProUGUI mortgageButtonText;
     [SerializeField] private GameObject propertyDetails;
+    [SerializeField] private GameObject root;
     private Property property;
 
 
@@ -25,7 +26,12 @@ public class PropertyUIController : MonoBehaviour
 
     public void updateCamera(CameraController camera)
     {
-        if (camera.space == null) return;
+        if (camera.space == null)
+        {
+            root.SetActive(false);
+            return;
+        } else root.SetActive(true);
+
         Space space = camera.space.space;
 
         if (space is not Property)
@@ -69,29 +75,59 @@ public class PropertyUIController : MonoBehaviour
 
     public void addHouse()
     {
+        if (!property.CanUpgrade())
+        {
+            GameUIManager.instance.OkPrompt($"Cannot add a house to {property.name}");
+            return;
+        }
+
         property.Upgrade();
         updatePropertyDetails(property);
+        GameUIManager.instance.OkPrompt($"A house has been added to {property.name}");
     }
+
     public void downgradeHouse()
     {
+        if (!property.CanDowngrade())
+        {
+            GameUIManager.instance.OkPrompt($"Cannot remove a house from {property.name}");
+            return;
+        }
+
         property.Downgrade();
         updatePropertyDetails(property);
+        GameUIManager.instance.OkPrompt($"A house has been removed from {property.name}");
     }
+
     public void mortgage() 
     {
         if (property.isMortgaged)
         {
+            if (!property.CanUnMortgage()) GameUIManager.instance.OkPrompt($"Cannot unmortgage {property.name}");
             property.UnMortgage();
+
+            updatePropertyDetails(property);
+            GameUIManager.instance.OkPrompt($"{property.name} has been unmortgaged");
         } else
         {
             property.Mortgage();
+            
+            updatePropertyDetails(property);
+            GameUIManager.instance.OkPrompt($"{property.name} has been mortgaged");
         }
         
-        updatePropertyDetails(property);
     }
+
     public void sell() 
     {
+        if (!property.CanSell())
+        {
+            GameUIManager.instance.OkPrompt($"Cannot sell {property.name}");
+            return;
+        }
+
         property.Sell();
         updatePropertyDetails(property);
+        GameUIManager.instance.OkPrompt($"{property.name} has been sold");
     }
 }

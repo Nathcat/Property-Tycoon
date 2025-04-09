@@ -1304,6 +1304,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e23469b929cc5944bbe431a77e1282a4, type: 3}
+--- !u!1 &1295856367 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 78121678833249948, guid: e23469b929cc5944bbe431a77e1282a4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1295856366}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1370762108 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1911069735959178253, guid: b22dc07fb0431c246b51bce1a822966c,
@@ -1898,7 +1904,8 @@ MonoBehaviour:
   gameTimer: {fileID: 1902556588}
   gameEndScreen: {fileID: 1122920914}
   gameTimerText: {fileID: 1521783795}
-  GetOutOfJailFree: {fileID: 1691175716}
+  getOutOfJailFree: {fileID: 1691175716}
+  propertyDetails: {fileID: 1295856367}
   playerCardElements:
   - {fileID: 162970411}
   - {fileID: 1631078755}
