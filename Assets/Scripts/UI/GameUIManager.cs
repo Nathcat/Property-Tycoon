@@ -146,7 +146,7 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     private class WaitForAuction : CustomYieldInstruction
     {
-        public override bool keepWaiting { get { return instance.waitingForAuction; } }
+        public override bool keepWaiting { get { Debug.Log("i hace set waiting to false "); return instance.waitingForAuction; } }
     }
 
     /// <summary>
