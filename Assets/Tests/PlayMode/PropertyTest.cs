@@ -201,8 +201,48 @@ public class PropertyTest
         Assert.IsTrue(property.CanSell());
         property.Sell();
         Assert.IsFalse(property.isOwned);
-
-
     }
 
+    [UnityTest]
+    public IEnumerator RentTest()
+    {
+        SceneManager.LoadScene("Game");
+        yield return null;
+        GameController.instance.SetupBoard();
+        GameController.instance.SetupCounters();
+        CounterController counter = GameController.instance.turnCounter;
+        CounterController victim = GameController.instance.counters[1];
+
+        Space[] spaces = GameController.instance.spaces;
+        Property property = (Property)GameController.instance.groups[1].GetProperties()[1];
+
+        int value = property.GetValue();
+        victim.MoveAbsolute(property.position);
+        counter.portfolio.AddAsset(new Cash(property.GetValue()));
+        property.Purchase(counter);
+
+        counter.StartCoroutine(property.action.Run(victim));
+        Assert.IsTrue(victim.portfolio.GetCashBalance() < 1500);
+    }
+
+    [UnityTest]
+    public IEnumerator propertyValue()
+    {
+        SceneManager.LoadScene("Game");
+        yield return null;
+        GameController.instance.SetupBoard();
+        GameController.instance.SetupCounters();
+        CounterController counter = GameController.instance.turnCounter;
+        CounterController victim = GameController.instance.counters[1];
+
+        Space[] spaces = GameController.instance.spaces;
+        Property property = (Property)GameController.instance.groups[0].GetProperties()[0];
+
+        int value = property.GetValue();
+        counter.portfolio.AddAsset(new Cash(property.GetValue()));
+        property.Purchase(counter);
+
+
+        Assert.AreEqual(property.GetValue(), property.cost);
+    }
 }
