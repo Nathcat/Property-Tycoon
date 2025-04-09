@@ -231,7 +231,7 @@ public class AICounter : CounterController
 
     public int GetPercentage(int value1, int value2)
     {
-        return Mathf.RoundToInt((value2 / value1) * 100);
+        return Mathf.RoundToInt((value1 / value2) * 100);
     }
 
 }
