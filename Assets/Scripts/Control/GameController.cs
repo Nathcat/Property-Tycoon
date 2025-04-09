@@ -88,6 +88,7 @@ public class GameController : MonoBehaviour
     [Header("Testing")]
     [SerializeField] private CounterController counterPrefab;
     [SerializeField] private CounterController aiCounterPrefab;
+    public int numberOfPlayers = 6;
 
     private void Awake()
     {
@@ -105,7 +106,7 @@ public class GameController : MonoBehaviour
         SetupTimer();
         //SetupCounters(new CounterController[6].Select(_ => Instantiate(counterPrefab)).ToArray());
         // this seems to break, but bring back if needed :)
-        SetupCounters(new CounterController[6].Select((c, index) =>
+        SetupCounters(new CounterController[numberOfPlayers].Select((c, index) =>
         {
             CounterController o = Instantiate(aiCounterPrefab);
             o.gameObject.name = "Player " + index;
