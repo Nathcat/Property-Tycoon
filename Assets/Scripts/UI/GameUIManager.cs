@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Codice.Client.BaseCommands;
 using TMPro;
 using Unity.Collections.LowLevel.Unsafe;
@@ -96,6 +97,10 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject propertyDetails;
     /// <summary>
+    /// End turn button
+    /// </summary>
+    [SerializeField] private GameObject endTurnButton;
+    /// <summary>
     /// The player cards displayed in the main UI
     /// </summary>
     [SerializeField] private GameObject[] playerCardElements;
@@ -189,6 +194,8 @@ public class GameUIManager : MonoBehaviour
         this.helpAndRulesMenu.SetActive(currentUIState[1]);
         this.pauseMenu.SetActive(currentUIState[2]);
         this.diceRollUI.SetActive(currentUIState[3]);
+
+        this.endTurnButton.SetActive(currentUIState[0] && currentUIState.Count(s => s) == 1);
 
         if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
 
@@ -292,6 +299,7 @@ public class GameUIManager : MonoBehaviour
     private void SetCurrentTurnLabel(CounterController counterController)
     {
         mainUI.transform.Find("CurrentTurn").GetChild(0).GetComponent<TextMeshProUGUI>().text = counterController.name + "'s turn";
+        mainUI.transform.Find("CurrentTurn").GetChild(1).GetComponent<UnityEngine.UI.Image>().sprite = counterController.icon;
 
     }
 
@@ -509,7 +517,7 @@ public class GameUIManager : MonoBehaviour
     public IEnumerator RollDice()
     {
         waitingForDiceRollComplete = true;
-        SetUIState(false, false, false, true);
+        SetUIState(true, false, false, true);
         lastDiceRoll = DoDiceRoll();
         diceRollUI.transform.GetChild(0).GetComponent<RawImage>().texture = diceTextures[lastDiceRoll.dice1 - 1];
         diceRollUI.transform.GetChild(1).GetComponent<RawImage>().texture = diceTextures[lastDiceRoll.dice2 - 1];
