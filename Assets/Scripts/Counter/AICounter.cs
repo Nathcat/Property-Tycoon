@@ -166,54 +166,55 @@ public class AICounter : CounterController
         {
             percentage = GetPercentage(p.GetValue(), portfolio.GetCashBalance());
         }
-
+        Debug.Log(percentage);
         if (percentage < 80)
         {
             int offset = Random.Range(-20, 20);
             int bid = Mathf.RoundToInt(((p.GetValue() * 0.7f) + offset));
+            Debug.Log(bid);
             int chance = Random.Range(1, 100);
             if (bid >= 100 && chance > 70)
             {
                 auction.Bid100();
-                yield break;
+                yield return null;
             }
             chance = Random.Range(1, 100);
             if (bid >= 50 && chance > 70)
             {
                 auction.Bid50();
-                yield break;
+                yield return null;
             }
             chance = Random.Range(1, 100);
             if (bid >= 20 && chance > 70)
             {
                 auction.Bid20();
-                yield break;
+                yield return null;
             }
             chance = Random.Range(1, 100);
             if (bid >= 10 && chance > 70)
             {
                 auction.Bid10();
-                yield break;
+                yield return null;
             }
             chance = Random.Range(1, 100);
             if (bid >= 5 && chance > 70)
             {
 
                 auction.Bid5();
-                yield break;
+                yield return null;
 
             }
             if (bid >= 1 && chance > 70)
             {
                 auction.Bid1();
-                yield break;
+                yield return null;
             }
 
         }
         else
         {
             auction.Withdraw();
-            yield break;
+            yield return null;
         }
     }
     public void Develop()
