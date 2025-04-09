@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -24,6 +22,7 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         GameController.instance.onNextTurn.AddListener(c => UpdateCamera(c.gameObject));
+        GameController.instance.onCounterMove.AddListener(c => UpdateCamera(c.gameObject));
     }
 
     //a method to move the camera to a target gameobject
@@ -31,7 +30,7 @@ public class CameraController : MonoBehaviour
     /// The UpdateCamera fuction is called with a target to make it face the specified target with an angle that coressponds to its place on the board
     /// </summary>
     /// <param name="target">what you want the camera to focus on</param>
-    void UpdateCamera(GameObject target) 
+    void UpdateCamera(GameObject target)
     {
         lastPropertyIndex = property.position;
 

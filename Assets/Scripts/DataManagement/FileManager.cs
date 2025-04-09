@@ -1,65 +1,74 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.IO;
 using System;
-using System.Text.RegularExpressions;
-using JetBrains.Annotations;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using UnityEngine;
 
 /// <summary>
 /// Utility class which provides methods for reading the required setup files.
 /// </summary>
-public class FileManager 
+public class FileManager
 {
-    public class InvalidFormatException : Exception {
-        public InvalidFormatException(string m) : base(m) {}
+    public class InvalidFormatException : Exception
+    {
+        public InvalidFormatException(string m) : base(m) { }
     }
 
     /// <summary>
     /// Read the CSV file containing the data of cards
     /// </summary>
     /// <param name="path">Path to the CSV file</param>
-    public static CardData ReadCardCSV(string path) {
-        
+    public static CardData ReadCardCSV(string path)
+    {
+
         List<Card> potLuck = new List<Card>();
         List<Card> opportunityKnocks = new List<Card>();
 
         string[] content = new string[0];
 
-        using (StreamReader sr = new StreamReader(path)) {
+        using (StreamReader sr = new StreamReader(path))
+        {
             content = sr.ReadToEnd().Split("\n");
         }
 
         // Skip over the first line, since this specifies the headers of the CSV.
-        for (int i = 1; i < content.Length; i++) {
+        for (int i = 1; i < content.Length; i++)
+        {
             string[] elements = Regex.Split(content[i], ",\\s*", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500));
 
-            if (elements.Length != 3) {
+            if (elements.Length != 3)
+            {
                 throw new InvalidFormatException("Expected 3 items in row " + i + ", but got " + elements.Length);
             }
 
-            if (elements[1].ToLower() == "pot luck") {
-                try {
+            if (elements[1].ToLower() == "pot luck")
+            {
+                try
+                {
                     potLuck.Add(new Card(elements[0], new Action(elements[2])));
                 }
-                catch (Action.SyntaxError e) {
+                catch (Action.SyntaxError e)
+                {
                     Debug.LogError(e.ToString());
                 }
             }
-            else if (elements[1].ToLower() == "opportunity knocks") {
-                try {
+            else if (elements[1].ToLower() == "opportunity knocks")
+            {
+                try
+                {
                     opportunityKnocks.Add(new Card(elements[0], new Action(elements[2])));
                 }
-                catch (Action.SyntaxError e) {
+                catch (Action.SyntaxError e)
+                {
                     Debug.LogError(e.ToString());
                 }
-            }  
+            }
         }
         // add two queues of cards, one for opportunity knocks, and one for pot luck.
         Queue<Card> opportunity = new Queue<Card>();
         Queue<Card> luck = new Queue<Card>();
-        
+
         // enqueue cards into the relevant queues.
         for (int i = 0; i < opportunityKnocks.Count; i++)
         {
@@ -118,15 +127,11 @@ public class FileManager
                     g = new PropertyGroup(elements[2]);
                     groups[elements[2]] = g;
                 }
+            }
 
-                if (elements[3] != "null")
-                {
-                    cost = Int32.Parse(elements[3]);
-                }
-                else
-                {
-                    Debug.LogWarning("Property group was supplied without a cost for property " + elements[1]);
-                }
+            if (elements[3] != "null")
+            {
+                cost = Int32.Parse(elements[3]);
             }
 
             Space s;
@@ -169,13 +174,12 @@ public class FileManager
                 }
 
                 g.AddProperty(s as Property);
-
-                Debug.Log((s as Property).GetRentDescription());
             }
             else
             {
-                s = new Space(Int32.Parse(elements[0])-1, elements[1], new Action(elements[4]));
-                if (s.name.ToLower() == "jail") {
+                s = new Space(Int32.Parse(elements[0]) - 1, elements[1], new Action(elements[4]));
+                if (s.name.ToLower() == "jail")
+                {
                     jailSpace = s;
                 }
             }

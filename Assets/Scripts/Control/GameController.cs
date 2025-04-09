@@ -1,9 +1,9 @@
-using Unity.VisualScripting;
-using UnityEngine;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.Events;
-using System.Collections.Generic;
 
 /// <summary> Main script for controlling high level flow of the game. </summary>
 public class GameController : MonoBehaviour
@@ -25,6 +25,10 @@ public class GameController : MonoBehaviour
 
     /// <summary> Event invoked when the next turn is started. </summary>
     public readonly UnityEvent<CounterController> onNextTurn = new UnityEvent<CounterController>();
+    /// <summary>
+    /// Invoked when a counter is physically moved
+    /// </summary>
+    public readonly UnityEvent<CounterController> onCounterMove = new UnityEvent<CounterController>();
 
     /// <summary> List of all <see cref="CounterController"/> particiapting in the game. </summary>
     public CounterController[] counters { get; private set; }
@@ -66,9 +70,17 @@ public class GameController : MonoBehaviour
     /// </summary>
     [HideInInspector] public Cash freeParking = new Cash(0);
 
+    /// <summary> A flag to show whether the game is abridged or not. </summary>
+    public bool abridged { get; private set; }
 
+    /// <summary> A float to hold the remaining time (in seconds), if playing the abridged version of the game. </summary>
+    public float timeRemaining { get; private set; }
 
+    /// <summary> a flag to show if the timer has expired </summary>
+    public bool timeExpired { get  { return timeRemaining <= 0; } }
 
+    /// <summary> a flag to show when the game has ended. </summary>
+    public bool gameOver;
 
     [Header("Testing")]
     [SerializeField] private CounterController counterPrefab;
@@ -84,6 +96,11 @@ public class GameController : MonoBehaviour
     {
         SetupBoard();
         SetupCards();
+        abridged = true;
+        timeRemaining = (65);
+        SetupTimer();
+        //SetupCounters(new CounterController[6].Select(_ => Instantiate(counterPrefab)).ToArray());
+        // this seems to break, but bring back if needed :)
         SetupCounters(new CounterController[6].Select((c, index) =>
         {
             CounterController o = Instantiate(counterPrefab);
@@ -91,14 +108,23 @@ public class GameController : MonoBehaviour
             return o;
         }).ToArray());
         
-        turnCounter.PlayTurn();
+        turnIndex = -1;
+        NextTurn();
     }
+
 
     /// <summary> Increment <see cref="turnIndex"/> and start the next turn.</summary>
     public void NextTurn()
     {
         turnIndex = (turnIndex + 1) % counters.Length;
-        GameUIManager.instance.UpdateUIForNewTurn(turnCounter);
+        
+        if (turnIndex == 0 && timeExpired) EndGame();
+        else
+        {
+            GameUIManager.instance.UpdateUIForNewTurn(turnCounter);
+            StartCoroutine(turnCounter.PlayTurn());
+            onNextTurn.Invoke(turnCounter);
+        }
         turnCounter.PlayTurn();
         onNextTurn.Invoke(turnCounter);
     }
@@ -122,9 +148,19 @@ public class GameController : MonoBehaviour
         luckDeck = cards.luck;
         opportunityDeck = cards.opportunity;
         //shuffle the pot luck cards
-        //Shuffle(luckDeck);
+        ShufflePotluck();
         //shuffle the opportunity knocks cards
-        //Shuffle(opportunityDeck);
+        ShuffleOpportunity();
+    }
+    /// <summary>
+    /// sets up the timer if the game is in 'abridged' mode.
+    /// </summary>
+    public void SetupTimer()
+    {
+        if (abridged)
+        {
+            GameUIManager.instance.SetUpTimer(timeRemaining);
+        }
     }
 
     /// <summary> Shuffle the given card deck using a BogoSort style method. </summary>
@@ -154,63 +190,86 @@ public class GameController : MonoBehaviour
 
     }
 
-    /// <summary> Draw and run the action for the top card from the Pot Luck deck. </summary>
-    public void DrawLuck()
+    /// <summary> Shuffle the opportunitydeck card deck using a BogoSort style method. </summary>
+    public void ShuffleOpportunity()
     {
-        if (luckDeck.Count != 0)
+        int random;
+        Card temp = null;
+        Card[] cards = new Card[opportunityDeck.Count];
+        for (int i = 0; i < opportunityDeck.Count; i++)
         {
-            Card removed = luckDeck.Dequeue();
-            removed.action.Run(turnCounter);
-            DiscardLuck(removed);
+            cards[i] = opportunityDeck.Dequeue();
         }
-        else
+
+        for (int i = 0; i < cards.Length; i++)
         {
-            Debug.Log("Deck is empty");
+            random = Random.Range(i, cards.Length);
+            temp = cards[random];
+            cards[random] = cards[i];
+            cards[i] = temp;
         }
+
+        for (int i = 0; i < cards.Length; i++)
+        {
+            opportunityDeck.Enqueue(cards[i]);
+        }
+
     }
+
+
+    /// <summary> Shuffle the potluck deck card deck using a BogoSort style method. </summary>
+    public void ShufflePotluck()
+    {
+        int random;
+        Card temp = null;
+        Card[] cards = new Card[luckDeck.Count];
+        for (int i = 0; i < luckDeck.Count; i++)
+        {
+            cards[i] = luckDeck.Dequeue();
+        }
+
+        for (int i = 0; i < cards.Length; i++)
+        {
+            random = Random.Range(i, cards.Length);
+            temp = cards[random];
+            cards[random] = cards[i];
+            cards[i] = temp;
+        }
+
+        for (int i = 0; i < cards.Length; i++)
+        {
+            luckDeck.Enqueue(cards[i]);
+        }
+
+    }
+
 
     /// <summary>
     /// Draw and run the action for the top card of the Pot Luck deck on the given counter
     /// </summary>
     /// <param name="counterController">The counter to run the card action on</param>
-    public void DrawLuck(CounterController counterController)
+    public Card DrawLuck(CounterController counterController)
     {
         if (luckDeck.Count != 0)
         {
             Card removed = luckDeck.Dequeue();
             removed.action.Run(counterController);
             DiscardLuck(removed);
+            return removed;
         }
         else
         {
             Debug.Log("Deck is empty");
+            return null;
         }
     }
 
-    /// <summary>
-    /// Draw and run the action for the top card of the Opportunity Knocks deck
-    /// </summary>
-    public void DrawOpportunity()
-    {
-        if (opportunityDeck.Count != 0)
-        {
-            Card removed = opportunityDeck.Dequeue();
-
-            removed.action.Run(turnCounter);
-
-            DiscardOpportunity(removed);
-        }
-        else
-        {
-            Debug.Log("Deck is empty");
-        }
-    }
 
     /// <summary>
     /// Draw and run the action for the top card of the Opportunity Knocks deck on the given counter
     /// </summary>
     /// <param name="counterController">The counter to run the card action on</param>
-    public void DrawOpportunity(CounterController counterController)
+    public Card DrawOpportunity(CounterController counterController)
     {
         if (opportunityDeck.Count != 0)
         {
@@ -219,11 +278,34 @@ public class GameController : MonoBehaviour
             removed.action.Run(counterController);
 
             DiscardOpportunity(removed);
+            return removed;
+
         }
         else
         {
             Debug.Log("Deck is empty");
+            return null;
         }
+    }
+
+    ///#
+    /// <summary>
+    /// Peek at the next card to be drawn from the Pot Luck deck; For the purposes of testing, should not be called otherwise.
+    /// 
+    /// </summary>
+    /// <returns>the next card to be drawn from the Pot Luck deck</returns>
+    public Card PeekLuck()
+    {
+        return luckDeck.Peek();
+    }
+
+    /// <summary>
+    /// peek at the next card to be drawn from the Opportunity Knocks deck; For the purposes of testing, should not be called otherwise.
+    /// </summary>
+    /// <returns>the next card to be drawn from the Opportunity Knocks deck</returns>
+    public Card PeekOpportunity()
+    {
+        return opportunityDeck.Peek();
     }
 
     /// <summary> Place a card onto the bottom of the Pot Luck deck. </summary>
@@ -243,11 +325,58 @@ public class GameController : MonoBehaviour
 
 
     /// <summary>
-    /// Register <paramref name="counters"/> to the game.
+    /// Register counters to the game.
+    /// </summary>
+    public void SetupCounters()
+    {
+        this.counters = new CounterController[6].Select((c, index) =>
+        {
+            CounterController o = Instantiate(counterPrefab);
+            o.gameObject.name = "Player " + index;
+            return o;
+        }).ToArray();
+    }
+
+    /// <summary>
+    /// Register counters to the game.
     /// </summary>
     /// <param name="counters">An array of the counters in this game.</param>
     public void SetupCounters(CounterController[] counters)
     {
         this.counters = counters;
+        for (int i = 0; i < counters.Length; i++)
+        {
+            counters[i].PickModel(i);
+        }
+    }
+
+    public void Update()
+    {
+        if (abridged && !timeExpired) timeRemaining -= Time.deltaTime;
+
+    }
+
+    /// <summary>
+    /// Displays the winner of the game.
+    /// </summary>
+    public void EndGame()
+    {
+        int[] totals = new int[counters.Length];
+        Debug.Log("number of players: " + counters.Length);
+        for (int i = 0; i < counters.Length; i++)
+        {
+            totals[i] = counters[i].portfolio.TotalValue();
+            Debug.Log("player " + i + " got a score of " + totals[i]);
+        }
+        int winner = 0;
+        for (int i = 0; i < totals.Length; i++)
+        {
+            if (totals[i] > totals[winner])
+            {
+                winner = i;
+            }
+        }
+        GameUIManager.instance.EndGame(counters[winner].name , totals[winner]);
+
     }
 }
