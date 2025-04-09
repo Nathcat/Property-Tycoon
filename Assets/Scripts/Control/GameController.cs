@@ -128,7 +128,7 @@ public class GameController : MonoBehaviour
             StartCoroutine(turnCounter.PlayTurn());
             onNextTurn.Invoke(turnCounter);
         }
-        turnCounter.PlayTurn();
+
         onNextTurn.Invoke(turnCounter);
     }
 
@@ -381,5 +381,23 @@ public class GameController : MonoBehaviour
         }
         GameUIManager.instance.EndGame(counters[winner].name , totals[winner]);
 
+    }
+
+    /// <summary>
+    /// Removes the <paramref name="counter"/> from the game.
+    /// </summary>
+    /// <param name="counter">The <see cref="CounterController"/> to remove</param>
+    public void forefit(CounterController counter)
+    {
+        bool current = turnIndex == counter.order;
+
+        counters = counters.RemoveAt(counter.order);
+        counter.portfolio.forefit();
+        counter.gameObject.SetActive(false);
+
+        Debug.Log(counters);
+
+        if (turnIndex > 0) turnIndex--;
+        if (current) NextTurn();
     }
 }
