@@ -311,7 +311,10 @@ public class GameUIManager : MonoBehaviour
                 playerCardElements[i].SetActive(true);
                 playerCardElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
                 playerCardElements[i].transform.Find("Icon").GetComponent<UnityEngine.UI.Image>().sprite = GameController.instance.counters[i].icon;
-                playerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = $"£{GameController.instance.counters[i].portfolio.GetCashBalance()}";
+
+                int balance = GameController.instance.counters[i].portfolio.GetCashBalance();
+                string money = $"{(balance < 0 ? "-" : "")}£{Mathf.Abs(balance)}";
+                playerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = money;
             }
 
         }
@@ -356,7 +359,7 @@ public class GameUIManager : MonoBehaviour
         i = 1;
         foreach (CounterController counterController in order)
         {
-            s += i.ToString() + (i == 1 ? "st" : (i == 2 ? "nd" : (i == 3 ? "rd" : "th"))) + " " + counterController.name + ": " + counterController.portfolio.TotalValue() + "\n";
+            s += i.ToString() + (i == 1 ? "st" : (i == 2 ? "nd" : (i == 3 ? "rd" : "th"))) + " " + counterController.name + ": £" + counterController.portfolio.TotalValue() + "\n";
             i++;
         }
 
