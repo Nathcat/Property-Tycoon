@@ -179,45 +179,45 @@ public class AICounter : CounterController
             if (bid >= 100 && chance > 70)
             {
                 auction.Bid100();
-                yield return null;
+                yield break;
             }
             chance = Random.Range(1, 100);
             if (bid >= 50 && chance > 70)
             {
                 auction.Bid50();
-                yield return null;
+                yield break;
             }
             chance = Random.Range(1, 100);
             if (bid >= 20 && chance > 70)
             {
                 auction.Bid20();
-                yield return null;
+                yield break;
             }
             chance = Random.Range(1, 100);
             if (bid >= 10 && chance > 70)
             {
                 auction.Bid10();
-                yield return null;
+                yield break;
             }
             chance = Random.Range(1, 100);
             if (bid >= 5 && chance > 70)
             {
 
                 auction.Bid5();
-                yield return null;
+                yield break;
 
             }
             if (bid >= 1 && chance > 70)
             {
                 auction.Bid1();
-                yield return null;
+                yield break;
             }
 
         }
         else
         {
             auction.Withdraw();
-            yield return null;
+            yield break;
         }
     }
     public void Develop()
