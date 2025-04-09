@@ -107,6 +107,9 @@ public class GameUIManager : MonoBehaviour
     /// The textures used to display the dice roll
     /// </summary>
     [SerializeField] private Texture[] diceTextures;
+    [SerializeField] private float diceRollTimeout = 3f;
+
+
     /// <summary>
     /// The state the UI was in before its current state
     /// </summary>
@@ -511,7 +514,13 @@ public class GameUIManager : MonoBehaviour
         diceRollUI.transform.GetChild(1).GetComponent<RawImage>().texture = diceTextures[lastDiceRoll.dice2 - 1];
         diceRollUI.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = lastDiceRoll.dice1 + lastDiceRoll.dice2 + (lastDiceRoll.doubleRoll ? "\nDouble! Roll again!" : "");
 
-        yield return new WaitForDiceRoll();
+        diceRollUI.transform.GetChild(3).gameObject.SetActive(GameController.instance.turnCounter.isControllable);
+
+        if (GameController.instance.turnCounter.isControllable) yield return new WaitForDiceRoll();
+        else {
+            yield return new WaitForSeconds(diceRollTimeout);
+            CompleteDiceRoll();
+        }
     }
 
     /// <summary>
