@@ -313,7 +313,7 @@ public class GameUIManager : MonoBehaviour
                 playerCardElements[i].transform.Find("Icon").GetComponent<UnityEngine.UI.Image>().sprite = GameController.instance.counters[i].icon;
 
                 int balance = GameController.instance.counters[i].portfolio.GetCashBalance();
-                string label = $"{(balance < 0 ? "-" : "")}£{Mathf.Abs(balance)}";
+                string label = $"{(balance < 0 ? "-" : "")}Â£{Mathf.Abs(balance)}";
                 playerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = label;
             }
 
@@ -360,7 +360,7 @@ public class GameUIManager : MonoBehaviour
         foreach (CounterController counterController in order)
         {
             int value = counterController.portfolio.TotalValue();
-            string score = $"{(value < 0 ? "-" : "")}£{Mathf.Abs(value)}";
+            string score = $"{(value < 0 ? "-" : "")}Â£{Mathf.Abs(value)}";
             s += i.ToString() + (i == 1 ? "st" : (i == 2 ? "nd" : (i == 3 ? "rd" : "th"))) + " " + counterController.name + ": " + score + "\n";
             i++;
         }
