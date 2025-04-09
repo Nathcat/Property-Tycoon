@@ -111,7 +111,6 @@ public class AuctionManager : MonoBehaviour
                 GameUIManager.instance.FinishAuction();
             }
             else {
-                // TODO Ok prompt?
                 Debug.Log(currentPlayer.name + " cannot afford their bid!");
                 StartCoroutine(RestartAuction());
             }
@@ -164,6 +163,10 @@ public class AuctionManager : MonoBehaviour
 
         // Display the player's current balance
         transform.Find("CurrentBalance").GetComponent<TextMeshProUGUI>().text = "You have £" + GameController.instance.counters[currentTurn].portfolio.GetCashBalance();
+
+        // Enable / disable the bid buttons depending on whether or not the counter is controllable
+        transform.Find("BidButtons").gameObject.SetActive(currentPlayer.isControllable);
+        StartCoroutine(currentPlayer.DoAuctionTurn());
     }
 
     /// <summary>

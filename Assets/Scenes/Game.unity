@@ -1163,9 +1163,29 @@ PrefabInstance:
       objectReference: {fileID: 1935141333}
     - target: {fileID: 9130902659212952632, guid: 49c80b1f13bed1445a42b3bbe87ad200,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9130902659212952632, guid: 49c80b1f13bed1445a42b3bbe87ad200,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1169012767}
+    - target: {fileID: 9130902659212952632, guid: 49c80b1f13bed1445a42b3bbe87ad200,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NextTurn
+      objectReference: {fileID: 0}
+    - target: {fileID: 9130902659212952632, guid: 49c80b1f13bed1445a42b3bbe87ad200,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameController, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9130902659212952632, guid: 49c80b1f13bed1445a42b3bbe87ad200,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

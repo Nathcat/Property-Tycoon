@@ -32,8 +32,9 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// The active instance of this class
     /// </summary>
-    public static GameUIManager instance { get; private set; }
+    [HideInInspector] public static GameUIManager instance { get; private set; }
 
+    [Header("UI Root Elements")]
     /// <summary>
     /// This is the help and rules menu canvas
     /// </summary>
@@ -95,6 +96,8 @@ public class GameUIManager : MonoBehaviour
     /// Called on completion of a yes / no prompt
     /// </summary>
     private System.Action<bool> onYesNoResponse;
+
+    [Header("Misc. Data")]
     /// <summary>
     /// The player cards displayed in the main UI
     /// </summary>
@@ -107,8 +110,8 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// The state the UI was in before its current state
     /// </summary>
-    [SerializeField] private bool[] previousUIState = new bool[] { true, false, false, false };
-    [SerializeField] private bool[] currentUIState = new bool[] { true, false, false, false };
+    private bool[] previousUIState = new bool[] { true, false, false, false };
+    private bool[] currentUIState = new bool[] { true, false, false, false };
 
     /// <summary>
     /// The last response from a yes / no prompt
@@ -263,6 +266,7 @@ public class GameUIManager : MonoBehaviour
         UpdateAllPlayerCardData();
         SetCurrentTurnLabel(currentTurn);
         UpdateLeaderboard();
+        ModifyUIForCounterType(currentTurn.isControllable);
     }
 
     /// <summary>
@@ -541,5 +545,13 @@ public class GameUIManager : MonoBehaviour
     public void EndMenuClicked()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    /// <summary>
+    /// Modify the UI for a particular counter type
+    /// </summary>
+    /// <param name="isControllable">Whether or not this counter is controllable. If false, UI elements which allow the user to control the turn will be disabled</param>
+    private void ModifyUIForCounterType(bool isControllable) {
+        mainUI.transform.Find("EndTurnButton").gameObject.SetActive(isControllable);
     }
 }

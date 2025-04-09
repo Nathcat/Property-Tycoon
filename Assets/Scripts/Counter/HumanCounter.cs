@@ -10,6 +10,7 @@ using UnityEngine.UIElements;
 /// </summary>
 public class HumanCounter : CounterController
 {
+    public override bool isControllable { get { return true; } }
 
     override public IEnumerator GoToJail()
     {
@@ -71,6 +72,7 @@ public class HumanCounter : CounterController
     /// </summary>
     override public IEnumerator PlayTurn()
     {
+        // Enable the end turn button
         if (!isInJail)
         {
             // Roll three times
