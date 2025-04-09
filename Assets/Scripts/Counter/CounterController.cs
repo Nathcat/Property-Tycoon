@@ -86,7 +86,13 @@ public abstract class CounterController : MonoBehaviour
     /// <summary>
     /// Have this counter leave jail
     /// </summary>
-    abstract public void LeaveJail();
+    public void LeaveJail()
+    {
+        isInJail = false;
+        turnsInJail = 0;
+        Debug.Log(name + " has left jail!");
+        //Utils.RunAfter(1, GameController.instance.NextTurn);
+    }
 
     /// <summary>
     /// Play this counter's turn

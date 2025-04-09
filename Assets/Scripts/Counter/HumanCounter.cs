@@ -59,14 +59,6 @@ public class HumanCounter : CounterController
         }
     }
 
-    override public void LeaveJail()
-    {
-        isInJail = false;
-        turnsInJail = 0;
-        Debug.Log(name + " has left jail!");
-        //Utils.RunAfter(1, GameController.instance.NextTurn);
-    }
-
     /// <summary>
     /// Rolls both dice, and moves the counter. If the roll is a double roll, the dice are rolled again and counter moved again.
     /// </summary>
