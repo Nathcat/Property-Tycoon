@@ -2167,7 +2167,6 @@ MonoBehaviour:
   - {fileID: 2086603766}
   - {fileID: 582441981}
   diceTextures:
-  - {fileID: 2800000, guid: ee969506d82d84a4198c69b24426291f, type: 3}
   - {fileID: 2800000, guid: 8a5b106432724144c92641ebf8e381e5, type: 3}
   - {fileID: 2800000, guid: e57bd2355d762de45b7848f74859775c, type: 3}
   - {fileID: 2800000, guid: dc91962fb03628b45bde1477e38643b7, type: 3}
@@ -2742,7 +2741,7 @@ PrefabInstance:
     - target: {fileID: 4715825312074687296, guid: a74c295325e881f4d968fb778642716f,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3260.7998
+      value: 3260.7996
       objectReference: {fileID: 0}
     - target: {fileID: 6131303997869509272, guid: a74c295325e881f4d968fb778642716f,
         type: 3}
