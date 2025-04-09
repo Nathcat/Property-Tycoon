@@ -463,8 +463,7 @@ public class GameUIManager : MonoBehaviour
         this.auctionMenu.SetActive(true);
         this.auctionMenu.GetComponent<AuctionManager>().StartAuction(GameController.instance.spaces[GameController.instance.turnCounter.position] as Property);
         waitingForAuction = true;
-        yield return new WaitForAuction();
-        Debug.Log("made it to the end of startauction");
+        return new WaitForAuction();
     }
 
     public void ShowCard(string type, Card input)
