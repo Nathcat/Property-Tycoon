@@ -171,7 +171,7 @@ public class AICounter : CounterController
         {
             int offset = Random.Range(-20, 20);
             int bid = Mathf.RoundToInt(((p.GetValue() * 0.7f) + offset));
-            Debug.Log(bid);
+            Debug.Log("bid" + bid);
             int chance = Random.Range(1, 100);
             if (bid >= 100 && chance > 70)
             {
