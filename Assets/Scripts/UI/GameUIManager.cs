@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Codice.Client.BaseCommands;
@@ -105,6 +104,10 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private Texture[] diceTextures;
     /// <summary>
+    /// Default names list, to replace missing names.
+    /// </summary>
+    [SerializeField] private List<string> defaultNames;
+    /// <summary>
     /// The state the UI was in before its current state
     /// </summary>
     [SerializeField] private bool[] previousUIState = new bool[] { true, false, false, false };
@@ -138,8 +141,10 @@ public class GameUIManager : MonoBehaviour
     private string Player6Type;
     [SerializeField] private GameObject GamemodeInput = null;
     private string Gamemode;
-    [SerializeField] private GameObject CSVInput = null;
-    private string CSV;
+    [SerializeField] private GameObject BoardInput = null;
+    [SerializeField] private GameObject CardInput = null;
+    private string boardCSV;
+    private string cardCSV;
     [SerializeField] private GameObject Error = null;
     [SerializeField] private GameObject HourInput = null;
     [SerializeField] private GameObject MinInput = null;
@@ -289,7 +294,7 @@ public class GameUIManager : MonoBehaviour
         else
         {
             float hours = Mathf.FloorToInt(inputTimer / 3600);
-            float mins = Mathf.FloorToInt((inputTimer / 60) % 3600);
+            float mins = Mathf.FloorToInt((inputTimer / 60) % 60);
             float seconds = Mathf.FloorToInt(inputTimer % 60);
             if (mins < 10)
             {
@@ -621,7 +626,8 @@ public class GameUIManager : MonoBehaviour
         Hour = HourInput.GetComponent<TMP_InputField>().text;
         Min = MinInput.GetComponent<TMP_InputField>().text;
         Sec = SecInput.GetComponent<TMP_InputField>().text;
-        CSV = CSVInput.GetComponent<TMP_InputField>().text;
+        boardCSV = BoardInput.GetComponent<TMP_InputField>().text;
+        cardCSV = CardInput.GetComponent<TMP_InputField>().text;
         Player1Type = Player1TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
         Player2Type = Player2TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
         Player3Type = Player3TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
@@ -633,8 +639,20 @@ public class GameUIManager : MonoBehaviour
 
 
         string[] playerNames = {Player1Name,Player2Name,Player3Name,Player4Name,Player5Name,Player6Name};
+        for(int i = 0;  i < playerNames.Length; i++)
+        {
+            if (playerNames[i].Equals(""))
+            {
+                int randNum = UnityEngine.Random.Range(0, defaultNames.Count);
+                playerNames[i] = defaultNames[randNum];
+                defaultNames.Remove(defaultNames[randNum]);
+            }
+        }
+        
+
+        int[] playerTypes = {int.Parse(Player1Type), int.Parse(Player2Type), int.Parse(Player3Type), int.Parse(Player4Type), int.Parse(Player5Type), int.Parse(Player6Type)};
         bool mode = (Gamemode.Equals("0"));
-        Debug.Log(mode + ":" + Hour + ":" + Min + ":" + Sec + ":" + CSV + ":");
+        Debug.Log(mode + ":" + Hour + ":" + Min + ":" + Sec + ":" + boardCSV + ":" + cardCSV);
         Debug.Log(Player1Name + ":" + Player1Type);
         Debug.Log(Player2Name + ":" + Player2Type);
         Debug.Log(Player3Name + ":" + Player3Type);
@@ -649,7 +667,7 @@ public class GameUIManager : MonoBehaviour
         }
         
         
-        GameController.instance.StartGame(playerNames, mode, time, CSV);
+        GameController.instance.StartGame(playerNames, playerTypes, mode, time, boardCSV, cardCSV);
 
         // Disable all but the main UI
         gameStarted = true;

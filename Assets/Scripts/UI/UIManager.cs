@@ -44,12 +44,11 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*
+        
         Scene = SceneManager.GetActiveScene();
         CurrentScene = Scene.name;
         if (Scene.name == "MainMenu")
         {
-            //SetUpUI.SetActive(false);
             StartScreen.SetActive(true);
             Credits.SetActive(false);
             HelpAndRules.SetActive(false);
@@ -60,6 +59,7 @@ public class UIManager : MonoBehaviour
         }
         else if (Scene.name == GameScene)
         {
+            
             TurnOffPlayerCards();
             //SetupScreen.SetActive(true);
             PauseButton.SetActive(true);
@@ -72,8 +72,9 @@ public class UIManager : MonoBehaviour
             {
                 d.SetActive(false);
             }
+            
         }
-        */
+        
     }
 
     // Update is called once per frame
@@ -109,7 +110,7 @@ public class UIManager : MonoBehaviour
     {
         StartScreen.SetActive(false);
         //SetUpUI.SetActive(true);
-        //SceneManager.LoadScene(GameScene);
+        SceneManager.LoadScene(GameScene);
     }
     public void MMSettingsButton()
     {
