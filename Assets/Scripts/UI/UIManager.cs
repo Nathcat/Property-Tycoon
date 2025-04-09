@@ -8,42 +8,7 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     //GameSetUpFields
-    [SerializeField] private GameObject SetUpUI = null;
-    [SerializeField] private GameObject Player1NameInput = null;
-    [SerializeField] private GameObject Player2NameInput = null;
-    [SerializeField] private GameObject Player3NameInput = null;
-    [SerializeField] private GameObject Player4NameInput = null;
-    [SerializeField] private GameObject Player5NameInput = null;
-    [SerializeField] private GameObject Player6NameInput = null;
-    [SerializeField] private string Player1Name;
-    [SerializeField] private string Player2Name;
-    [SerializeField] private string Player3Name;
-    [SerializeField] private string Player4Name;
-    [SerializeField] private string Player5Name;
-    [SerializeField] private string Player6Name;
-    [SerializeField] private GameObject Player1TypeInput = null;
-    [SerializeField] private GameObject Player2TypeInput = null;
-    [SerializeField] private GameObject Player3TypeInput = null;
-    [SerializeField] private GameObject Player4TypeInput = null;
-    [SerializeField] private GameObject Player5TypeInput = null;
-    [SerializeField] private GameObject Player6TypeInput = null;
-    [SerializeField] private string Player1Type;
-    [SerializeField] private string Player2Type;
-    [SerializeField] private string Player3Type;
-    [SerializeField] private string Player4Type;
-    [SerializeField] private string Player5Type;
-    [SerializeField] private string Player6Type;
-    [SerializeField] private GameObject GamemodeInput = null;
-    [SerializeField] private string Gamemode;
-    [SerializeField] private GameObject CSVInput = null;
-    [SerializeField] private string CSV;
-    [SerializeField] private GameObject Error = null;
-    [SerializeField] private GameObject HourInput = null;
-    [SerializeField] private GameObject MinInput = null;
-    [SerializeField] private GameObject SecInput = null;
-    [SerializeField] private string Hour;
-    [SerializeField] private string Min;
-    [SerializeField] private string Sec;
+    
 
 
     //MainMenu Fields
@@ -86,7 +51,7 @@ public class UIManager : MonoBehaviour
         CurrentScene = Scene.name;
         if (Scene.name == "MainMenu")
         {
-            SetUpUI.SetActive(false);
+            //SetUpUI.SetActive(false);
             StartScreen.SetActive(true);
             Credits.SetActive(false);
             HelpAndRules.SetActive(false);
@@ -143,7 +108,7 @@ public class UIManager : MonoBehaviour
     public void MMStartButton()
     {
         StartScreen.SetActive(false);
-        SetUpUI.SetActive(true);
+        //SetUpUI.SetActive(true);
         //SceneManager.LoadScene(GameScene);
     }
     public void MMSettingsButton()
@@ -327,29 +292,6 @@ public class UIManager : MonoBehaviour
 
 
 
-    //----------Game Setup Menu(need to decide where we are putting this)----------
-    public void SetupStart() 
-    {
-        Debug.Log("logging");
-        Player1Name = Player1NameInput.GetComponent<TMP_InputField>().text;
-        Player2Name = Player2NameInput.GetComponent<TMP_InputField>().text;
-        Player3Name = Player3NameInput.GetComponent<TMP_InputField>().text;
-        Player4Name = Player4NameInput.GetComponent<TMP_InputField>().text;
-        Player5Name = Player5NameInput.GetComponent<TMP_InputField>().text;
-        Player6Name = Player6NameInput.GetComponent<TMP_InputField>().text;
-        Hour = HourInput.GetComponent<TMP_InputField>().text;
-        Min = MinInput.GetComponent<TMP_InputField>().text;
-        Sec = SecInput.GetComponent<TMP_InputField>().text;
-        CSV = CSVInput.GetComponent<TMP_InputField>().text;
-        Player1Type = Player1TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
-        Player2Type = Player2TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
-        Player3Type = Player3TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
-        Player4Type = Player4TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
-        Player5Type = Player5TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
-        Player6Type = Player6TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
-        Gamemode = GamemodeInput.GetComponent<TMP_Dropdown>().value.ToString();
-        Debug.Log(Player1Name+":"+  Player1Type + ":"  + Hour + ":" + Min + ":" + Sec + ":" + CSV + ":" + Gamemode);
-    }
-
+    
 
 }

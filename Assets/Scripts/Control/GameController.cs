@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine.Events;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 /// <summary> Main script for controlling high level flow of the game. </summary>
 public class GameController : MonoBehaviour
@@ -93,6 +94,13 @@ public class GameController : MonoBehaviour
         
         turnCounter.PlayTurn();
     }
+
+    public void StartGame(string[] names, bool abridged,)
+    {
+
+    }
+
+
 
     /// <summary> Increment <see cref="turnIndex"/> and start the next turn.</summary>
     public void NextTurn()
