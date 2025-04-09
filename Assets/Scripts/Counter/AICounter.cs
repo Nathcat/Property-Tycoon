@@ -234,6 +234,7 @@ public class AICounter : CounterController
             Property p = properties[i];
             if (p.CanUnMortgage())
             {
+                Debug.Log(this.name + "unmortgaged" + p.name);
                 p.UnMortgage();
             }
             if (p.CanUpgrade())
@@ -242,6 +243,7 @@ public class AICounter : CounterController
                 int chance = Random.Range(1, 100);
                 if (percentage < 25 && chance > 50)
                 {
+                    Debug.Log(this.name + "upgraded" + p.name);
                     p.Upgrade();
                 }
 
@@ -260,16 +262,19 @@ public class AICounter : CounterController
                 Property p = properties[i];
                 if (p.CanDowngrade())
                 {
+                    Debug.Log(this.name + "downgraded" + p.name);
                     p.Downgrade();
                     sold = true;
                 }
                 else if (!p.CanUnMortgage())
                 {
+                    Debug.Log(this.name + "mortgaged" + p.name);
                     p.Mortgage();
                     sold = true;
                 }
                 else if (p.CanSell())
                 {
+                    Debug.Log(this.name + "sold" + p.name);
                     p.Sell();
                     sold = true;
                 }
