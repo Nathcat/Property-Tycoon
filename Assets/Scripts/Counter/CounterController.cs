@@ -23,7 +23,7 @@ public class CounterController : MonoBehaviour
     public Space space { get { return GameController.instance.spaces[position]; } }
 
     /// <summary> The icon used to represent this counter </summary>
-    public Sprite icon { get { return counterIcons[order]; } }
+    public Sprite icon { get; private set; }
 
     /// <summary> The space controller that the counter is currently on </summary>
     public SpaceController spaceController { get { return GameController.instance.spaceControllers[position]; } }
@@ -90,6 +90,7 @@ public class CounterController : MonoBehaviour
             Destroy(currentModel);
         }
         currentModel = models[modelNum];
+        icon = counterIcons[modelNum];
         Instantiate(currentModel, transform);
     }
 
@@ -236,12 +237,14 @@ public class CounterController : MonoBehaviour
                 LeaveJail();
             }
         }
+
+        GameUIManager.instance.Endable();
     }
 
     /// <summary>
     /// Move the counter to a specific space
     /// </summary>
-    /// <param name="space">The index of the space to  move to</param>
+    /// <param name="space">The index of the space to move to</param>
     public void MoveAbsolute(int space)
     {
         position = space % GameController.instance.spaces.Length;

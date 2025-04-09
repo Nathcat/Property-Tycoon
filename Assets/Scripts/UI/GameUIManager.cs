@@ -101,6 +101,14 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject endTurnButton;
     /// <summary>
+    /// Forefit button
+    /// </summary>
+    [SerializeField] private GameObject forefitButton;
+    /// <summary>
+    /// Debt notification
+    /// </summary>
+    [SerializeField] private GameObject debtNotification;
+    /// <summary>
     /// The player cards displayed in the main UI
     /// </summary>
     [SerializeField] private GameObject[] playerCardElements;
@@ -122,6 +130,11 @@ public class GameUIManager : MonoBehaviour
     [HideInInspector] public RollData lastDiceRoll { get; private set; } = null;
     [HideInInspector] public bool waitingForDiceRollComplete { get; private set; } = false;
     [HideInInspector] public bool waitingForAuction { get; private set; } = false;
+
+    /// <summary>
+    /// <see cref="true"/> if the current turn can be ended.
+    /// </summary>
+    private bool endable;
 
     /// <summary>
     /// Used to wait for a yes / no prompt to complete
@@ -195,7 +208,9 @@ public class GameUIManager : MonoBehaviour
         this.pauseMenu.SetActive(currentUIState[2]);
         this.diceRollUI.SetActive(currentUIState[3]);
 
-        this.endTurnButton.SetActive(currentUIState[0] && currentUIState.Count(s => s) == 1);
+        this.endTurnButton.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() >= 0);
+        this.debtNotification.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() < 0);
+        this.forefitButton.SetActive(endable);
 
         if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
 
@@ -266,6 +281,7 @@ public class GameUIManager : MonoBehaviour
     /// <param name="currentTurn">The player whose turn it is now</param>
     public void UpdateUIForNewTurn(CounterController currentTurn)
     {
+        endable = false;
         SetUIState(true, false, false, false);
         SetCurrentTurnLabel(currentTurn);
         updatePlayers();
@@ -285,11 +301,22 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     private void UpdateAllPlayerCardData()
     {
-        for (int i = 0; i < GameController.instance.counters.Length; i++)
+        for (int i = 0; i < playerCardElements.Length; i++)
         {
-            playerCardElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
-            playerCardElements[i].transform.Find("Icon").GetComponent<UnityEngine.UI.Image>().sprite = GameController.instance.counters[i].icon;
-            playerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = $"�{GameController.instance.counters[i].portfolio.GetCashBalance()}";
+            if (i >= GameController.instance.counters.Length)
+            {
+                playerCardElements[i].SetActive(false);
+            } else
+            {
+                playerCardElements[i].SetActive(true);
+                playerCardElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
+                playerCardElements[i].transform.Find("Icon").GetComponent<UnityEngine.UI.Image>().sprite = GameController.instance.counters[i].icon;
+
+                int balance = GameController.instance.counters[i].portfolio.GetCashBalance();
+                string label = $"{(balance < 0 ? "-" : "")}£{Mathf.Abs(balance)}";
+                playerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = label;
+            }
+
         }
     }
 
@@ -332,7 +359,9 @@ public class GameUIManager : MonoBehaviour
         i = 1;
         foreach (CounterController counterController in order)
         {
-            s += i.ToString() + (i == 1 ? "st" : (i == 2 ? "nd" : (i == 3 ? "rd" : "th"))) + " " + counterController.name + ": " + counterController.portfolio.TotalValue() + "\n";
+            int value = counterController.portfolio.TotalValue();
+            string score = $"{(value < 0 ? "-" : "")}£{Mathf.Abs(value)}";
+            s += i.ToString() + (i == 1 ? "st" : (i == 2 ? "nd" : (i == 3 ? "rd" : "th"))) + " " + counterController.name + ": " + score + "\n";
             i++;
         }
 
@@ -558,5 +587,21 @@ public class GameUIManager : MonoBehaviour
     public void EndMenuClicked()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    /// <summary>
+    /// When bankrupt clicked
+    /// </summary>
+    public void ForefitClicked()
+    {
+        GameController.instance.forefit(GameController.instance.turnCounter);
+    }
+
+    /// <summary>
+    /// Allows the turn to be ended.
+    /// </summary>
+    public void Endable()
+    {
+        endable = true;
     }
 }
