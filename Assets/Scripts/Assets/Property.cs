@@ -202,7 +202,6 @@ public class Property : Space, IAsset
     {
         if (!CanPurchase(counter))
         {
-            Debug.Log("cant purchase for some reason :/");
             return;
         }
         owner = counter;
