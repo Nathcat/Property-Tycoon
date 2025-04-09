@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -17,6 +15,7 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         GameController.instance.onNextTurn.AddListener(c => UpdateCamera(c.gameObject));
+        GameController.instance.onCounterMove.AddListener(c => UpdateCamera(c.gameObject));
     }
 
     //a method to move the camera to a target gameobject
@@ -24,15 +23,15 @@ public class CameraController : MonoBehaviour
     /// The UpdateCamera fuction is called with a target to make it face the specified target with an angle that coressponds to its place on the board
     /// </summary>
     /// <param name="target">what you want the camera to focus on</param>
-    void UpdateCamera(GameObject target) 
+    void UpdateCamera(GameObject target)
     {
         //sets the position to that of the target
         this.transform.position = target.transform.position;
 
         //checks where the target is and then moves it based on if its in the N,S,E or W
-        if (this.transform.position.x > boardRadius) 
+        if (this.transform.position.x > boardRadius)
         {
-            this.transform.position = new Vector3(target.transform.position.x+ sideOffset, target.transform.position.y + heightOffset, target.transform.position.z+ lengthOffset);
+            this.transform.position = new Vector3(target.transform.position.x + sideOffset, target.transform.position.y + heightOffset, target.transform.position.z + lengthOffset);
             this.transform.LookAt(target.transform.position);
         }
         else if (this.transform.position.z < -boardRadius)
@@ -50,8 +49,9 @@ public class CameraController : MonoBehaviour
             this.transform.position = new Vector3(target.transform.position.x - lengthOffset, target.transform.position.y + heightOffset, target.transform.position.z + sideOffset);
             this.transform.LookAt(target.transform.position);
         }
-        else {
-            Debug.LogError("No offset is valid");
+        else
+        {
+            Debug.LogWarning("No offset is valid");
         }
     }
 }

@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 /// <summary>
 /// Interface which all kinds of assets should implement.
 /// </summary>
