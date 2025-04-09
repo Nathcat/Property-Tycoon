@@ -16,7 +16,7 @@ public class Portfolio
     /// </summary>
     public Portfolio()
     {
-        cashBalance = new Cash(0);
+        cashBalance = new Cash(1500);
         properties = new List<Property>();
     }
 

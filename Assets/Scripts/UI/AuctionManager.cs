@@ -9,12 +9,12 @@ public class AuctionManager : MonoBehaviour
     /// <summary>
     /// The value of each player's current bid
     /// </summary>
-    private Cash[] bids;
+    public Cash[] bids { get; private set; }
     private bool[] withdrawn;
     /// <summary>
     /// The index of the player whose turn it currently is
     /// </summary>
-    private int currentTurn = 0;
+    [HideInInspector] public int currentTurn { get; private set; } = 0;
     private CounterController currentPlayer { get { return GameController.instance.counters[currentTurn]; } }
     public Property targetProperty;
 

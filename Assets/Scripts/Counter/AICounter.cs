@@ -115,6 +115,7 @@ public class AICounter : CounterController
                         else
                         {
                             yield return GameUIManager.instance.StartAuction();
+                            Debug.Log(p.name);
                             yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
                             Develop();
                             GameController.instance.NextTurn();
@@ -164,7 +165,7 @@ public class AICounter : CounterController
         int percentage = 100;
         if (portfolio.GetCashBalance() > 0)
         {
-            percentage = GetPercentage(p.GetValue(), portfolio.GetCashBalance());
+            percentage = GetPercentage(auction.bids[auction.currentTurn].GetValue(), portfolio.GetCashBalance());
         }
         Debug.Log(percentage);
         if (percentage < 80)
@@ -215,7 +216,6 @@ public class AICounter : CounterController
                 Debug.Log("bid 1");
                 yield return null;
             }
-            Debug.Log("How the fuck did you get here");
 
         }
         else

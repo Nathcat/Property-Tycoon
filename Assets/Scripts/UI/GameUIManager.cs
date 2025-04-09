@@ -485,6 +485,7 @@ public class GameUIManager : MonoBehaviour
     {
         SetUIState(true, false, false, false);
         instance.waitingForAuction = false;
+        Debug.Log("Finished auction");
         this.auctionMenu.SetActive(false);
     }
 
