@@ -92,6 +92,9 @@ public class AICounter : CounterController
                 yield return GameController.instance.spaces[position].action.Run(this);
             } while (oldPos != position);
 
+            GameUIManager.instance.AIStartThinking(name);
+            yield return new WaitForSeconds(2f);
+            GameUIManager.instance.AIStopThinking();
 
             Space space = GameController.instance.spaces[position];
 
