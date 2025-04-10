@@ -8,7 +8,7 @@ public class AICounter : CounterController
     // Start is called before the first frame update
     override public IEnumerator GoToJail()
     {
-        MoveAbsolute(GameController.instance.jailSpace.position);
+        yield return MoveAbsolute(GameController.instance.jailSpace.position);
 
         Debug.Log(name + " has gone to jail, can they pay?");
 
@@ -60,7 +60,7 @@ public class AICounter : CounterController
             // Roll three times
             yield return GameUIManager.instance.RollDice();
 
-            MoveCounter(lastRoll.dice1, lastRoll.dice2);
+            yield return MoveCounter(lastRoll.dice1, lastRoll.dice2);
             int doubles = 0;
             while (lastRoll.doubleRoll)
             {
@@ -73,7 +73,7 @@ public class AICounter : CounterController
 
                 yield return GameUIManager.instance.RollDice();
 
-                MoveCounter(lastRoll.dice1, lastRoll.dice2);
+                yield return MoveCounter(lastRoll.dice1, lastRoll.dice2);
             }
 
             // If 3 doubles have been rolled, go to jail
@@ -92,6 +92,9 @@ public class AICounter : CounterController
                 yield return GameController.instance.spaces[position].action.Run(this);
             } while (oldPos != position);
 
+            GameUIManager.instance.AIStartThinking(name);
+            yield return new WaitForSeconds(2f);
+            GameUIManager.instance.AIStopThinking();
 
             Space space = GameController.instance.spaces[position];
 
@@ -171,14 +174,15 @@ public class AICounter : CounterController
             percentage = GetPercentage(auction.bids[auction.currentTurn].GetValue(), portfolio.GetCashBalance());
         }
         Debug.Log(percentage);
+        int currentbid = auction.bids[auction.currentTurn].GetValue();
         if (percentage < 80)
         {
-            int offset = Random.Range(-20, 20);
-            int bid = Mathf.RoundToInt(((p.GetValue() * 0.7f) + offset));
+            int offset = Random.Range(-20, 30);
+            int bid = Mathf.RoundToInt(((p.GetValue() * 0.85f) + offset));
             Debug.Log("bid" + bid);
             chance = Random.Range(1, 100);
             bool bidded = false;
-            if (bid >= 100 && chance > 70 && bidded == false)
+            if (bid-currentbid >= 100 && chance > 70 && bidded == false)
             {
                 auction.Bid100();
                 yield return null;
@@ -187,7 +191,7 @@ public class AICounter : CounterController
             }
             Debug.Log("didnt bid 100");
             chance = Random.Range(1, 100);
-            if (bid >= 50 && chance > 70 && bidded == false)
+            if (bid-currentbid >= 50 && chance > 70 && bidded == false)
             {
                 auction.Bid50();
                 yield return null;
@@ -195,7 +199,7 @@ public class AICounter : CounterController
             }
             Debug.Log("didnt bid 50");
             chance = Random.Range(1, 100);
-            if (bid >= 20 && chance > 70 && bidded == false)
+            if (bid-currentbid >= 20 && chance > 70 && bidded == false)
             {
                 auction.Bid20();
                 yield return null;
@@ -203,7 +207,7 @@ public class AICounter : CounterController
             }
             Debug.Log("didnt bid 20");
             chance = Random.Range(1, 100);
-            if (bid >= 10 && chance > 70 && bidded == false)
+            if (bid - currentbid >= 10 && chance > 70 && bidded == false)
             {
                 auction.Bid10();
                 yield return null;
@@ -211,7 +215,7 @@ public class AICounter : CounterController
             }
             Debug.Log("didnt bid 10");
             chance = Random.Range(1, 100);
-            if (bid >= 5 && chance > 70 && bidded == false)
+            if (bid - currentbid >= 5 && chance > 70 && bidded == false)
             {
                 bidded = true;
                 auction.Bid5();
@@ -219,17 +223,26 @@ public class AICounter : CounterController
 
             }
             Debug.Log("didnt bid 5");
-            if (bid >= 1 && bidded == false)
+            if (bid - currentbid >= 1 && bidded == false)
             {
                 auction.Bid1();
                 Debug.Log("bid 1");
                 bidded = true;
                 yield return null;
             }
+            else if(bidded == false)
+            {
+                Debug.Log("withdrew!");
+                auction.Withdraw();
+                yield return null;
+                bidded = true;
+            }
+
 
         }
         else
         {
+            Debug.Log("withdrew!");
             auction.Withdraw();
             yield return null;
         }
