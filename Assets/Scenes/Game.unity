@@ -2348,8 +2348,6 @@ MonoBehaviour:
   hourInput: {fileID: 3371684087761843595}
   minuteInput: {fileID: 25914645081129253}
   secongInput: {fileID: 5772276859064707821}
-  boardCSV: {fileID: 4546438280481824156}
-  cardCSV: {fileID: 4546438280481824155}
 --- !u!114 &1946495483 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8233043170432225183, guid: b3e4d314438c0ee48b9c7494acd3a966,
@@ -2678,21 +2676,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 349618280222828457, guid: b3e4d314438c0ee48b9c7494acd3a966,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1935141333}
     - target: {fileID: 2091598595014488817, guid: b3e4d314438c0ee48b9c7494acd3a966,
         type: 3}
       propertyPath: m_Name
       value: SetupMenu
       objectReference: {fileID: 0}
-    - target: {fileID: 4040694380631910006, guid: b3e4d314438c0ee48b9c7494acd3a966,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1935141333}
     - target: {fileID: 6512745946493868725, guid: b3e4d314438c0ee48b9c7494acd3a966,
         type: 3}
       propertyPath: m_Pivot.x
@@ -2808,30 +2796,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3e4d314438c0ee48b9c7494acd3a966, type: 3}
---- !u!114 &4546438280481824155 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7281169125328136553, guid: b3e4d314438c0ee48b9c7494acd3a966,
-    type: 3}
-  m_PrefabInstance: {fileID: 4546438280481824154}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4546438280481824156 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4099479991290741048, guid: b3e4d314438c0ee48b9c7494acd3a966,
-    type: 3}
-  m_PrefabInstance: {fileID: 4546438280481824154}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &4724444653102408441
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3226,6 +3190,21 @@ PrefabInstance:
     - target: {fileID: 6014684436127930284, guid: b3c30c42cacd085468457f924e254a3e,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545061904204192340, guid: b3c30c42cacd085468457f924e254a3e,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545061904204192340, guid: b3c30c42cacd085468457f924e254a3e,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545061904204192340, guid: b3c30c42cacd085468457f924e254a3e,
+        type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6806040878253955673, guid: b3c30c42cacd085468457f924e254a3e,

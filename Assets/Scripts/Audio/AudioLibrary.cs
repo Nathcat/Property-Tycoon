@@ -8,11 +8,11 @@ public class AudioLibrary : ScriptableObject
 
     public void PlayCLick()
     {
-        AudioManager.instance.Play(clickSfx);
+        AudioManager.instance.play(clickSfx);
     }
 
     public void PlayMoney()
     {
-        AudioManager.instance.Play(moneySfx);
+        AudioManager.instance.play(moneySfx);
     }
 }

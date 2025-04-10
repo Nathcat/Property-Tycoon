@@ -570,15 +570,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1351571290}
     m_Modifications:
+    - target: {fileID: 97294164295602974, guid: 270cda0ba662e2244aa1e47b71fa5334,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 414634118350687275, guid: 270cda0ba662e2244aa1e47b71fa5334,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 443972569}
+    - target: {fileID: 699996933489839335, guid: 270cda0ba662e2244aa1e47b71fa5334,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 703505165177894356, guid: 270cda0ba662e2244aa1e47b71fa5334,
         type: 3}
       propertyPath: m_Name
       value: Settings
+      objectReference: {fileID: 0}
+    - target: {fileID: 2875750492396377267, guid: 270cda0ba662e2244aa1e47b71fa5334,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2892872389179502691, guid: 270cda0ba662e2244aa1e47b71fa5334,
         type: 3}
@@ -680,6 +695,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3886011392766373159, guid: 270cda0ba662e2244aa1e47b71fa5334,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8928978912992031969, guid: 270cda0ba662e2244aa1e47b71fa5334,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8988740122975288495, guid: 270cda0ba662e2244aa1e47b71fa5334,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -699,6 +729,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1279467258090791476, guid: 3068dcc3f902a7e43b5985a6bfca36d6,
+        type: 3}
+      propertyPath: mixer
+      value: 
+      objectReference: {fileID: 24100000, guid: d0616d54490e2174db2b738db8c6381e,
+        type: 2}
     - target: {fileID: 1279467258090791476, guid: 3068dcc3f902a7e43b5985a6bfca36d6,
         type: 3}
       propertyPath: library
