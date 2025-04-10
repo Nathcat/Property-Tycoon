@@ -124,7 +124,7 @@ MonoBehaviour:
   needsOwenership: {fileID: 8957393537293728727}
   mortgageButtonText: {fileID: 7025544707318118150}
   propertyDetails: {fileID: 2547310219478424147}
-  root: {fileID: 6082618216983709376}
+  root: {fileID: 4350980645874587004}
   propertyOwner: {fileID: 8434721289802103866}
 --- !u!1 &177793882271155735
 GameObject:
