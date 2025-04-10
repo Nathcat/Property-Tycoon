@@ -165,7 +165,7 @@ public class GameUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI boardCSV;
     [SerializeField] private TextMeshProUGUI cardCSV;
 
-    private bool gameStarted;
+    public bool gameStarted { get; private set; }
 
 
     /// <summary>

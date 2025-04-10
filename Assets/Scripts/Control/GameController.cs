@@ -319,6 +319,8 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void EndGame()
     {
+        gameOver = true;
+
         int[] totals = new int[counters.Length];
         Debug.Log("number of players: " + counters.Length);
         for (int i = 0; i < counters.Length; i++)
@@ -334,8 +336,8 @@ public class GameController : MonoBehaviour
                 winner = i;
             }
         }
-        GameUIManager.instance.EndGame(counters[winner].name , totals[winner]);
 
+        GameUIManager.instance.EndGame(counters[winner].name , totals[winner]);
     }
 
     /// <summary>
