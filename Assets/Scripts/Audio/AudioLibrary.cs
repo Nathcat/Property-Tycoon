@@ -1,13 +1,12 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Sound Manager")]
-public class SoundManager : ScriptableObject
+public class AudioLibrary : ScriptableObject
 {
     [SerializeField] private AudioClip clickSfx;
 
     public void PlayCLick()
     {
-        AudioSource.PlayClipAtPoint(clickSfx, Camera.main.transform.position);
-        Debug.Log("asdasd");
+        AudioManager.instance.Play(clickSfx);
     }
 }
