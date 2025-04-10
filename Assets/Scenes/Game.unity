@@ -3105,16 +3105,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: HelpAndRules Game
       objectReference: {fileID: 0}
-    - target: {fileID: 2854852343412331946, guid: b3c30c42cacd085468457f924e254a3e,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -3211.6858
-      objectReference: {fileID: 0}
-    - target: {fileID: 4083308471619324107, guid: b3c30c42cacd085468457f924e254a3e,
-        type: 3}
-      propertyPath: m_Size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6014684436127930284, guid: b3c30c42cacd085468457f924e254a3e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3163,21 +3153,6 @@ PrefabInstance:
     - target: {fileID: 6014684436127930284, guid: b3c30c42cacd085468457f924e254a3e,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6545061904204192340, guid: b3c30c42cacd085468457f924e254a3e,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6545061904204192340, guid: b3c30c42cacd085468457f924e254a3e,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6545061904204192340, guid: b3c30c42cacd085468457f924e254a3e,
-        type: 3}
-      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6806040878253955673, guid: b3c30c42cacd085468457f924e254a3e,

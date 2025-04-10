@@ -1099,21 +1099,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1351571290}
     m_Modifications:
-    - target: {fileID: 1050789263321364943, guid: 1f3f85203cd8d084e8088c7a84932b57,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -3211.6858
-      objectReference: {fileID: 0}
-    - target: {fileID: 1270451856827376814, guid: 1f3f85203cd8d084e8088c7a84932b57,
-        type: 3}
-      propertyPath: m_Size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1270451856827376814, guid: 1f3f85203cd8d084e8088c7a84932b57,
-        type: 3}
-      propertyPath: m_Value
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2865308043316741897, guid: 1f3f85203cd8d084e8088c7a84932b57,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1129,21 +1114,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 443972569}
-    - target: {fileID: 5892732453201204910, guid: 1f3f85203cd8d084e8088c7a84932b57,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5892732453201204910, guid: 1f3f85203cd8d084e8088c7a84932b57,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5892732453201204910, guid: 1f3f85203cd8d084e8088c7a84932b57,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6486040221030450937, guid: 1f3f85203cd8d084e8088c7a84932b57,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1239,15 +1209,3 @@ SceneRoots:
   - {fileID: 573216229}
   - {fileID: 443972572}
   - {fileID: 1351571290}
-  - {fileID: 1237642758}
-  - {fileID: 46854894}
-  - {fileID: 822957920}
-  - {fileID: 224615177}
-  - {fileID: 1181886295}
-  - {fileID: 1867225080}
-  - {fileID: 1747623690}
-  - {fileID: 825183918}
-  - {fileID: 1916499307}
-  - {fileID: 1904136964}
-  - {fileID: 1526750090}
-  - {fileID: 1077961440}

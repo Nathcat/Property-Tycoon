@@ -283,13 +283,49 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 629202916683252685, guid: 2e0194f968537e34ab8ce0113fb98cb5,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 629202916683252685, guid: 2e0194f968537e34ab8ce0113fb98cb5,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 629202916683252685, guid: 2e0194f968537e34ab8ce0113fb98cb5,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8,
+        type: 2}
+    - target: {fileID: 629202916683252685, guid: 2e0194f968537e34ab8ce0113fb98cb5,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 629202916683252685, guid: 2e0194f968537e34ab8ce0113fb98cb5,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: BackButton
       objectReference: {fileID: 0}
     - target: {fileID: 629202916683252685, guid: 2e0194f968537e34ab8ce0113fb98cb5,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlayCLick
+      objectReference: {fileID: 0}
+    - target: {fileID: 629202916683252685, guid: 2e0194f968537e34ab8ce0113fb98cb5,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UIManager, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 629202916683252685, guid: 2e0194f968537e34ab8ce0113fb98cb5,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: SoundManager, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 629202916683252685, guid: 2e0194f968537e34ab8ce0113fb98cb5,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3888652993653504587, guid: 2e0194f968537e34ab8ce0113fb98cb5,
         type: 3}
