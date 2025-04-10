@@ -104,7 +104,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1757691515262713045}
-  - {fileID: 3478693453410659305}
+  - {fileID: 5121986715598868536}
   m_Father: {fileID: 1153384605548076175}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 4646720098159354797}
   - component: {fileID: 6430424496092757322}
   m_Layer: 5
-  m_Name: text
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,11 +142,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3478693453410659305}
+  m_Father: {fileID: 5121986715598868536}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 226.97482, y: 0}
+  m_AnchoredPosition: {x: 49.50009, y: 0}
   m_SizeDelta: {x: 362.9435, y: 64.0096}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4646720098159354797
@@ -1066,7 +1066,7 @@ GameObject:
   - component: {fileID: 8812670390447395664}
   - component: {fileID: 6274254121889124937}
   m_Layer: 5
-  m_Name: CurrentTurn
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1079,14 +1079,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6610891992717866600}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5121986715598868536}
-  - {fileID: 8074841263711258408}
-  m_Father: {fileID: 7880576472048297065}
+  m_Children: []
+  m_Father: {fileID: 5121986715598868536}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
@@ -1548,7 +1546,7 @@ GameObject:
   - component: {fileID: 2959846881855556053}
   - component: {fileID: 9144025818546605948}
   m_Layer: 5
-  m_Name: Turn
+  m_Name: CurrentTurn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1565,13 +1563,15 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3478693453410659305}
+  m_Children:
+  - {fileID: 8074841263711258408}
+  - {fileID: 3478693453410659305}
+  m_Father: {fileID: 7880576472048297065}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 177.47467, y: 0}
-  m_SizeDelta: {x: 511.94934, y: 2.9077988}
+  m_AnchoredPosition: {x: 0.000061035156, y: 0}
+  m_SizeDelta: {x: -0.000061035156, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2959846881855556053
 CanvasRenderer:
