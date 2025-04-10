@@ -1705,6 +1705,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: OkPrompt
       objectReference: {fileID: 0}
+    - target: {fileID: 7876261011181303489, guid: d07f9c4b91bb24645a3116e88c57048d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 282
+      objectReference: {fileID: 0}
+    - target: {fileID: 8464635078914212274, guid: d07f9c4b91bb24645a3116e88c57048d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 58
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
