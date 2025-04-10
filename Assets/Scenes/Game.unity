@@ -15,7 +15,7 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
   m_Fog: 1
-  m_FogColor: {r: 0.49292266, g: 0.5303217, b: 0.5320754, a: 1}
+  m_FogColor: {r: 0.5767177, g: 0.68282825, b: 0.9056604, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.02
   m_LinearFogStart: 0
@@ -25,7 +25,7 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+  m_SubtractiveShadowColor: {r: 0.6694998, g: 0.7056053, b: 0.8018868, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -594,7 +594,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 100
+  far clip plane: 300
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -756,7 +756,6 @@ GameObject:
   m_Component:
   - component: {fileID: 489928343}
   - component: {fileID: 489928346}
-  - component: {fileID: 489928345}
   - component: {fileID: 489928344}
   m_Layer: 0
   m_Name: Clarity Camera
@@ -824,14 +823,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!81 &489928345
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 489928342}
-  m_Enabled: 1
 --- !u!20 &489928346
 Camera:
   m_ObjectHideFlags: 0
@@ -864,7 +855,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 100
+  far clip plane: 300
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -1791,6 +1782,61 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Environment
+      objectReference: {fileID: 0}
+    - target: {fileID: 1331110221597906794, guid: 6d85730d11451744bb622fb40e732e4c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1331110221597906794, guid: 6d85730d11451744bb622fb40e732e4c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1331110221597906794, guid: 6d85730d11451744bb622fb40e732e4c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1331110221597906794, guid: 6d85730d11451744bb622fb40e732e4c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1331110221597906794, guid: 6d85730d11451744bb622fb40e732e4c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1331110221597906794, guid: 6d85730d11451744bb622fb40e732e4c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1331110221597906794, guid: 6d85730d11451744bb622fb40e732e4c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1331110221597906794, guid: 6d85730d11451744bb622fb40e732e4c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1331110221597906794, guid: 6d85730d11451744bb622fb40e732e4c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1331110221597906794, guid: 6d85730d11451744bb622fb40e732e4c,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2266486755644839941, guid: 6d85730d11451744bb622fb40e732e4c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2942682165283453811, guid: 6d85730d11451744bb622fb40e732e4c,
         type: 3}
