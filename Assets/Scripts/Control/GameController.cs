@@ -117,8 +117,10 @@ public class GameController : MonoBehaviour
     /// <param name="time">The total time for the game if its abridged</param>
     public void SetupGamemode(bool abridged, float time)
     {
+        Debug.Log(abridged);
         this.abridged = abridged;
         this.timeRemaining = time;
+        if (abridged) GameUIManager.instance.SetUpTimer(time);
     }
 
     /// <summary> Increment <see cref="turnIndex"/> and start the next turn.</summary>
@@ -174,17 +176,6 @@ public class GameController : MonoBehaviour
         //shuffle the opportunity knocks cards
         ShuffleOpportunity();
 
-    }
-
-    /// <summary>
-    /// sets up the timer if the game is in 'abridged' mode.
-    /// </summary>
-    public void SetupTimer()
-    {
-        if (abridged)
-        {
-            GameUIManager.instance.SetUpTimer(timeRemaining);
-        }
     }
 
     /// <summary> Shuffle the opportunitydeck card deck using a BogoSort style method. </summary>
