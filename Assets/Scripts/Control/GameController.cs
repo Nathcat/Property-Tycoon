@@ -99,23 +99,52 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        SetupBoard();
-        SetupCards();
-        abridged = true;
-        timeRemaining = (108000);
-        SetupTimer();
-        //SetupCounters(new CounterController[6].Select(_ => Instantiate(counterPrefab)).ToArray());
-        // this seems to break, but bring back if needed :)
-        SetupCounters(new CounterController[numberOfPlayers].Select((c, index) =>
+       
+    }
+
+    public void StartGame(string[] names,int[] types, bool isAbridged, int time, string boardDirectory, string cardDirectory)
+    {
+        if(boardDirectory.Equals(""))
         {
-            CounterController o = Instantiate(aiCounterPrefab);
-            o.gameObject.name = "Player " + index;
-            return o;
-        }).ToArray());
-        
+            SetupBoard();
+        }
+        else
+        {
+            SetupBoard(boardDirectory);
+        }
+        if(cardDirectory.Equals(""))
+        {
+            SetupCards();
+        }
+        else
+        {
+            SetupCards(cardDirectory);
+        }
+        abridged = isAbridged;
+        if (abridged)
+        {
+            timeRemaining = time;
+            SetupTimer();
+        }
+        else
+        {
+            timeRemaining = 1;
+        }
+        List<CounterController> counterControllers = new List<CounterController>();
+        for (int i = 0; i < names.Length; i++)
+        {
+            if (types[i] == 1)
+            {
+                continue;
+            }
+            counterControllers.Add(Instantiate(types[i] == 0 ? aiCounterPrefab : counterPrefab));
+            counterControllers.Last().gameObject.name = names[i];
+        }
+        SetupCounters(counterControllers.ToArray());
         turnIndex = -1;
         NextTurn();
     }
+
 
 
     /// <summary> Increment <see cref="turnIndex"/> and start the next turn.</summary>
@@ -134,22 +163,35 @@ public class GameController : MonoBehaviour
         onNextTurn.Invoke(turnCounter);
     }
 
-    /// <summary> Parse board configuration and place spaces. </summary>
+    /// <summary> Parse board configuration and place spaces - assumes board.csv in the Assets directory. </summary>
     public void SetupBoard()
+    {
+        SetupBoard(Path.Combine(Application.dataPath, "board.csv"));
+    }
+
+    /// <summary> Parse board configuration and place spaces. </summary>
+    public void SetupBoard(string dir)
     {
         // Cleanup old counter controllers
         if (spaceControllers != null)
             foreach (SpaceController space in spaceControllers)
                 Destroy(space.gameObject);
 
-        board = FileManager.ReadBoardCSV(Path.Combine(Application.dataPath, "board.csv"));
+        board = FileManager.ReadBoardCSV(dir);
         spaceControllers = BoardGenerator.GenerateBoard(transform, 2, 1, normalSpace, cornerSpace, spaces);
     }
 
-    /// <summary> Put the card information from the csv file into the relevant card decks, and shuffle both decks. </summary>
+    /// <summary> Put the card information from the csv file into the relevant card decks, and shuffle both decks - assumes cards.csv in the Assets directory. </summary>
     public void SetupCards()
     {
-        cards = FileManager.ReadCardCSV(Path.Combine(Application.dataPath, "cards.csv"));
+        SetupCards(Path.Combine(Application.dataPath, "cards.csv"));
+    }
+
+
+    /// <summary> Put the card information from the csv file into the relevant card decks, and shuffle both decks. </summary>
+    public void SetupCards(string dir)
+    {
+        cards = FileManager.ReadCardCSV(dir);
         luckDeck = cards.luck;
         opportunityDeck = cards.opportunity;
         //shuffle the pot luck cards
