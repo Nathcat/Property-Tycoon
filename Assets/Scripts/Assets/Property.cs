@@ -208,6 +208,7 @@ public class Property : Space, IAsset
         owner = counter;
         counter.portfolio.AddAsset(this);
         counter.portfolio.RemoveCash(new Cash(cost));
+        AudioManager.instance.library.PlayMoney();
     }
 
     /// <summary>
@@ -271,6 +272,8 @@ public class Property : Space, IAsset
         owner.portfolio.AddAsset(new Cash(isMortgaged ? (mortgageValue) : cost));
         owner.portfolio.RemoveProperty(this);
         owner = null;
+
+        AudioManager.instance.library.PlayMoney();
     }
 
     /// <summary>

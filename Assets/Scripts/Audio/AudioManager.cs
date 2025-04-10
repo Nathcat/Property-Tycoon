@@ -1,12 +1,12 @@
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(AudioSource))]
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance { get; private set; }
     public AudioSource audioSource { get; private set; }
+    public AudioLibrary library;
 
     private void Awake()
     {

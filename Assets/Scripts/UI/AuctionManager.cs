@@ -110,6 +110,7 @@ public class AuctionManager : MonoBehaviour
                 targetProperty.AuctionPurchase(currentPlayer, bids[currentTurn]);
                 Debug.Log(currentPlayer.name + " obtains " + targetProperty.name);
                 GameUIManager.instance.FinishAuction();
+                AudioManager.instance.library.PlayMoney();
             }
             else {
                 Debug.Log(currentPlayer.name + " cannot afford their bid!");
