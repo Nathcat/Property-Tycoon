@@ -61,12 +61,13 @@ public class AuctionManager : MonoBehaviour
             {
                 playerPanel.gameObject.SetActive(false);
                 i++;
-                break;
             }
-
-            playerPanel.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
-            playerPanel.GetChild(1).GetComponent<TextMeshProUGUI>().text = "£0";
-            i++;
+            else
+            {
+                playerPanel.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
+                playerPanel.GetChild(1).GetComponent<TextMeshProUGUI>().text = "£0";
+                i++;
+            }
         }
 
         NextBid();

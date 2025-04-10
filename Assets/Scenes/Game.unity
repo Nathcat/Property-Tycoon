@@ -5989,6 +5989,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e282f2babb3ed5a44b6acd8a4e0257c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgradeMeshes:
+  - {fileID: 0}
+  - {fileID: -2432090755550338912, guid: efffb0f8e061bf54688bad0da3618106, type: 3}
+  - {fileID: -2432090755550338912, guid: 3bc1fcc49d4f55141882fafa971ddb4a, type: 3}
+  - {fileID: -2432090755550338912, guid: 090d55fe7ff5bc9449b4e2acf4e3650e, type: 3}
+  - {fileID: -2432090755550338912, guid: bd781c6a117d1654f997efd86fd641d6, type: 3}
+  - {fileID: -2432090755550338912, guid: 08820cf45530c65438e701a3bd450a1b, type: 3}
   normalSpace: {fileID: 838760111749697168, guid: c18ffdd0e9fbed54db884f8aa2ac2f3d,
     type: 3}
   cornerSpace: {fileID: 7848276747064225561, guid: baa8530b3ac3ef74e91ad12f417bb9b7,
