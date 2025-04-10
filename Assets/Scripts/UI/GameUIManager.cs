@@ -141,6 +141,7 @@ public class GameUIManager : MonoBehaviour
     [SerializeField] private GameObject setUpUI;
     [SerializeField] private TMP_InputField[] playerNames;
     [SerializeField] private TMP_Dropdown[] playerTypes;
+    [SerializeField] private Image[] playerIcons;
     [SerializeField] private TMP_Dropdown gamemodeInput;
     [SerializeField] private TextMeshProUGUI setupError;
     [SerializeField] private TMP_InputField hourInput;
@@ -244,6 +245,9 @@ public class GameUIManager : MonoBehaviour
             input.text = defaultNames[i];
             defaultNames.RemoveAt(i);
         }
+
+        for (int i = 0; i < playerIcons.Length; i++)
+            playerIcons[i].sprite = GameController.instance.counterIcons[i];
     }
 
     void Update()

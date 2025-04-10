@@ -28,14 +28,6 @@ public abstract class CounterController : MonoBehaviour
     public string name { get { return gameObject.name; } }
 
     /// <summary>
-    /// Stores the models of each counter
-    /// </summary>
-    [SerializeField] protected GameObject[] models;
-
-    /// <summary> Icons to represent each counter </summary>
-    public Sprite[] counterIcons;
-
-    /// <summary>
     /// Stores the current counter's model
     /// </summary>
     protected GameObject currentModel;
@@ -78,8 +70,8 @@ public abstract class CounterController : MonoBehaviour
         {
             Destroy(currentModel);
         }
-        currentModel = models[modelNum];
-        icon = counterIcons[modelNum];
+        currentModel = GameController.instance.counterModels[modelNum];
+        icon = GameController.instance.counterIcons[modelNum];
         Instantiate(currentModel, transform);
     }
 

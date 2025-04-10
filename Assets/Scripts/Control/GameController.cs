@@ -88,6 +88,12 @@ public class GameController : MonoBehaviour
     [SerializeField] private CounterController humanCounterPrefab;
     [SerializeField] private CounterController aiCounterPrefab;
 
+    /// <summary> Stores the models of each counter </summary>
+    public GameObject[] counterModels;
+
+    /// <summary> Icons to represent each counter </summary>
+    public Sprite[] counterIcons;
+
     private void Awake()
     {
         if (instance != null && !instance.IsDestroyed())
