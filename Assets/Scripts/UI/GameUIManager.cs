@@ -62,8 +62,10 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject auctionMenu;
     [HideInInspector] public AuctionManager auctionManager { get { return auctionMenu.GetComponent<AuctionManager>(); } }
+    
     [SerializeField] private GameObject AIThinkingUI;
     [SerializeField] private TextMeshProUGUI AIThinkingText;
+
 
     [Header("Card Display")]
     /// <summary>
@@ -142,6 +144,18 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private Texture[] diceTextures;
     [SerializeField] private float diceRollTimeout = 3f;
+    [SerializeField] private GameObject dicePrefab;
+    private Rigidbody[] diceInstances;
+    [SerializeField] private Vector3 dice1CameraView;
+    [SerializeField] private Vector3 dice2CameraView;
+    private Vector3[] diceRotations = new Vector3[] {
+        new Vector3(0f, 90f, 0f),
+        new Vector3(0f, 270f, 0f),
+        new Vector3(0f, 0f, 0f),
+        new Vector3(270f, 0f, 0f),
+        new Vector3(0f, 180f, 0f),
+        new Vector3(90f, 0f, 0f)
+    };
 
 
     /// <summary>
@@ -626,7 +640,14 @@ public class GameUIManager : MonoBehaviour
         waitingForDiceRollComplete = true;
         SetUIState(true, false, false, true);
         lastDiceRoll = DoDiceRoll();
-        Debug.Log("dicetextures:" + diceTextures.Length);
+        diceRollUI.transform.GetChild(0).gameObject.SetActive(false);
+        diceRollUI.transform.GetChild(1).gameObject.SetActive(false);
+        diceRollUI.transform.GetChild(2).gameObject.SetActive(false);
+        diceRollUI.transform.GetChild(3).gameObject.SetActive(false);
+
+
+        /*
+
         diceRollUI.transform.GetChild(0).GetComponent<RawImage>().texture = diceTextures[lastDiceRoll.dice1 - 1];
         diceRollUI.transform.GetChild(1).GetComponent<RawImage>().texture = diceTextures[lastDiceRoll.dice2 - 1];
         diceRollUI.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = lastDiceRoll.dice1 + lastDiceRoll.dice2 + (lastDiceRoll.doubleRoll ? "\nDouble! Roll again!" : "");
@@ -638,7 +659,54 @@ public class GameUIManager : MonoBehaviour
         {
             yield return new WaitForSeconds(diceRollTimeout);
             CompleteDiceRoll();
+        }*/
+
+        yield return new WaitForSeconds(3f);
+
+        diceInstances = new Rigidbody[2];
+        diceInstances[0] = Instantiate(dicePrefab, Camera.main.transform.position, new Quaternion()).GetComponent<Rigidbody>();
+        diceInstances[1] = Instantiate(dicePrefab, Camera.main.transform.position, new Quaternion()).GetComponent<Rigidbody>();
+
+        Vector3 direction1 = Quaternion.Euler(Random.Range(0, 30f), Random.Range(-30f, 30f), 0f) * Camera.main.transform.forward;
+        Vector3 direction2 = Quaternion.Euler(Random.Range(0, 30f), Random.Range(-30f, 30f), 0f) * Camera.main.transform.forward;
+
+        diceInstances[0].AddForce(direction1 * Random.Range(10f, 20f), ForceMode.Impulse);
+        diceInstances[1].AddForce(direction2 * Random.Range(10f, 20f), ForceMode.Impulse);
+        yield return new WaitForSeconds(3f);
+
+        diceInstances[0].isKinematic = true;
+        diceInstances[1].isKinematic = true;
+
+        diceInstances[0].transform.SetParent(Camera.main.transform, true);
+        diceInstances[1].transform.SetParent(Camera.main.transform, true);
+
+        Vector3 A = diceInstances[0].transform.localPosition;
+        Vector3 B = diceInstances[1].transform.localPosition;
+        Vector3 Arot = diceInstances[0].transform.localRotation.eulerAngles;
+        Vector3 Brot = diceInstances[1].transform.localRotation.eulerAngles;
+
+        float interval = 0.01f;
+        float timeToMove = 0.5f;
+        for (float t = 0; t <= timeToMove; t += interval)
+        {
+            diceInstances[0].transform.localPosition = Vector3.Lerp(A, dice1CameraView, t / timeToMove);
+            diceInstances[1].transform.localPosition = Vector3.Lerp(B, dice2CameraView, t / timeToMove);
+            diceInstances[0].transform.localRotation = Quaternion.Euler(Vector3.Lerp(Arot, diceRotations[lastDiceRoll.dice1 - 1], t / timeToMove));
+            diceInstances[1].transform.localRotation = Quaternion.Euler(Vector3.Lerp(Brot, diceRotations[lastDiceRoll.dice2 - 1], t / timeToMove));
+            yield return new WaitForSeconds(interval);
         }
+
+        diceRollUI.transform.GetChild(3).gameObject.SetActive(GameController.instance.turnCounter.isControllable);
+
+        if (GameController.instance.turnCounter.isControllable) yield return new WaitForDiceRoll();
+        else
+        {
+            yield return new WaitForSeconds(diceRollTimeout);
+        }
+
+        Destroy(diceInstances[0].gameObject);
+        Destroy(diceInstances[1].gameObject);
+        CompleteDiceRoll();
     }
 
     /// <summary>
