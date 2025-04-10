@@ -36,6 +36,7 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        if (target == null) return;
         transform.position = Vector3.Lerp(transform.position, GetDestination(), Time.deltaTime * moveLerp);
 
         Quaternion rotation = Quaternion.LookRotation(target.transform.position - transform.position);
@@ -58,7 +59,9 @@ public class CameraController : MonoBehaviour
 
     public Vector3 GetDestination()
     {
+        
         //checks where the target is and then moves it based on if its in the N,S,E or W
+       
         if (target.transform.position.x > boardRadius)
         {
             return new Vector3(target.transform.position.x + sideOffset, target.transform.position.y + heightOffset, target.transform.position.z + lengthOffset);
@@ -76,7 +79,8 @@ public class CameraController : MonoBehaviour
             return new Vector3(target.transform.position.x - lengthOffset, target.transform.position.y + heightOffset, target.transform.position.z + sideOffset);
         }
 
-        throw new NotImplementedException();
+       // throw new NotImplementedException();
+       return Vector3.zero;
     }
 
     private GameObject nextProperty(int start, int direction)

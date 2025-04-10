@@ -130,13 +130,17 @@ public class GameController : MonoBehaviour
         {
             timeRemaining = 1;
         }
-        CounterController[] counterControllers = new CounterController[6];
-        for (int i = 0; i < counterControllers.Length; i++)
+        List<CounterController> counterControllers = new List<CounterController>();
+        for (int i = 0; i < names.Length; i++)
         {
-            counterControllers[i] = Instantiate(counterPrefab);
-            counterControllers[i].gameObject.name = names[i];
+            if (types[i] == 1)
+            {
+                continue;
+            }
+            counterControllers.Add(Instantiate(types[i] == 0 ? aiCounterPrefab : counterPrefab));
+            counterControllers.Last().gameObject.name = names[i];
         }
-        SetupCounters(counterControllers);
+        SetupCounters(counterControllers.ToArray());
         turnIndex = -1;
         NextTurn();
     }

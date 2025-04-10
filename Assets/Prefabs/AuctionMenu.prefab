@@ -1009,6 +1009,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a795e00bf9014e49acc2e69f16d710d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetProperty:
+    position: 0
+    name: 
+    cost: 0
 --- !u!1 &1862178272554579643
 GameObject:
   m_ObjectHideFlags: 0
@@ -2546,6 +2550,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a795e00bf9014e49acc2e69f16d710d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetProperty:
+    position: 0
+    name: 
+    cost: 0
 --- !u!1 &4092826757736708610
 GameObject:
   m_ObjectHideFlags: 0

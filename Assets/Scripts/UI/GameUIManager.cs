@@ -252,6 +252,7 @@ public class GameUIManager : MonoBehaviour
         this.auctionMenu.SetActive(false);
         this.cardUI.SetActive(false);
         this.gameEndScreen.SetActive(false);
+        this.propertyDetails.SetActive(false);
 
 
 
@@ -261,19 +262,7 @@ public class GameUIManager : MonoBehaviour
         this.diceRollUI.SetActive(false);
         Debug.Log("gamestarted = " + gameStarted);
 
-        /*
-        // Disable all but the main UI
-        SetUIState(true, false, false, false);
-        this.gameTimer.SetActive(false);
-        this.yesNoPromptUI.SetActive(false);
-        this.okPromptUI.SetActive(false);
-        this.getOutOfJailFree.SetActive(false);
-        this.auctionMenu.SetActive(false);
-        this.cardUI.SetActive(false);
-        this.gameEndScreen.SetActive(false);
-        this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
-        this.helpAndRulesMenu.transform.GetChild(1).gameObject.SetActive(false);
-        */
+        
     }
 
     void Update()
@@ -737,7 +726,7 @@ public class GameUIManager : MonoBehaviour
         // Disable all but the main UI
         gameStarted = true;
         this.SetUpUI.SetActive(false);
-        SetUIState(true, false, false, false);
+        SetUIState(true, false, false, true);
         this.yesNoPromptUI.SetActive(false);
         this.okPromptUI.SetActive(false);
         this.getOutOfJailFree.SetActive(false);
