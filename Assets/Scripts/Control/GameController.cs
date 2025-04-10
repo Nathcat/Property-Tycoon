@@ -46,11 +46,11 @@ public class GameController : MonoBehaviour
     public Space jailSpace { get { return board.jailSpace; } }
 
     /// <summary> The index in <see cref="counters"/> of the <see cref="CounterController"/> who currently has their turn. </summary>
-    public int turnIndex { get; private set; }
+    public int turnIndex { get; private set; } = -1;
 
     /// <summary> The <see cref="CounterController"/> who currently has their turn. </summary>
     public CounterController turnCounter { get { return counters[turnIndex]; } }
-    
+
     /// <summary> Array of <see cref="SpaceController"/> objects the board consists of. </summary>
     public SpaceController[] spaceControllers { get; private set; }
 
@@ -81,7 +81,7 @@ public class GameController : MonoBehaviour
     [HideInInspector] public float timeRemaining { get; private set; }
 
     /// <summary> a flag to show if the timer has expired </summary>
-    [HideInInspector] public bool timeExpired { get  { return abridged && timeRemaining <= 0; } }
+    [HideInInspector] public bool timeExpired { get { return abridged && timeRemaining <= 0; } }
 
     /// <summary> a flag to show when the game has ended. </summary>
     [HideInInspector] public bool gameOver;
@@ -94,6 +94,8 @@ public class GameController : MonoBehaviour
 
     /// <summary> Icons to represent each counter </summary>
     public Sprite[] counterIcons;
+    public Terrain terrain;
+    public GameObject environment;
 
     private void Awake()
     {
@@ -126,7 +128,7 @@ public class GameController : MonoBehaviour
     public void NextTurn()
     {
         turnIndex = (turnIndex + 1) % counters.Length;
-        
+
         if (counters.Length == 1 || (turnIndex == 0 && timeExpired)) EndGame();
         else
         {
@@ -155,6 +157,9 @@ public class GameController : MonoBehaviour
 
         board = FileManager.ReadBoardCSV(dir);
         spaceControllers = BoardGenerator.GenerateBoard(transform, 2, 1, normalSpace, cornerSpace, spaces);
+
+
+        Debug.Log(BoardGenerator.GetBoardDimensions(spaces.Count()));
     }
 
     /// <summary> Put the card information from the csv file into the relevant card decks, and shuffle both decks - assumes cards.csv in the Assets directory. </summary>
@@ -195,10 +200,12 @@ public class GameController : MonoBehaviour
     /// <typeparam name="T">The type stored by the list</typeparam>
     /// <param name="l">The list to shuffle</param>
     /// <returns>The shuffled list</returns>
-    public List<T> ShuffleList<T>(List<T> l) {
+    public List<T> ShuffleList<T>(List<T> l)
+    {
         List<T> res = new List<T>();
 
-        while (res.Count != l.Count) {
+        while (res.Count != l.Count)
+        {
             res.Add(l[Random.Range(0, l.Count)]);
         }
 
@@ -288,7 +295,7 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void SetupCounters()
     {
-        SetupCounters(new CounterConfig[6].Select((_, i) => 
+        SetupCounters(new CounterConfig[6].Select((_, i) =>
             new CounterConfig($"Player {i}", CounterType.Human)).ToArray()
         );
     }
@@ -299,7 +306,8 @@ public class GameController : MonoBehaviour
     /// <param name="counters">An array of the counters in this game.</param>
     public void SetupCounters(CounterConfig[] counters)
     {
-        this.counters = counters.Select((c, i) => {
+        this.counters = counters.Select((c, i) =>
+        {
             CounterController prefab = c.type == CounterType.Human ? humanCounterPrefab : aiCounterPrefab;
             CounterController o = Instantiate(prefab);
             o.gameObject.name = c.name;
@@ -312,6 +320,10 @@ public class GameController : MonoBehaviour
     {
         if (abridged && !timeExpired) timeRemaining -= Time.deltaTime;
 
+        float environmentScale = Camera.main.GetComponent<CameraController>().boardRadius / 4.5f;
+        environment.transform.localScale = new Vector3(environmentScale, environmentScale, environmentScale);
+        terrain.terrainData.size = new Vector3(50f * environmentScale, 600f * environmentScale, 50f * environmentScale);
+        terrain.transform.position = new Vector3((50f * environmentScale) / -2f, -4.54f * environmentScale, (50f * environmentScale) / -2f);
     }
 
     /// <summary>
@@ -337,7 +349,7 @@ public class GameController : MonoBehaviour
             }
         }
 
-        GameUIManager.instance.EndGame(counters[winner].name , totals[winner]);
+        GameUIManager.instance.EndGame(counters[winner].name, totals[winner]);
     }
 
     /// <summary>

@@ -115,4 +115,17 @@ public class CardTest
         GameController.instance.ShufflePotluck();
         Assert.AreNotEqual(beforeshuffle, GameController.instance.PeekLuck());
     }
+
+    [UnityTest]
+    public IEnumerator GetOutOfJailTest()
+    {
+        SceneManager.LoadScene("Game");
+        yield return null;
+        GameController.instance.SetupBoard();
+        GameController.instance.SetupCounters();
+        GameController.instance.SetupCards();
+        CounterController counter = GameController.instance.turnCounter;
+
+
+    }
 }

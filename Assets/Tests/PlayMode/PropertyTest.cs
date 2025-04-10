@@ -31,6 +31,7 @@ public class PropertyTest
         Assert.AreEqual(cash.GetValue(), (property.GetValue()));
         Assert.AreEqual(value / 2, (property.GetValue()));
         Assert.IsTrue(property.isMortgaged);
+        counter.portfolio.AddAsset(new Cash(property.GetValue()));
         Assert.IsTrue(property.CanUnMortgage());
     }
 
@@ -50,7 +51,7 @@ public class PropertyTest
         counter.portfolio.AddAsset(new Cash(property.GetValue()));
         property.Purchase(counter);
         Cash cash = property.Mortgage();
-
+        counter.portfolio.AddAsset(new Cash(property.GetValue()));
         property.UnMortgage();
         Assert.AreNotEqual(value, (property.GetValue()) * 2);
     }
@@ -107,7 +108,6 @@ public class PropertyTest
         Property property;
         CounterController counter = GameController.instance.turnCounter;
         PropertyGroup thisgroup = GameController.instance.groups[0];
-
         property = (Property)thisgroup.GetProperties()[0];
         counter.portfolio.AddAsset(new Cash(property.GetValue()));
         list.Add(property);
@@ -172,12 +172,11 @@ public class PropertyTest
         }
         list[0].Upgrade();
 
-
         Assert.IsFalse(list[1].CanDowngrade());
         Assert.IsTrue(list[0].CanDowngrade());
         list[0].Downgrade();
         Assert.AreEqual(1, list[0].upgradeLevel);
-        Assert.AreEqual(counter.portfolio.GetCashBalance(), list[1].upgradeCost);
+        Assert.AreEqual(counter.portfolio.GetCashBalance(), list[1].upgradeCost + Portfolio.STARTING_CASH);
         Assert.IsTrue(list[1].CanDowngrade());
 
 
@@ -202,8 +201,48 @@ public class PropertyTest
         Assert.IsTrue(property.CanSell());
         property.Sell();
         Assert.IsFalse(property.isOwned);
-
-
     }
 
+    [UnityTest]
+    public IEnumerator RentTest()
+    {
+        SceneManager.LoadScene("Game");
+        yield return null;
+        GameController.instance.SetupBoard();
+        GameController.instance.SetupCounters();
+        CounterController counter = GameController.instance.turnCounter;
+        CounterController victim = GameController.instance.counters[1];
+
+        Space[] spaces = GameController.instance.spaces;
+        Property property = (Property)GameController.instance.groups[0].GetProperties()[1];
+
+        int value = property.GetValue();
+        victim.MoveAbsolute(property.position);
+        counter.portfolio.AddAsset(new Cash(property.GetValue()));
+        property.Purchase(counter);
+
+        counter.StartCoroutine(property.action.Run(victim));
+        Assert.IsTrue(victim.portfolio.GetCashBalance() < 1500);
+    }
+
+    [UnityTest]
+    public IEnumerator propertyValue()
+    {
+        SceneManager.LoadScene("Game");
+        yield return null;
+        GameController.instance.SetupBoard();
+        GameController.instance.SetupCounters();
+        CounterController counter = GameController.instance.turnCounter;
+        CounterController victim = GameController.instance.counters[1];
+
+        Space[] spaces = GameController.instance.spaces;
+        Property property = (Property)GameController.instance.groups[0].GetProperties()[0];
+
+        int value = property.GetValue();
+        counter.portfolio.AddAsset(new Cash(property.GetValue()));
+        property.Purchase(counter);
+
+
+        Assert.AreEqual(property.GetValue(), property.cost);
+    }
 }

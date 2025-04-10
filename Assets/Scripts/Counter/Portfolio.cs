@@ -48,7 +48,7 @@ public class Portfolio
         {
             cashBalance.AddCash((Cash)newAsset);
         }
-        else if (t.Equals(typeof(Property)))
+        else if (t.Equals(typeof(Property)) || t.Equals(typeof(Station)) || t.Equals(typeof(Utility)))
         {
             properties.Add((Property)newAsset);
         }

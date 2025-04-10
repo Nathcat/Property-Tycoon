@@ -1,3 +1,4 @@
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,7 +10,7 @@ public class CameraController : MonoBehaviour
     public static CameraController instance { get; private set; }
     public GameObject target { get; private set; } = null;
     ///used to set the board radius
-    [SerializeField] private float boardRadius = 4.5f;
+    public float boardRadius { get; private set; } = 4.5f;
     ///used to contol the camers offset
     [SerializeField] private int sideOffset = 1;
     [SerializeField] private int heightOffset = 2;
@@ -37,6 +38,10 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        if (GameController.instance.turnIndex != -1) {
+            boardRadius = (BoardGenerator.GetBoardDimensions(GameController.instance.spaces.Count()) - 4f) / 2f;
+        }
+
         Vector3 moveTarget;
         Vector3 lookTarget;
 
@@ -97,7 +102,6 @@ public class CameraController : MonoBehaviour
             return new Vector3(target.transform.position.x - lengthOffset, target.transform.position.y + heightOffset, target.transform.position.z + sideOffset);
         }
 
-       // throw new NotImplementedException();
        return Vector3.zero;
     }
 
