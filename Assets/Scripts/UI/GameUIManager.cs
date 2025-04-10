@@ -255,13 +255,13 @@ public class GameUIManager : MonoBehaviour
         if (gameStarted)
         {
             this.mainUI.SetActive(currentUIState[0]);
-            this.propertyDetails.SetActive(currentUIState[0]);
             this.helpAndRulesMenu.SetActive(currentUIState[1]);
             this.pauseMenu.SetActive(currentUIState[2]);
             this.diceRollUI.SetActive(currentUIState[3]);
 
             this.endTurnButton.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() >= 0);
             this.debtNotification.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() < 0);
+            this.propertyDetails.SetActive(endable);
             this.forefitButton.SetActive(endable);
 
             if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);

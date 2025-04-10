@@ -18,6 +18,16 @@ PrefabInstance:
       propertyPath: m_Size
       value: 0.04711404
       objectReference: {fileID: 0}
+    - target: {fileID: 1419266435928594022, guid: 1f3f85203cd8d084e8088c7a84932b57,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 62
+      objectReference: {fileID: 0}
+    - target: {fileID: 1419266435928594022, guid: 1f3f85203cd8d084e8088c7a84932b57,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 91.04199
+      objectReference: {fileID: 0}
     - target: {fileID: 2865308043316741897, guid: 1f3f85203cd8d084e8088c7a84932b57,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -28,10 +38,15 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: GameUIManager, Scripts
       objectReference: {fileID: 0}
+    - target: {fileID: 3876293087269061454, guid: 1f3f85203cd8d084e8088c7a84932b57,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3981458016208565347, guid: 1f3f85203cd8d084e8088c7a84932b57,
         type: 3}
       propertyPath: m_Name
-      value: HelpAndRules Variant
+      value: HelpAndRules Game
       objectReference: {fileID: 0}
     - target: {fileID: 4172368218852837598, guid: 1f3f85203cd8d084e8088c7a84932b57,
         type: 3}
@@ -42,6 +57,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: GameUIManager, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 4485334254482379967, guid: 1f3f85203cd8d084e8088c7a84932b57,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5892732453201204910, guid: 1f3f85203cd8d084e8088c7a84932b57,
         type: 3}
@@ -78,6 +98,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: GameUIManager, Scripts
       objectReference: {fileID: 0}
+    - target: {fileID: 6874116370818049083, guid: 1f3f85203cd8d084e8088c7a84932b57,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 3.3200684
+      objectReference: {fileID: 0}
     - target: {fileID: 6876790342326981667, guid: 1f3f85203cd8d084e8088c7a84932b57,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -102,6 +127,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8456994537109263499, guid: 1f3f85203cd8d084e8088c7a84932b57,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 62
+      objectReference: {fileID: 0}
+    - target: {fileID: 8456994537109263499, guid: 1f3f85203cd8d084e8088c7a84932b57,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 91.04199
       objectReference: {fileID: 0}
     - target: {fileID: 8608828936065234492, guid: 1f3f85203cd8d084e8088c7a84932b57,
         type: 3}

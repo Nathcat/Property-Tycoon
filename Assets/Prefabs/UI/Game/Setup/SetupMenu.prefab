@@ -1333,7 +1333,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &3191409695468136827
 MonoBehaviour:
@@ -2788,7 +2788,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 136408546465038669}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GameUIManager, Scripts
+        m_MethodName: BrowseCardCSV
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4159232889634005686
 GameObject:
   m_ObjectHideFlags: 0
@@ -4588,7 +4600,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 445503197736891245}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GameUIManager, Scripts
+        m_MethodName: BrowseBoardCSV
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7421373510197465121
 GameObject:
   m_ObjectHideFlags: 0
@@ -5877,6 +5901,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8974082977567135043}
     m_Modifications:
+    - target: {fileID: 4106739486057342867, guid: 6e8ff61f3836b1b4a9400317b2177f7e,
+        type: 3}
+      propertyPath: m_text
+      value: Human
+      objectReference: {fileID: 0}
     - target: {fileID: 5009355983436473578, guid: 6e8ff61f3836b1b4a9400317b2177f7e,
         type: 3}
       propertyPath: m_Pivot.x
@@ -5981,6 +6010,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: PLAYER 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188039839996582982, guid: 6e8ff61f3836b1b4a9400317b2177f7e,
+        type: 3}
+      propertyPath: m_Value
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8179185195591822016, guid: 6e8ff61f3836b1b4a9400317b2177f7e,
         type: 3}
