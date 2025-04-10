@@ -39,6 +39,23 @@ public static class Utils
     }
 }
 
+/// <summary>
+/// Helper class for creating simple CustomYieldInstructions
+/// </summary>
+public class FunctionalYieldInstruction : CustomYieldInstruction
+{
+    private KeepWaiting fn;
+
+    public FunctionalYieldInstruction(KeepWaiting fn)
+    {
+        this.fn = fn;
+    }
+
+    public override bool keepWaiting => fn();
+
+    public delegate bool KeepWaiting();
+}
+
 // Fix https://stackoverflow.com/a/64749403
 namespace System.Runtime.CompilerServices
 {

@@ -62,10 +62,24 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject auctionMenu;
     [HideInInspector] public AuctionManager auctionManager { get { return auctionMenu.GetComponent<AuctionManager>(); } }
+    
+    [Header("Card Display")]
     /// <summary>
     /// UI for displaying cards
     /// </summary>
     [SerializeField] private GameObject cardUI;
+    /// <summary>
+    /// UI element of card background
+    /// </summary>
+    [SerializeField] private Image cardBackground;
+    /// <summary>
+    /// Background for potluck cards
+    /// </summary>
+    [SerializeField] private Sprite potluckBackground;
+    /// <summary>
+    /// Background for opportunity knocks cards
+    /// </summary>
+    [SerializeField] private Sprite opportunityBackground;
     /// <summary>
     /// Card title
     /// </summary>
@@ -74,6 +88,7 @@ public class GameUIManager : MonoBehaviour
     /// Card description
     /// </summary>
     [SerializeField] private TextMeshProUGUI cardDesc;
+
     /// <summary>
     /// Timer for the abridged version of the game
     /// </summary>
@@ -550,11 +565,22 @@ public class GameUIManager : MonoBehaviour
         return new WaitForAuction();
     }
 
-    public void ShowCard(string type, Card input)
+    public IEnumerator ShowPotluckCard(Card input)
     {
         this.cardUI.SetActive(true);
-        this.cardTitle.text = type;
+        this.cardBackground.sprite = potluckBackground;
+        this.cardTitle.text = "Potluck!";
         this.cardDesc.text = input.description;
+        yield return new FunctionalYieldInstruction(() => cardUI.activeSelf);
+    }
+
+    public IEnumerator ShowOpportunityCard(Card input)
+    {
+        this.cardUI.SetActive(true);
+        this.cardBackground.sprite = opportunityBackground;
+        this.cardTitle.text = "Opportunity Knocks!";
+        this.cardDesc.text = input.description;
+        yield return new FunctionalYieldInstruction(() => cardUI.activeSelf);
     }
 
     public void CloseCard()
