@@ -1291,7 +1291,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalSpace: {fileID: 838760111749697168, guid: c18ffdd0e9fbed54db884f8aa2ac2f3d,
     type: 3}
-  cornerSpace: {fileID: 7848276747064225561, guid: baa8530b3ac3ef74e91ad12f417bb9b7,
+  cornerSpace: {fileID: 838760111749697168, guid: 380ca1ad2c196624d871bd7dad6e427f,
     type: 3}
   gameOver: 0
   humanCounterPrefab: {fileID: 4270496797090321259, guid: 4d375960808148349a83838f1020f159,
