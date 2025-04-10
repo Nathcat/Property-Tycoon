@@ -94,6 +94,9 @@ public class GameController : MonoBehaviour
 
     /// <summary> Icons to represent each counter </summary>
     public Sprite[] counterIcons;
+    public int environmentScale = 1;
+    public Terrain terrain;
+    public GameObject environment;
 
     private void Awake()
     {
@@ -155,6 +158,8 @@ public class GameController : MonoBehaviour
 
         board = FileManager.ReadBoardCSV(dir);
         spaceControllers = BoardGenerator.GenerateBoard(transform, 2, 1, normalSpace, cornerSpace, spaces);
+
+
     }
 
     /// <summary> Put the card information from the csv file into the relevant card decks, and shuffle both decks - assumes cards.csv in the Assets directory. </summary>
@@ -312,6 +317,9 @@ public class GameController : MonoBehaviour
     {
         if (abridged && !timeExpired) timeRemaining -= Time.deltaTime;
 
+        environment.transform.localScale = new Vector3(environmentScale, environmentScale, environmentScale);
+        terrain.terrainData.size = new Vector3(50f * environmentScale, 600f * environmentScale, 50f * environmentScale);
+        terrain.transform.position = new Vector3((50f * environmentScale) / -2f, -4.54f * environmentScale, (50f * environmentScale) / -2f);
     }
 
     /// <summary>

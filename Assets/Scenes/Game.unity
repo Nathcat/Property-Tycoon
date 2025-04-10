@@ -829,6 +829,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &973459038 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1269913414824570388, guid: 6d85730d11451744bb622fb40e732e4c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1284000235}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &984567036 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1713848828636543365, guid: b3e4d314438c0ee48b9c7494acd3a966,
@@ -1105,6 +1111,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3262473a34b79e44afd2fba60fd7bf4, type: 3}
+--- !u!218 &1167521051 stripped
+Terrain:
+  m_CorrespondingSourceObject: {fileID: 3851173378995404243, guid: 6d85730d11451744bb622fb40e732e4c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1284000235}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1169012766
 GameObject:
   m_ObjectHideFlags: 0
@@ -1164,6 +1176,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c954ea366e7d79e4fa2bbb8bb8152393, type: 3}
   - {fileID: 21300000, guid: aec86838e699e274aa4a585af25b09e8, type: 3}
   - {fileID: 21300000, guid: a3851f579763bdb4ea34ab84522789ef, type: 3}
+  environmentScale: 1
+  terrain: {fileID: 1167521051}
+  environment: {fileID: 973459038}
 --- !u!4 &1169012768
 Transform:
   m_ObjectHideFlags: 0
@@ -1536,6 +1551,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2942682165283453811, guid: 6d85730d11451744bb622fb40e732e4c,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3576987070835833005, guid: 6d85730d11451744bb622fb40e732e4c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3576987070835833005, guid: 6d85730d11451744bb622fb40e732e4c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3576987070835833005, guid: 6d85730d11451744bb622fb40e732e4c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3576987070835833005, guid: 6d85730d11451744bb622fb40e732e4c,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
