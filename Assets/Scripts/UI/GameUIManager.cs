@@ -62,7 +62,9 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject auctionMenu;
     [HideInInspector] public AuctionManager auctionManager { get { return auctionMenu.GetComponent<AuctionManager>(); } }
-    
+    [SerializeField] private GameObject AIThinkingUI;
+    [SerializeField] private TextMeshProUGUI AIThinkingText;
+
     [Header("Card Display")]
     /// <summary>
     /// UI for displaying cards
@@ -243,6 +245,7 @@ public class GameUIManager : MonoBehaviour
         this.cardUI.SetActive(false);
         this.gameEndScreen.SetActive(false);
         this.propertyDetails.SetActive(false);
+        this.AIThinkingUI.SetActive(false);
 
 
 
@@ -681,7 +684,8 @@ public class GameUIManager : MonoBehaviour
                     playerNames[i].text,
                     t.value == 0 ? CounterType.AI : CounterType.Human
                 )).ToArray());
-        } catch (System.Exception e)
+        }
+        catch (System.Exception e)
         {
             setupError.text = $"Counter Error: {e.Message}";
             Debug.LogException(e);
@@ -797,5 +801,25 @@ public class GameUIManager : MonoBehaviour
     public void BrowseCardCSV()
     {
         BrowseCSV("Card");
+    }
+
+    /// <summary>
+    /// Clears all UI and shows which AI is thinking
+    /// </summary>
+    /// <param name="name"> name of the AI. </param>
+    public void AIStartThinking(string name)
+    {
+        AIThinkingUI.gameObject.SetActive(true);
+        SetUIState(false, false, false, false);
+        AIThinkingText.text = name + " is thinking...";
+    }
+
+    /// <summary>
+    /// Clears the AI thinking screen and restores previous UI
+    /// </summary>
+    public void AIStopThinking()
+    {
+        RevertToPreviousUIState();
+        AIThinkingUI.gameObject.SetActive(false);
     }
 }
