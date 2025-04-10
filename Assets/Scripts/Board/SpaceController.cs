@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class SpaceController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI output;
+    [SerializeField] private MeshFilter model;
     [SerializeField] private Image colour;
     [SerializeField] private Image skin;
     public Transform[] waypoints;
@@ -19,6 +20,7 @@ public class SpaceController : MonoBehaviour
     [SerializeField] private Sprite parkingSkin;
 
     [HideInInspector] public Space space { get; private set; }
+
 
     /// <summary> The position of this space controller on the board. </summary>
     public int position { get {  return space.position; } }
@@ -41,4 +43,20 @@ public class SpaceController : MonoBehaviour
         else if (space.action.ContainsCommand<TakeOppoKnocks>()) skin.sprite = opportunitySkin;
         else colour.color = new Color(91, 218, 187);
     }
+
+    private void Update()
+    {
+        if (space is Property)
+        {
+            int index = (space as Property).upgradeLevel;
+            model.mesh = GameController.instance.upgradeMeshes[index];
+        }
+        else 
+        { 
+            model.mesh = null;
+        }
+        
+    }
+
+
 }
