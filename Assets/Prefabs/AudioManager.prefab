@@ -143,6 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4c0c102389e7e84a9ae1f7c76745542, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  library: {fileID: 0}
 --- !u!1 &8172325356066846161
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,7 +191,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
