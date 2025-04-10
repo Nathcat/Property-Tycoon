@@ -309,6 +309,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: SoundManager, Scripts
+        m_MethodName: PlayCLick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1261893206544921324
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,6 +454,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: SoundManager, Scripts
+        m_MethodName: PlayCLick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1373037952062470371
 GameObject:
   m_ObjectHideFlags: 0
@@ -566,6 +590,18 @@ MonoBehaviour:
       - m_Target: {fileID: 3982653371635830941}
         m_TargetAssemblyTypeName: AuctionManager, Assembly-CSharp
         m_MethodName: Bid1
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: SoundManager, Scripts
+        m_MethodName: PlayCLick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1264,6 +1300,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: SoundManager, Scripts
+        m_MethodName: PlayCLick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3289373768025654466
 GameObject:
   m_ObjectHideFlags: 0
@@ -1833,6 +1881,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: SoundManager, Scripts
+        m_MethodName: PlayCLick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5322354933888431019
 GameObject:
   m_ObjectHideFlags: 0
@@ -2101,6 +2161,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: SoundManager, Scripts
+        m_MethodName: PlayCLick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5932618620454307788
 GameObject:
   m_ObjectHideFlags: 0
@@ -2225,6 +2297,18 @@ MonoBehaviour:
       - m_Target: {fileID: 3982653371635830941}
         m_TargetAssemblyTypeName: AuctionManager, Assembly-CSharp
         m_MethodName: NextBid
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: SoundManager, Scripts
+        m_MethodName: PlayCLick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2493,6 +2577,18 @@ MonoBehaviour:
       - m_Target: {fileID: 3982653371635830941}
         m_TargetAssemblyTypeName: AuctionManager, Assembly-CSharp
         m_MethodName: Bid5
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: SoundManager, Scripts
+        m_MethodName: PlayCLick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

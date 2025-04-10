@@ -134,6 +134,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: SoundManager, Scripts
+        m_MethodName: PlayCLick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1349336127527512817
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,6 +532,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: SoundManager, Scripts
+        m_MethodName: PlayCLick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2340120459582926542
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,6 +902,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: SoundManager, Scripts
+        m_MethodName: PlayCLick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4381722327775727526
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,6 +1222,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: SoundManager, Scripts
+        m_MethodName: PlayCLick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6751796354279232109
 GameObject:
   m_ObjectHideFlags: 0
@@ -1311,6 +1359,18 @@ MonoBehaviour:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: MMStartButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: SoundManager, Scripts
+        m_MethodName: PlayCLick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
