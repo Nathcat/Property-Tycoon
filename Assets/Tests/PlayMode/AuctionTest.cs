@@ -27,7 +27,8 @@ public class AuctionTest
         CounterController counter6 = GameController.instance.counters[5];
                 
         AuctionManager auction = GameUIManager.instance.auctionManager;
-        auction.StartAuction(property);
+        counter1.MoveAbsolute(property.position);
+        GameUIManager.instance.StartAuction();
         foreach (var item in GameController.instance.counters)
         {
             if(item == counter1)
@@ -64,7 +65,8 @@ public class AuctionTest
         CounterController counter6 = GameController.instance.counters[5];
 
         AuctionManager auction = GameUIManager.instance.auctionManager;
-        auction.StartAuction(property);
+        counter1.MoveAbsolute(property.position);
+        GameUIManager.instance.StartAuction();
         foreach (var item in GameController.instance.counters)
         {
             if (item == counter1 || item == counter2)

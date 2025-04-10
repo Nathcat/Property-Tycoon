@@ -214,7 +214,7 @@ public class PropertyTest
         CounterController victim = GameController.instance.counters[1];
 
         Space[] spaces = GameController.instance.spaces;
-        Property property = (Property)GameController.instance.groups[1].GetProperties()[1];
+        Property property = (Property)GameController.instance.groups[0].GetProperties()[1];
 
         int value = property.GetValue();
         victim.MoveAbsolute(property.position);

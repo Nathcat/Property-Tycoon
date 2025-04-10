@@ -34,7 +34,7 @@ public class UtilitiesTest
             i++;
 
         }
-        Debug.Log(thisgroup.name);
+        counter.StartCoroutine(GameUIManager.instance.RollDice());
         victim.MoveAbsolute(thisgroup.GetProperties()[0].position);
 
         property = (Utility)thisgroup.GetProperties()[0];
@@ -62,6 +62,7 @@ public class UtilitiesTest
 
         victim.portfolio.AddAsset(new Cash(1000));
 
+
         int i = 0;
         foreach (var item in GameController.instance.groups)
         {
@@ -73,14 +74,17 @@ public class UtilitiesTest
             i++;
         }
         Debug.Log(thisgroup.name);
+        counter.StartCoroutine(GameUIManager.instance.RollDice());
         victim.MoveAbsolute(thisgroup.GetProperties()[0].position);
-
         property = (Utility)thisgroup.GetProperties()[0];
         counter.portfolio.AddAsset(new Cash(property.GetValue()));
         list.Add(property);
         property.Purchase(counter);
-        victim.StartCoroutine(property.action.Run(victim));
+
+        counter.StartCoroutine(property.action.Run(victim));
+
         int oneutilityrent = ((victim.lastRoll.dice1 + victim.lastRoll.dice2) * 4);
+
 
         property = (Utility)thisgroup.GetProperties()[1];
         counter.portfolio.AddAsset(new Cash(property.GetValue()));
