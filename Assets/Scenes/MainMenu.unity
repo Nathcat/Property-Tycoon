@@ -1210,6 +1210,37 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 443972569}
+    - target: {fileID: 8096245791200295904, guid: c3afadfcf48e4ae4188de72a0b464146,
+        type: 3}
+      propertyPath: m_text
+      value: 'Development Team
+
+
+        Nathan
+
+        Brooke
+
+        Rose
+
+        Tyler
+
+        Joe
+
+        Jaiden
+
+
+        Board
+        game by Watson Games
+
+
+        Music by Patrick A. from Pixabay
+
+        KayKit
+        : City Builder Bits (1.0), Licensed under CC0, Created/distributed by Kay
+        Lousberg (www.kaylousberg.com)
+
+        Runtime File Browser by yasirkula'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
