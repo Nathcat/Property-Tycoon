@@ -117,10 +117,8 @@ public class GameController : MonoBehaviour
     /// <param name="time">The total time for the game if its abridged</param>
     public void SetupGamemode(bool abridged, float time)
     {
-        Debug.Log(abridged);
         this.abridged = abridged;
         this.timeRemaining = time;
-        if (abridged) GameUIManager.instance.SetUpTimer(time);
     }
 
     /// <summary> Increment <see cref="turnIndex"/> and start the next turn.</summary>

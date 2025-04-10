@@ -259,6 +259,7 @@ public class GameUIManager : MonoBehaviour
             this.pauseMenu.SetActive(currentUIState[2]);
             this.diceRollUI.SetActive(currentUIState[3]);
 
+            this.gameTimer.SetActive(currentUIState[0] && GameController.instance.abridged);
             this.endTurnButton.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() >= 0);
             this.debtNotification.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() < 0);
             this.propertyDetails.SetActive(endable);
@@ -277,16 +278,7 @@ public class GameUIManager : MonoBehaviour
             }
         }
     }
-    /// <summary>
-    /// Set up the timer.
-    /// </summary>
-    /// <param name="inputTimer"></param>
-    public void SetUpTimer(float inputTimer)
-    {
-        gameTimer.SetActive(true);
-        UpdateTimer(inputTimer);
-        Debug.Log("timer set up");
-    }
+
     /// <summary>
     /// Update the timer to show the current remaining time, in hours, mins and seconds.
     /// </summary>
