@@ -97,7 +97,6 @@ public class CameraController : MonoBehaviour
             return new Vector3(target.transform.position.x - lengthOffset, target.transform.position.y + heightOffset, target.transform.position.z + sideOffset);
         }
 
-       // throw new NotImplementedException();
        return Vector3.zero;
     }
 
