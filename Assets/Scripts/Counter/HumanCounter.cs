@@ -94,15 +94,20 @@ public class HumanCounter : CounterController
                 yield break;
             }
 
+            Space space = GameController.instance.spaces[position];
+
+            if (space.action.ContainsCommand<TakePotLuck>())
+                yield return GameUIManager.instance.ShowPotluckCard(GameController.instance.PeekLuck());
+            
+            if (space.action.ContainsCommand<TakeOppoKnocks>())
+                yield return GameUIManager.instance.ShowOpportunityCard(GameController.instance.PeekOpportunity());
+
             int oldPos = position;
             do
             {
                 oldPos = position;
                 yield return GameController.instance.spaces[position].action.Run(this);
             } while (oldPos != position);
-
-
-            Space space = GameController.instance.spaces[position];
 
             if (space is Property)
             {
@@ -135,7 +140,7 @@ public class HumanCounter : CounterController
                 }
             }
 
-            CameraController.instance.SetTarget(spaceController.gameObject);
+                CameraController.instance.SetTarget(spaceController.gameObject);
         }
         else
         {

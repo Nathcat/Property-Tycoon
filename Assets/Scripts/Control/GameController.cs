@@ -81,15 +81,19 @@ public class GameController : MonoBehaviour
     [HideInInspector] public float timeRemaining { get; private set; }
 
     /// <summary> a flag to show if the timer has expired </summary>
-    [HideInInspector] public bool timeExpired { get  { return timeRemaining <= 0; } }
+    [HideInInspector] public bool timeExpired { get  { return abridged && timeRemaining <= 0; } }
 
     /// <summary> a flag to show when the game has ended. </summary>
     [HideInInspector] public bool gameOver;
 
-    [Header("Testing")]
-    [SerializeField] private CounterController counterPrefab;
+    [SerializeField] private CounterController humanCounterPrefab;
     [SerializeField] private CounterController aiCounterPrefab;
-    public int numberOfPlayers = 6;
+
+    /// <summary> Stores the models of each counter </summary>
+    public GameObject[] counterModels;
+
+    /// <summary> Icons to represent each counter </summary>
+    public Sprite[] counterIcons;
 
     private void Awake()
     {
@@ -98,55 +102,25 @@ public class GameController : MonoBehaviour
         instance = this;
     }
 
-    private void Start()
+    /// <summary>
+    /// Starts the game by calling the first counter's turn.
+    /// </summary>
+    public void StartGame()
     {
-       
-    }
-
-    public void StartGame(string[] names,int[] types, bool isAbridged, int time, string boardDirectory, string cardDirectory)
-    {
-        if(boardDirectory.Equals(""))
-        {
-            SetupBoard();
-        }
-        else
-        {
-            SetupBoard(boardDirectory);
-        }
-        if(cardDirectory.Equals(""))
-        {
-            SetupCards();
-        }
-        else
-        {
-            SetupCards(cardDirectory);
-        }
-        abridged = isAbridged;
-        if (abridged)
-        {
-            timeRemaining = time;
-            SetupTimer();
-        }
-        else
-        {
-            timeRemaining = 1;
-        }
-        List<CounterController> counterControllers = new List<CounterController>();
-        for (int i = 0; i < names.Length; i++)
-        {
-            if (types[i] == 1)
-            {
-                continue;
-            }
-            counterControllers.Add(Instantiate(types[i] == 0 ? aiCounterPrefab : counterPrefab));
-            counterControllers.Last().gameObject.name = names[i];
-        }
-        SetupCounters(counterControllers.ToArray());
         turnIndex = -1;
         NextTurn();
     }
 
-
+    /// <summary>
+    /// Setup the gamemode for the game.
+    /// </summary>
+    /// <param name="abridged">Wether this game is abridge or not</param>
+    /// <param name="time">The total time for the game if its abridged</param>
+    public void SetupGamemode(bool abridged, float time)
+    {
+        this.abridged = abridged;
+        this.timeRemaining = time;
+    }
 
     /// <summary> Increment <see cref="turnIndex"/> and start the next turn.</summary>
     public void NextTurn()
@@ -156,6 +130,7 @@ public class GameController : MonoBehaviour
         if (counters.Length == 1 || (turnIndex == 0 && timeExpired)) EndGame();
         else
         {
+            Debug.Log(turnCounter);
             GameUIManager.instance.UpdateUIForNewTurn(turnCounter);
             StartCoroutine(turnCounter.PlayTurn());
             onNextTurn.Invoke(turnCounter);
@@ -200,24 +175,6 @@ public class GameController : MonoBehaviour
         //shuffle the opportunity knocks cards
         ShuffleOpportunity();
 
-        foreach (Card c in luckDeck) {
-            Debug.Log(c);
-        }
-
-        foreach (Card c in opportunityDeck) {
-            Debug.Log(c);
-        }
-    }
-
-    /// <summary>
-    /// sets up the timer if the game is in 'abridged' mode.
-    /// </summary>
-    public void SetupTimer()
-    {
-        if (abridged)
-        {
-            GameUIManager.instance.SetUpTimer(timeRemaining);
-        }
     }
 
     /// <summary> Shuffle the opportunitydeck card deck using a BogoSort style method. </summary>
@@ -291,7 +248,6 @@ public class GameController : MonoBehaviour
         }
     }
 
-    ///#
     /// <summary>
     /// Peek at the next card to be drawn from the Pot Luck deck; For the purposes of testing, should not be called otherwise.
     /// 
@@ -328,29 +284,28 @@ public class GameController : MonoBehaviour
 
 
     /// <summary>
-    /// Register counters to the game.
+    /// Register 6 test counters to the game.
     /// </summary>
     public void SetupCounters()
     {
-        this.counters = new CounterController[6].Select((c, index) =>
-        {
-            CounterController o = Instantiate(counterPrefab);
-            o.gameObject.name = "Player " + index;
-            return o;
-        }).ToArray();
+        SetupCounters(new CounterConfig[6].Select((_, i) => 
+            new CounterConfig($"Player {i}", CounterType.Human)).ToArray()
+        );
     }
 
     /// <summary>
     /// Register counters to the game.
     /// </summary>
     /// <param name="counters">An array of the counters in this game.</param>
-    public void SetupCounters(CounterController[] counters)
+    public void SetupCounters(CounterConfig[] counters)
     {
-        this.counters = counters;
-        for (int i = 0; i < counters.Length; i++)
-        {
-            counters[i].PickModel(i);
-        }
+        this.counters = counters.Select((c, i) => {
+            CounterController prefab = c.type == CounterType.Human ? humanCounterPrefab : aiCounterPrefab;
+            CounterController o = Instantiate(prefab);
+            o.gameObject.name = c.name;
+            o.PickModel(i);
+            return o;
+        }).ToArray();
     }
 
     public void Update()
@@ -364,6 +319,8 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void EndGame()
     {
+        gameOver = true;
+
         int[] totals = new int[counters.Length];
         Debug.Log("number of players: " + counters.Length);
         for (int i = 0; i < counters.Length; i++)
@@ -379,8 +336,8 @@ public class GameController : MonoBehaviour
                 winner = i;
             }
         }
-        GameUIManager.instance.EndGame(counters[winner].name , totals[winner]);
 
+        GameUIManager.instance.EndGame(counters[winner].name , totals[winner]);
     }
 
     /// <summary>

@@ -1,15 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Codice.Client.BaseCommands;
 using TMPro;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.Mathematics;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
+using SimpleFileBrowser;
+using System.IO;
+using UnityEngine.PlayerLoop;
 
 public class GameUIManager : MonoBehaviour
 {
@@ -64,10 +62,24 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject auctionMenu;
     [HideInInspector] public AuctionManager auctionManager { get { return auctionMenu.GetComponent<AuctionManager>(); } }
+    
+    [Header("Card Display")]
     /// <summary>
     /// UI for displaying cards
     /// </summary>
     [SerializeField] private GameObject cardUI;
+    /// <summary>
+    /// UI element of card background
+    /// </summary>
+    [SerializeField] private Image cardBackground;
+    /// <summary>
+    /// Background for potluck cards
+    /// </summary>
+    [SerializeField] private Sprite potluckBackground;
+    /// <summary>
+    /// Background for opportunity knocks cards
+    /// </summary>
+    [SerializeField] private Sprite opportunityBackground;
     /// <summary>
     /// Card title
     /// </summary>
@@ -76,6 +88,7 @@ public class GameUIManager : MonoBehaviour
     /// Card description
     /// </summary>
     [SerializeField] private TextMeshProUGUI cardDesc;
+
     /// <summary>
     /// Timer for the abridged version of the game
     /// </summary>
@@ -112,6 +125,10 @@ public class GameUIManager : MonoBehaviour
     /// Debt notification
     /// </summary>
     [SerializeField] private GameObject debtNotification;
+    /// <summary>
+    /// The current turn banner
+    /// </summary>
+    [SerializeField] private Transform currentTurn;
 
     [Header("Misc. Data")]
     /// <summary>
@@ -135,47 +152,20 @@ public class GameUIManager : MonoBehaviour
     [SerializeField] private bool[] previousUIState = new bool[] { true, false, false, false };
     [SerializeField] private bool[] currentUIState = new bool[] { true, false, false, false };
 
+    [Header("Setup UI")]
+    [SerializeField] private GameObject setUpUI;
+    [SerializeField] private TMP_InputField[] playerNames;
+    [SerializeField] private TMP_Dropdown[] playerTypes;
+    [SerializeField] private Image[] playerIcons;
+    [SerializeField] private TMP_Dropdown gamemodeInput;
+    [SerializeField] private TextMeshProUGUI setupError;
+    [SerializeField] private TMP_InputField hourInput;
+    [SerializeField] private TMP_InputField minuteInput;
+    [SerializeField] private TMP_InputField secongInput;
+    [SerializeField] private TextMeshProUGUI boardCSV;
+    [SerializeField] private TextMeshProUGUI cardCSV;
 
-    [SerializeField] private GameObject SetUpUI = null;
-    [SerializeField] private GameObject Player1NameInput = null;
-    [SerializeField] private GameObject Player2NameInput = null;
-    [SerializeField] private GameObject Player3NameInput = null;
-    [SerializeField] private GameObject Player4NameInput = null;
-    [SerializeField] private GameObject Player5NameInput = null;
-    [SerializeField] private GameObject Player6NameInput = null;
-    private string Player1Name;
-    private string Player2Name;
-    private string Player3Name;
-    private string Player4Name;
-    private string Player5Name;
-    private string Player6Name;
-    [SerializeField] private GameObject Player1TypeInput = null;
-    [SerializeField] private GameObject Player2TypeInput = null;
-    [SerializeField] private GameObject Player3TypeInput = null;
-    [SerializeField] private GameObject Player4TypeInput = null;
-    [SerializeField] private GameObject Player5TypeInput = null;
-    [SerializeField] private GameObject Player6TypeInput = null;
-    private string Player1Type;
-    private string Player2Type;
-    private string Player3Type;
-    private string Player4Type;
-    private string Player5Type;
-    private string Player6Type;
-    [SerializeField] private GameObject GamemodeInput = null;
-    private string Gamemode;
-    [SerializeField] private GameObject BoardInput = null;
-    [SerializeField] private GameObject CardInput = null;
-    private string boardCSV;
-    private string cardCSV;
-    [SerializeField] private GameObject Error = null;
-    [SerializeField] private GameObject HourInput = null;
-    [SerializeField] private GameObject MinInput = null;
-    [SerializeField] private GameObject SecInput = null;
-    private string Hour;
-    private string Min;
-    private string Sec;
-
-    private bool gameStarted;
+    public bool gameStarted { get; private set; }
 
 
     /// <summary>
@@ -243,7 +233,7 @@ public class GameUIManager : MonoBehaviour
     {
         gameStarted = false;
         instance = this;
-        this.SetUpUI.SetActive(true);
+        this.setUpUI.SetActive(true);
         SetUIState(false, false, false, false);
         this.gameTimer.SetActive(false);
         this.yesNoPromptUI.SetActive(false);
@@ -260,9 +250,19 @@ public class GameUIManager : MonoBehaviour
         this.mainUI.SetActive(false);
         this.helpAndRulesMenu.SetActive(false);
         this.diceRollUI.SetActive(false);
-        Debug.Log("gamestarted = " + gameStarted);
 
-        
+        this.setupError.gameObject.SetActive(false);
+        this.UpdateCSV();
+
+        foreach (TMP_InputField input in playerNames)
+        {
+            int i = Random.Range(0, defaultNames.Count);
+            input.text = defaultNames[i];
+            defaultNames.RemoveAt(i);
+        }
+
+        for (int i = 0; i < playerIcons.Length; i++)
+            playerIcons[i].sprite = GameController.instance.counterIcons[i];
     }
 
     void Update()
@@ -270,13 +270,14 @@ public class GameUIManager : MonoBehaviour
         if (gameStarted)
         {
             this.mainUI.SetActive(currentUIState[0]);
-            this.propertyDetails.SetActive(currentUIState[0]);
             this.helpAndRulesMenu.SetActive(currentUIState[1]);
             this.pauseMenu.SetActive(currentUIState[2]);
             this.diceRollUI.SetActive(currentUIState[3]);
 
+            this.gameTimer.SetActive(currentUIState[0] && GameController.instance.abridged);
             this.endTurnButton.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() >= 0);
             this.debtNotification.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() < 0);
+            this.propertyDetails.SetActive(endable);
             this.forefitButton.SetActive(endable);
 
             if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
@@ -292,16 +293,7 @@ public class GameUIManager : MonoBehaviour
             }
         }
     }
-    /// <summary>
-    /// Set up the timer.
-    /// </summary>
-    /// <param name="inputTimer"></param>
-    public void SetUpTimer(float inputTimer)
-    {
-        gameTimer.SetActive(true);
-        UpdateTimer(inputTimer);
-        Debug.Log("timer set up");
-    }
+
     /// <summary>
     /// Update the timer to show the current remaining time, in hours, mins and seconds.
     /// </summary>
@@ -395,8 +387,8 @@ public class GameUIManager : MonoBehaviour
     /// <param name="counterController">The counter controller whose name will be set in the current turn label</param>
     private void SetCurrentTurnLabel(CounterController counterController)
     {
-        mainUI.transform.Find("CurrentTurn").GetChild(0).GetComponent<TextMeshProUGUI>().text = counterController.name + "'s turn";
-        mainUI.transform.Find("CurrentTurn").GetChild(1).GetComponent<UnityEngine.UI.Image>().sprite = counterController.icon;
+        currentTurn.GetChild(0).GetComponent<TextMeshProUGUI>().text = counterController.name + "'s turn";
+        currentTurn.GetChild(1).GetComponent<Image>().sprite = counterController.icon;
 
     }
 
@@ -461,6 +453,7 @@ public class GameUIManager : MonoBehaviour
     public void QuitButtonClicked()
     {
         SceneManager.LoadScene("MainMenu");
+        Time.timeScale = 1;
     }
 
     /// <summary>
@@ -573,11 +566,22 @@ public class GameUIManager : MonoBehaviour
         return new WaitForAuction();
     }
 
-    public void ShowCard(string type, Card input)
+    public IEnumerator ShowPotluckCard(Card input)
     {
         this.cardUI.SetActive(true);
-        this.cardTitle.text = type;
+        this.cardBackground.sprite = potluckBackground;
+        this.cardTitle.text = "Potluck!";
         this.cardDesc.text = input.description;
+        yield return new FunctionalYieldInstruction(() => cardUI.activeSelf);
+    }
+
+    public IEnumerator ShowOpportunityCard(Card input)
+    {
+        this.cardUI.SetActive(true);
+        this.cardBackground.sprite = opportunityBackground;
+        this.cardTitle.text = "Opportunity Knocks!";
+        this.cardDesc.text = input.description;
+        yield return new FunctionalYieldInstruction(() => cardUI.activeSelf);
     }
 
     public void CloseCard()
@@ -670,71 +674,58 @@ public class GameUIManager : MonoBehaviour
     //----------Game Setup Menu(need to decide where we are putting this)----------
     public void SetupStart()
     {
-        Debug.Log("logging");
-        Player1Name = Player1NameInput.GetComponent<TMP_InputField>().text;
-        Player2Name = Player2NameInput.GetComponent<TMP_InputField>().text;
-        Player3Name = Player3NameInput.GetComponent<TMP_InputField>().text;
-        Player4Name = Player4NameInput.GetComponent<TMP_InputField>().text;
-        Player5Name = Player5NameInput.GetComponent<TMP_InputField>().text;
-        Player6Name = Player6NameInput.GetComponent<TMP_InputField>().text;
-        Hour = HourInput.GetComponent<TMP_InputField>().text;
-        Min = MinInput.GetComponent<TMP_InputField>().text;
-        Sec = SecInput.GetComponent<TMP_InputField>().text;
-        boardCSV = BoardInput.GetComponent<TMP_InputField>().text;
-        cardCSV = CardInput.GetComponent<TMP_InputField>().text;
-        Player1Type = Player1TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
-        Player2Type = Player2TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
-        Player3Type = Player3TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
-        Player4Type = Player4TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
-        Player5Type = Player5TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
-        Player6Type = Player6TypeInput.GetComponent<TMP_Dropdown>().value.ToString();
-        Gamemode = GamemodeInput.GetComponent<TMP_Dropdown>().value.ToString();
-
-
-
-        string[] playerNames = { Player1Name, Player2Name, Player3Name, Player4Name, Player5Name, Player6Name };
-        for (int i = 0; i < playerNames.Length; i++)
+        try
         {
-            if (playerNames[i].Equals(""))
-            {
-                int randNum = UnityEngine.Random.Range(0, defaultNames.Count);
-                playerNames[i] = defaultNames[randNum];
-                defaultNames.Remove(defaultNames[randNum]);
-            }
+            GameController.instance.SetupCounters(playerTypes.Where(t => t.value != 1)
+                .Select((t, i) => new CounterConfig(
+                    playerNames[i].text,
+                    t.value == 0 ? CounterType.AI : CounterType.Human
+                )).ToArray());
+        } catch (System.Exception e)
+        {
+            setupError.text = $"Counter Error: {e.Message}";
+            Debug.LogException(e);
+            return;
         }
 
-
-        int[] playerTypes = { int.Parse(Player1Type), int.Parse(Player2Type), int.Parse(Player3Type), int.Parse(Player4Type), int.Parse(Player5Type), int.Parse(Player6Type) };
-        bool mode = (Gamemode.Equals("0"));
-        Debug.Log(mode + ":" + Hour + ":" + Min + ":" + Sec + ":" + boardCSV + ":" + cardCSV);
-        Debug.Log(Player1Name + ":" + Player1Type);
-        Debug.Log(Player2Name + ":" + Player2Type);
-        Debug.Log(Player3Name + ":" + Player3Type);
-        Debug.Log(Player4Name + ":" + Player4Type);
-        Debug.Log(Player5Name + ":" + Player5Type);
-        Debug.Log(Player6Name + ":" + Player6Type);
-
-        int time = 0;
-        if (mode)
+        try
         {
-            time = (int.Parse(Hour) * 3600) + (int.Parse(Min) * 60) + int.Parse(Sec);
+            int time = time = (int.Parse(hourInput.text) * 3600) + (int.Parse(minuteInput.text) * 60) + int.Parse(secongInput.text);
+            GameController.instance.SetupGamemode(gamemodeInput.value == 0, time);
+        }
+        catch (System.Exception e)
+        {
+            setupError.text = $"Gamemode Error: {e.Message}";
+            Debug.LogException(e);
+            return;
         }
 
+        try
+        {
+            GameController.instance.SetupBoard(PlayerPrefs.GetString("Board"));
+        }
+        catch (System.Exception e)
+        {
+            setupError.text = $"Board CSV Error: {e.Message}";
+            Debug.LogException(e);
+            return;
+        }
 
-        GameController.instance.StartGame(playerNames, playerTypes, mode, time, boardCSV, cardCSV);
+        try
+        {
+            GameController.instance.SetupCards(PlayerPrefs.GetString("Card"));
+        }
+        catch (System.Exception e)
+        {
+            setupError.text = $"Card CSV Error: {e.Message}";
+            Debug.LogException(e);
+            return;
+        }
 
-        // Disable all but the main UI
         gameStarted = true;
-        this.SetUpUI.SetActive(false);
+        this.setUpUI.SetActive(false);
         SetUIState(true, false, false, true);
-        this.yesNoPromptUI.SetActive(false);
-        this.okPromptUI.SetActive(false);
-        this.getOutOfJailFree.SetActive(false);
-        this.auctionMenu.SetActive(false);
-        this.cardUI.SetActive(false);
-        this.gameEndScreen.SetActive(false);
-        this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
-        this.helpAndRulesMenu.transform.GetChild(1).gameObject.SetActive(false);
+        GameController.instance.StartGame();
     }
 
     /// <summary>
@@ -760,5 +751,51 @@ public class GameUIManager : MonoBehaviour
     public void Endable()
     {
         endable = true;
+    }
+
+    /// <summary>
+    /// Sets the CSV path for the <paramref name="which"/>
+    /// </summary>
+    /// <param name="which">The CVS to set</param>
+    /// <param name="result">The path to set.</param>
+    private void SetCSV(string which, string result)
+    {
+        PlayerPrefs.SetString(which, result);
+        UpdateCSV();
+    }
+
+    /// <summary>
+    /// Update the CSV path display on the UI
+    /// </summary>
+    private void UpdateCSV()
+    {
+        boardCSV.text = PlayerPrefs.HasKey("Board") ? Path.GetFileName(PlayerPrefs.GetString("Board")) : "None selected";
+        cardCSV.text = PlayerPrefs.HasKey("Card") ? Path.GetFileName(PlayerPrefs.GetString("Card")) : "None selected";
+    }
+
+    /// <summary>
+    /// Open a file dialog to select the CSV for <paramref name="which"/>
+    /// </summary>
+    /// <param name="which"></param>
+    private void BrowseCSV(string which)
+    {
+        FileBrowser.SetFilters(false, ".csv");
+        FileBrowser.ShowLoadDialog(r => SetCSV(which, r[0]), null, FileBrowser.PickMode.Files, initialPath: Path.GetFullPath("."), title: $"Load {which} CSV");
+    }
+
+    /// <summary>
+    /// Open a file dialog to select the BoardCSV
+    /// </summary>
+    public void BrowseBoardCSV()
+    {
+        BrowseCSV("Board");
+    }
+
+    /// <summary>
+    /// Open a file dialog to select the CardCSV
+    /// </summary>
+    public void BrowseCardCSV()
+    {
+        BrowseCSV("Card");
     }
 }

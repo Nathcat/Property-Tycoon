@@ -7,7 +7,7 @@ public class Move : Command
 
     override public IEnumerator Execute(CounterController counterController, Argument[] args) {
         if (args[0].value.ToLower() == "absolute") {
-            counterController.MoveAbsolute(int.Parse(args[1].value));
+            counterController.MoveAbsolute(int.Parse(args[1].value) - 1);
             Debug.Log(counterController.name + " moves to space number " + args[1].value);
         }
         else if (args[0].value.ToLower() == "relative")

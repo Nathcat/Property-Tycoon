@@ -1,4 +1,3 @@
-using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,6 +16,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private int lengthOffset = 5;
     [SerializeField] private float moveLerp = 1f;
     [SerializeField] private float rotateLerp = 2f;
+    [SerializeField] private Vector3 orbitOffset;
+    [SerializeField] private float orbitSpeed = 4;
     /// <summary> The currently targeted space, null if the target is not a space. </summary>
     public SpaceController space { get; private set; }
 
@@ -36,11 +37,28 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (target == null) return;
-        transform.position = Vector3.Lerp(transform.position, GetDestination(), Time.deltaTime * moveLerp);
+        Vector3 moveTarget;
+        Vector3 lookTarget;
 
-        Quaternion rotation = Quaternion.LookRotation(target.transform.position - transform.position);
+        if (target == null || GameController.instance.gameOver)
+        {
+            moveTarget = GetOrbit();
+            lookTarget = Vector3.zero;
+        } else
+        {
+            moveTarget = GetDestination();
+            lookTarget = target.transform.position;
+        }
+
+        transform.position = Vector3.Lerp(transform.position, moveTarget, Time.deltaTime * moveLerp);
+
+        Quaternion rotation = Quaternion.LookRotation(lookTarget - transform.position);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * rotateLerp);
+    }
+
+    public Vector3 GetOrbit()
+    {
+        return Quaternion.Euler(0, orbitSpeed * Time.time % 360, 0) * orbitOffset;
     }
 
     //a method to move the camera to a target gameobject
