@@ -1,16 +1,13 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Codice.Client.BaseCommands;
 using TMPro;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.Mathematics;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
+using SimpleFileBrowser;
+using System.IO;
+using UnityEngine.PlayerLoop;
 
 public class GameUIManager : MonoBehaviour
 {
@@ -33,8 +30,9 @@ public class GameUIManager : MonoBehaviour
     /// <summary>
     /// The active instance of this class
     /// </summary>
-    public static GameUIManager instance { get; private set; }
+    [HideInInspector] public static GameUIManager instance { get; private set; }
 
+    [Header("UI Root Elements")]
     /// <summary>
     /// This is the help and rules menu canvas
     /// </summary>
@@ -64,10 +62,24 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject auctionMenu;
     [HideInInspector] public AuctionManager auctionManager { get { return auctionMenu.GetComponent<AuctionManager>(); } }
+    
+    [Header("Card Display")]
     /// <summary>
     /// UI for displaying cards
     /// </summary>
     [SerializeField] private GameObject cardUI;
+    /// <summary>
+    /// UI element of card background
+    /// </summary>
+    [SerializeField] private Image cardBackground;
+    /// <summary>
+    /// Background for potluck cards
+    /// </summary>
+    [SerializeField] private Sprite potluckBackground;
+    /// <summary>
+    /// Background for opportunity knocks cards
+    /// </summary>
+    [SerializeField] private Sprite opportunityBackground;
     /// <summary>
     /// Card title
     /// </summary>
@@ -76,6 +88,7 @@ public class GameUIManager : MonoBehaviour
     /// Card description
     /// </summary>
     [SerializeField] private TextMeshProUGUI cardDesc;
+
     /// <summary>
     /// Timer for the abridged version of the game
     /// </summary>
@@ -101,6 +114,24 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject endTurnButton;
     /// <summary>
+    /// Called on completion of a yes / no prompt
+    /// </summary>
+    private System.Action<bool> onYesNoResponse;
+    /// <summary>
+    /// Forefit button
+    /// </summary>
+    [SerializeField] private GameObject forefitButton;
+    /// <summary>
+    /// Debt notification
+    /// </summary>
+    [SerializeField] private GameObject debtNotification;
+    /// <summary>
+    /// The current turn banner
+    /// </summary>
+    [SerializeField] private Transform currentTurn;
+
+    [Header("Misc. Data")]
+    /// <summary>
     /// The player cards displayed in the main UI
     /// </summary>
     [SerializeField] private GameObject[] playerCardElements;
@@ -108,11 +139,34 @@ public class GameUIManager : MonoBehaviour
     /// The textures used to display the dice roll
     /// </summary>
     [SerializeField] private Texture[] diceTextures;
+    [SerializeField] private float diceRollTimeout = 3f;
+
+
+    /// <summary>
+    /// Default names list, to replace missing names.
+    /// </summary>
+    [SerializeField] private List<string> defaultNames;
     /// <summary>
     /// The state the UI was in before its current state
     /// </summary>
     [SerializeField] private bool[] previousUIState = new bool[] { true, false, false, false };
     [SerializeField] private bool[] currentUIState = new bool[] { true, false, false, false };
+
+    [Header("Setup UI")]
+    [SerializeField] private GameObject setUpUI;
+    [SerializeField] private TMP_InputField[] playerNames;
+    [SerializeField] private TMP_Dropdown[] playerTypes;
+    [SerializeField] private Image[] playerIcons;
+    [SerializeField] private TMP_Dropdown gamemodeInput;
+    [SerializeField] private TextMeshProUGUI setupError;
+    [SerializeField] private TMP_InputField hourInput;
+    [SerializeField] private TMP_InputField minuteInput;
+    [SerializeField] private TMP_InputField secongInput;
+    [SerializeField] private TextMeshProUGUI boardCSV;
+    [SerializeField] private TextMeshProUGUI cardCSV;
+
+    public bool gameStarted { get; private set; }
+
 
     /// <summary>
     /// The last response from a yes / no prompt
@@ -122,6 +176,11 @@ public class GameUIManager : MonoBehaviour
     [HideInInspector] public RollData lastDiceRoll { get; private set; } = null;
     [HideInInspector] public bool waitingForDiceRollComplete { get; private set; } = false;
     [HideInInspector] public bool waitingForAuction { get; private set; } = false;
+
+    /// <summary>
+    /// <see cref="true"/> if the current turn can be ended.
+    /// </summary>
+    private bool endable;
 
     /// <summary>
     /// Used to wait for a yes / no prompt to complete
@@ -172,10 +231,10 @@ public class GameUIManager : MonoBehaviour
 
     void Start()
     {
+        gameStarted = false;
         instance = this;
-
-        // Disable all but the main UI
-        SetUIState(true, false, false, false);
+        this.setUpUI.SetActive(true);
+        SetUIState(false, false, false, false);
         this.gameTimer.SetActive(false);
         this.yesNoPromptUI.SetActive(false);
         this.okPromptUI.SetActive(false);
@@ -183,42 +242,58 @@ public class GameUIManager : MonoBehaviour
         this.auctionMenu.SetActive(false);
         this.cardUI.SetActive(false);
         this.gameEndScreen.SetActive(false);
-        this.helpAndRulesMenu.transform.GetChild(0).gameObject.SetActive(true);
-        this.helpAndRulesMenu.transform.GetChild(1).gameObject.SetActive(false);
+        this.propertyDetails.SetActive(false);
+
+
+
+        this.pauseMenu.SetActive(false);
+        this.mainUI.SetActive(false);
+        this.helpAndRulesMenu.SetActive(false);
+        this.diceRollUI.SetActive(false);
+
+        this.setupError.gameObject.SetActive(false);
+        this.UpdateCSV();
+
+        foreach (TMP_InputField input in playerNames)
+        {
+            int i = Random.Range(0, defaultNames.Count);
+            input.text = defaultNames[i];
+            defaultNames.RemoveAt(i);
+        }
+
+        for (int i = 0; i < playerIcons.Length; i++)
+            playerIcons[i].sprite = GameController.instance.counterIcons[i];
     }
 
     void Update()
     {
-        this.mainUI.SetActive(currentUIState[0]);
-        this.propertyDetails.SetActive(currentUIState[0]);
-        this.helpAndRulesMenu.SetActive(currentUIState[1]);
-        this.pauseMenu.SetActive(currentUIState[2]);
-        this.diceRollUI.SetActive(currentUIState[3]);
-
-        this.endTurnButton.SetActive(currentUIState[0] && currentUIState.Count(s => s) == 1);
-
-        if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
-
-        bool GOJF = GameController.instance.turnCounter.getOutOfJailFree;
-        if (GOJF)
+        if (gameStarted)
         {
-            this.getOutOfJailFree.SetActive(true);
-        }
-        else
-        {
-            this.getOutOfJailFree.SetActive(false);
+            this.mainUI.SetActive(currentUIState[0]);
+            this.helpAndRulesMenu.SetActive(currentUIState[1]);
+            this.pauseMenu.SetActive(currentUIState[2]);
+            this.diceRollUI.SetActive(currentUIState[3]);
+
+            this.gameTimer.SetActive(currentUIState[0] && GameController.instance.abridged);
+            this.endTurnButton.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() >= 0);
+            this.debtNotification.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() < 0);
+            this.propertyDetails.SetActive(endable);
+            this.forefitButton.SetActive(endable);
+
+            if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);
+
+            bool GOJF = GameController.instance.turnCounter.getOutOfJailFree;
+            if (GOJF)
+            {
+                this.getOutOfJailFree.SetActive(true);
+            }
+            else
+            {
+                this.getOutOfJailFree.SetActive(false);
+            }
         }
     }
-    /// <summary>
-    /// Set up the timer.
-    /// </summary>
-    /// <param name="inputTimer"></param>
-    public void SetUpTimer(float inputTimer)
-    {
-        gameTimer.SetActive(true);
-        UpdateTimer(inputTimer);
-        Debug.Log("timer set up");
-    }
+
     /// <summary>
     /// Update the timer to show the current remaining time, in hours, mins and seconds.
     /// </summary>
@@ -232,7 +307,7 @@ public class GameUIManager : MonoBehaviour
         else
         {
             float hours = Mathf.FloorToInt(inputTimer / 3600);
-            float mins = Mathf.FloorToInt(inputTimer / 60);
+            float mins = Mathf.FloorToInt((inputTimer / 60) % 60);
             float seconds = Mathf.FloorToInt(inputTimer % 60);
             if (mins < 10)
             {
@@ -266,6 +341,7 @@ public class GameUIManager : MonoBehaviour
     /// <param name="currentTurn">The player whose turn it is now</param>
     public void UpdateUIForNewTurn(CounterController currentTurn)
     {
+        endable = false;
         SetUIState(true, false, false, false);
         SetCurrentTurnLabel(currentTurn);
         updatePlayers();
@@ -285,11 +361,23 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     private void UpdateAllPlayerCardData()
     {
-        for (int i = 0; i < GameController.instance.counters.Length; i++)
+        for (int i = 0; i < playerCardElements.Length; i++)
         {
-            playerCardElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
-            playerCardElements[i].transform.Find("Icon").GetComponent<UnityEngine.UI.Image>().sprite = GameController.instance.counters[i].icon;
-            playerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = $"�{GameController.instance.counters[i].portfolio.GetCashBalance()}";
+            if (i >= GameController.instance.counters.Length)
+            {
+                playerCardElements[i].SetActive(false);
+            }
+            else
+            {
+                playerCardElements[i].SetActive(true);
+                playerCardElements[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = GameController.instance.counters[i].name;
+                playerCardElements[i].transform.Find("Icon").GetComponent<UnityEngine.UI.Image>().sprite = GameController.instance.counters[i].icon;
+
+                int balance = GameController.instance.counters[i].portfolio.GetCashBalance();
+                string label = $"{(balance < 0 ? "-" : "")}£{Mathf.Abs(balance)}";
+                playerCardElements[i].transform.Find("Money").GetComponent<TextMeshProUGUI>().text = label;
+            }
+
         }
     }
 
@@ -299,8 +387,8 @@ public class GameUIManager : MonoBehaviour
     /// <param name="counterController">The counter controller whose name will be set in the current turn label</param>
     private void SetCurrentTurnLabel(CounterController counterController)
     {
-        mainUI.transform.Find("CurrentTurn").GetChild(0).GetComponent<TextMeshProUGUI>().text = counterController.name + "'s turn";
-        mainUI.transform.Find("CurrentTurn").GetChild(1).GetComponent<UnityEngine.UI.Image>().sprite = counterController.icon;
+        currentTurn.GetChild(0).GetComponent<TextMeshProUGUI>().text = counterController.name + "'s turn";
+        currentTurn.GetChild(1).GetComponent<Image>().sprite = counterController.icon;
 
     }
 
@@ -332,7 +420,9 @@ public class GameUIManager : MonoBehaviour
         i = 1;
         foreach (CounterController counterController in order)
         {
-            s += i.ToString() + (i == 1 ? "st" : (i == 2 ? "nd" : (i == 3 ? "rd" : "th"))) + " " + counterController.name + ": " + counterController.portfolio.TotalValue() + "\n";
+            int value = counterController.portfolio.TotalValue();
+            string score = $"{(value < 0 ? "-" : "")}£{Mathf.Abs(value)}";
+            s += i.ToString() + (i == 1 ? "st" : (i == 2 ? "nd" : (i == 3 ? "rd" : "th"))) + " " + counterController.name + ": " + score + "\n";
             i++;
         }
 
@@ -363,6 +453,7 @@ public class GameUIManager : MonoBehaviour
     public void QuitButtonClicked()
     {
         SceneManager.LoadScene("MainMenu");
+        Time.timeScale = 1;
     }
 
     /// <summary>
@@ -470,16 +561,27 @@ public class GameUIManager : MonoBehaviour
         SetUIState(false, false, false, false);
         previousUIState = new bool[4];
         this.auctionMenu.SetActive(true);
-        this.auctionMenu.GetComponent<AuctionManager>().StartAuction(GameController.instance.spaces[GameController.instance.turnCounter.position] as Property);
         waitingForAuction = true;
-        yield return new WaitForAuction();
+        this.auctionMenu.GetComponent<AuctionManager>().StartAuction(GameController.instance.spaces[GameController.instance.turnCounter.position] as Property);
+        return new WaitForAuction();
     }
 
-    public void ShowCard(string type, Card input)
+    public IEnumerator ShowPotluckCard(Card input)
     {
         this.cardUI.SetActive(true);
-        this.cardTitle.text = type;
+        this.cardBackground.sprite = potluckBackground;
+        this.cardTitle.text = "Potluck!";
         this.cardDesc.text = input.description;
+        yield return new FunctionalYieldInstruction(() => cardUI.activeSelf);
+    }
+
+    public IEnumerator ShowOpportunityCard(Card input)
+    {
+        this.cardUI.SetActive(true);
+        this.cardBackground.sprite = opportunityBackground;
+        this.cardTitle.text = "Opportunity Knocks!";
+        this.cardDesc.text = input.description;
+        yield return new FunctionalYieldInstruction(() => cardUI.activeSelf);
     }
 
     public void CloseCard()
@@ -492,9 +594,10 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     public void FinishAuction()
     {
-        this.auctionMenu.SetActive(false);
         SetUIState(true, false, false, false);
-        waitingForAuction = false;
+        instance.waitingForAuction = false;
+        Debug.Log("Finished auction");
+        this.auctionMenu.SetActive(false);
     }
 
     /// <summary>
@@ -520,11 +623,19 @@ public class GameUIManager : MonoBehaviour
         waitingForDiceRollComplete = true;
         SetUIState(true, false, false, true);
         lastDiceRoll = DoDiceRoll();
+        Debug.Log("dicetextures:" + diceTextures.Length);
         diceRollUI.transform.GetChild(0).GetComponent<RawImage>().texture = diceTextures[lastDiceRoll.dice1 - 1];
         diceRollUI.transform.GetChild(1).GetComponent<RawImage>().texture = diceTextures[lastDiceRoll.dice2 - 1];
         diceRollUI.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = lastDiceRoll.dice1 + lastDiceRoll.dice2 + (lastDiceRoll.doubleRoll ? "\nDouble! Roll again!" : "");
 
-        yield return new WaitForDiceRoll();
+        diceRollUI.transform.GetChild(3).gameObject.SetActive(GameController.instance.turnCounter.isControllable);
+
+        if (GameController.instance.turnCounter.isControllable) yield return new WaitForDiceRoll();
+        else
+        {
+            yield return new WaitForSeconds(diceRollTimeout);
+            CompleteDiceRoll();
+        }
     }
 
     /// <summary>
@@ -558,5 +669,133 @@ public class GameUIManager : MonoBehaviour
     public void EndMenuClicked()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    //----------Game Setup Menu(need to decide where we are putting this)----------
+    public void SetupStart()
+    {
+        try
+        {
+            GameController.instance.SetupCounters(playerTypes.Where(t => t.value != 1)
+                .Select((t, i) => new CounterConfig(
+                    playerNames[i].text,
+                    t.value == 0 ? CounterType.AI : CounterType.Human
+                )).ToArray());
+        } catch (System.Exception e)
+        {
+            setupError.text = $"Counter Error: {e.Message}";
+            Debug.LogException(e);
+            return;
+        }
+
+        try
+        {
+            int time = time = (int.Parse(hourInput.text) * 3600) + (int.Parse(minuteInput.text) * 60) + int.Parse(secongInput.text);
+            GameController.instance.SetupGamemode(gamemodeInput.value == 0, time);
+        }
+        catch (System.Exception e)
+        {
+            setupError.text = $"Gamemode Error: {e.Message}";
+            Debug.LogException(e);
+            return;
+        }
+
+        try
+        {
+            GameController.instance.SetupBoard(PlayerPrefs.GetString("Board"));
+        }
+        catch (System.Exception e)
+        {
+            setupError.text = $"Board CSV Error: {e.Message}";
+            Debug.LogException(e);
+            return;
+        }
+
+        try
+        {
+            GameController.instance.SetupCards(PlayerPrefs.GetString("Card"));
+        }
+        catch (System.Exception e)
+        {
+            setupError.text = $"Card CSV Error: {e.Message}";
+            Debug.LogException(e);
+            return;
+        }
+
+        gameStarted = true;
+        this.setUpUI.SetActive(false);
+        SetUIState(true, false, false, true);
+        GameController.instance.StartGame();
+    }
+
+    /// <summary>
+    /// Modify the UI for a particular counter type
+    /// </summary>
+    /// <param name="isControllable">Whether or not this counter is controllable. If false, UI elements which allow the user to control the turn will be disabled</param>
+    private void ModifyUIForCounterType(bool isControllable)
+    {
+        mainUI.transform.Find("EndTurnButton").gameObject.SetActive(isControllable);
+    }
+
+    /// <summary>
+    /// When bankrupt clicked
+    /// </summary>
+    public void ForefitClicked()
+    {
+        GameController.instance.forefit(GameController.instance.turnCounter);
+    }
+
+    /// <summary>
+    /// Allows the turn to be ended.
+    /// </summary>
+    public void Endable()
+    {
+        endable = true;
+    }
+
+    /// <summary>
+    /// Sets the CSV path for the <paramref name="which"/>
+    /// </summary>
+    /// <param name="which">The CVS to set</param>
+    /// <param name="result">The path to set.</param>
+    private void SetCSV(string which, string result)
+    {
+        PlayerPrefs.SetString(which, result);
+        UpdateCSV();
+    }
+
+    /// <summary>
+    /// Update the CSV path display on the UI
+    /// </summary>
+    private void UpdateCSV()
+    {
+        boardCSV.text = PlayerPrefs.HasKey("Board") ? Path.GetFileName(PlayerPrefs.GetString("Board")) : "None selected";
+        cardCSV.text = PlayerPrefs.HasKey("Card") ? Path.GetFileName(PlayerPrefs.GetString("Card")) : "None selected";
+    }
+
+    /// <summary>
+    /// Open a file dialog to select the CSV for <paramref name="which"/>
+    /// </summary>
+    /// <param name="which"></param>
+    private void BrowseCSV(string which)
+    {
+        FileBrowser.SetFilters(false, ".csv");
+        FileBrowser.ShowLoadDialog(r => SetCSV(which, r[0]), null, FileBrowser.PickMode.Files, initialPath: Path.GetFullPath("."), title: $"Load {which} CSV");
+    }
+
+    /// <summary>
+    /// Open a file dialog to select the BoardCSV
+    /// </summary>
+    public void BrowseBoardCSV()
+    {
+        BrowseCSV("Board");
+    }
+
+    /// <summary>
+    /// Open a file dialog to select the CardCSV
+    /// </summary>
+    public void BrowseCardCSV()
+    {
+        BrowseCSV("Card");
     }
 }

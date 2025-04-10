@@ -1,3 +1,4 @@
+using System.Xml.Serialization;
 using UnityEngine;
 
 /// <summary>
@@ -272,6 +273,15 @@ public class Property : Space, IAsset
 
         owner.portfolio.AddAsset(new Cash(isMortgaged ? (mortgageValue) : cost));
         owner.portfolio.RemoveProperty(this);
+        owner = null;
+    }
+
+    /// <summary>
+    /// Forefit this property without refunding.
+    /// </summary>
+    public void forefit()
+    {
+        upgradeLevel = 0;
         owner = null;
     }
 }

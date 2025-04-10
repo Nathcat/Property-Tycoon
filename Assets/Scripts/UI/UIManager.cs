@@ -4,6 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+    //GameSetUpFields
+    
+
+
     //MainMenu Fields
     [SerializeField] private GameObject StartScreen = null;
     [SerializeField] private GameObject Credits = null;
@@ -18,11 +22,11 @@ public class UIManager : MonoBehaviour
     //InGame Fields
     [SerializeField] private GameObject HelpAndEscape = null;
     [SerializeField] private GameObject PauseButton = null;
-    [SerializeField] private GameObject[] Dice;
-    [SerializeField] private GameObject[] PlayerCardElements;
-    [SerializeField] private TextMeshProUGUI PlayerTurn;
-    public int DiceValue1;
-    public int DiceValue2;
+    [SerializeField] private GameObject[] Dice = null;
+    [SerializeField] private GameObject[] PlayerCardElements = null;
+    [SerializeField] private TextMeshProUGUI PlayerTurn = null;
+    public int DiceValue1 = 0;
+    public int DiceValue2 = 0;
 
 
     //AuctionMenu Fields
@@ -40,6 +44,7 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         Scene = SceneManager.GetActiveScene();
         CurrentScene = Scene.name;
         if (Scene.name == "MainMenu")
@@ -54,6 +59,7 @@ public class UIManager : MonoBehaviour
         }
         else if (Scene.name == GameScene)
         {
+            
             TurnOffPlayerCards();
             //SetupScreen.SetActive(true);
             PauseButton.SetActive(true);
@@ -66,7 +72,9 @@ public class UIManager : MonoBehaviour
             {
                 d.SetActive(false);
             }
+            
         }
+        
     }
 
     // Update is called once per frame
@@ -100,6 +108,8 @@ public class UIManager : MonoBehaviour
 
     public void MMStartButton()
     {
+        StartScreen.SetActive(false);
+        //SetUpUI.SetActive(true);
         SceneManager.LoadScene(GameScene);
     }
     public void MMSettingsButton()
@@ -127,7 +137,11 @@ public class UIManager : MonoBehaviour
     public void EMYesButton()
     {
         //Close the program, I think we should do a while true loop that eats all their RAM >:3
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
         Application.Quit();
+#endif
     }
     //----------help menu----------
     public void HMHelpButton()
@@ -283,8 +297,6 @@ public class UIManager : MonoBehaviour
 
 
 
-    //----------game composition menu----------
-
-
+    
 
 }

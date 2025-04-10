@@ -1,20 +1,15 @@
-using System.Linq;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
-
-/// <summary>
-/// CounterController: A class used to control a counter, either controlled by a player or an AI.
-/// </summary>
-public class CounterController : MonoBehaviour
+public abstract class CounterController : MonoBehaviour
 {
     /// <summary> The portfolio of the counter, containing any owned money and properties. </summary>
     [HideInInspector] public readonly Portfolio portfolio = new Portfolio();
 
     /// <summary> The index in <see cref="GameController.spaces"/> that this counter is currently on. </summary>
-    [HideInInspector] public int position { get; private set; }
+    [HideInInspector] public int position { get; protected set; }
 
     /// <summary> The index of this counter in <see cref="GameController.counters"/>. </summary>
     public int order { get { return System.Array.IndexOf(GameController.instance.counters, this); } }
@@ -23,27 +18,19 @@ public class CounterController : MonoBehaviour
     public Space space { get { return GameController.instance.spaces[position]; } }
 
     /// <summary> The icon used to represent this counter </summary>
-    public Sprite icon { get { return counterIcons[order]; } }
+    public Sprite icon { get; private set; }
 
     /// <summary> The space controller that the counter is currently on </summary>
     public SpaceController spaceController { get { return GameController.instance.spaceControllers[position]; } }
     /// <summary>
     /// The name of the game object this controller is attached to
     /// </summary>
-    new public string name { get { return gameObject.name; } }
-
-    /// <summary>
-    /// Stores the models of each counter
-    /// </summary>
-    [SerializeField] private GameObject[] models;
-
-    /// <summary> Icons to represent each counter </summary>
-    public Sprite[] counterIcons;
+    public string name { get { return gameObject.name; } }
 
     /// <summary>
     /// Stores the current counter's model
     /// </summary>
-    private GameObject currentModel;
+    protected GameObject currentModel;
 
     /// <summary>
     /// Stores the last roll performed by this counter
@@ -53,12 +40,12 @@ public class CounterController : MonoBehaviour
     /// <summary>
     /// Stores if the player is in jail
     /// </summary>
-    public bool isInJail { get; private set; }
+    public bool isInJail { get; protected set; }
 
     /// <summary>
     /// The number of turns the player has been in jail
     /// </summary>
-    private int turnsInJail = 0;
+    protected int turnsInJail = 0;
     /// <summary>
     /// True if the player is able to get out of jail free
     /// </summary>
@@ -66,19 +53,13 @@ public class CounterController : MonoBehaviour
     /// <summary>
     /// Determines whether or not the player can currently buy properties
     /// </summary>
-    public bool canPurchaseProperties { get; private set; } = false;
+    public bool canPurchaseProperties { get; protected set; } = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        Move();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    /// <summary>
+    /// Determines whether or not this counter is controllable by the user.
+    /// i.e. for a Human counter this should always be true, otherwise this should be false
+    /// </summary>
+    virtual public bool isControllable { get {return false; } }
 
     /// <summary>
     /// This makes the counter's model the model of its index
@@ -89,57 +70,26 @@ public class CounterController : MonoBehaviour
         {
             Destroy(currentModel);
         }
-        currentModel = models[modelNum];
+        currentModel = GameController.instance.counterModels[modelNum];
+        icon = GameController.instance.counterIcons[modelNum];
         Instantiate(currentModel, transform);
     }
 
-    public IEnumerator GoToJail()
+    // Start is called before the first frame update
+    void Start()
     {
-        MoveAbsolute(GameController.instance.jailSpace.position);
-
-        Debug.Log(name + " has gone to jail, can they pay?");
-
-        if (getOutOfJailFree)
-        {
-            Debug.Log("... they have a get out of jail free card!");
-            //Utils.RunAfter(1, GameController.instance.NextTurn);
-            yield return new WaitForSeconds(1f);
-        }
-
-        if (portfolio.GetCashBalance() >= 50)
-        {
-            Debug.Log("... they can pay, asking if they want to...");
-
-            yield return GameUIManager.instance.YesNoPrompt("Pay £50 to get out of jail?");
-            bool reply = GameUIManager.instance.promptState.response;
-
-            if (reply)
-            {
-                Cash fine = new Cash(50);
-                portfolio.RemoveCash(fine);
-                GameController.instance.freeParking.AddCash(fine);
-                Debug.Log(name + " pays to leave jail!");
-
-                //Utils.RunAfter(1, GameController.instance.NextTurn);
-            }
-            else
-            {
-                isInJail = true;
-                Debug.Log(name + " is now in jail! Jail space is at position " + GameController.instance.jailSpace.position);
-
-                //Utils.RunAfter(1, GameController.instance.NextTurn);
-            }
-        }
-        else
-        {
-            Debug.Log("... they cannot pay.");
-            isInJail = true;
-            Debug.Log(name + " is now in jail! Jail space is at position " + GameController.instance.jailSpace.position);
-            //Utils.RunAfter(1, GameController.instance.NextTurn);
-            yield return new WaitForSeconds(1f);
-        }
+        Move();
     }
 
+    /// <summary>
+    /// Should be called when this counter should be sent to jail.
+    /// Whether or not it actually goes to jail will be determined in this method.
+    /// </summary>
+    abstract public IEnumerator GoToJail();
+
+    /// <summary>
+    /// Have this counter leave jail
+    /// </summary>
     public void LeaveJail()
     {
         isInJail = false;
@@ -149,99 +99,14 @@ public class CounterController : MonoBehaviour
     }
 
     /// <summary>
-    /// Rolls both dice, and moves the counter. If the roll is a double roll, the dice are rolled again and counter moved again.
+    /// Play this counter's turn
     /// </summary>
-    public IEnumerator PlayTurn()
-    {
-        if (!isInJail)
-        {
-            // Roll three times
-            yield return GameUIManager.instance.RollDice();
-
-            MoveCounter(lastRoll.dice1, lastRoll.dice2);
-            int doubles = 0;
-            while (lastRoll.doubleRoll)
-            {
-                doubles++;
-
-                if (doubles == 3)
-                {
-                    break;
-                }
-
-                yield return GameUIManager.instance.RollDice();
-
-                MoveCounter(lastRoll.dice1, lastRoll.dice2);
-            }
-
-            // If 3 doubles have been rolled, go to jail
-            if (doubles == 3)
-            {
-                Debug.Log(name + " has rolled 3 doubles, going to jail!");
-                yield return GoToJail();
-                yield break;
-            }
-
-            int oldPos = position;
-            do
-            {
-                oldPos = position;
-                yield return GameController.instance.spaces[position].action.Run(this);
-            } while (oldPos != position);
-
-
-            Space space = GameController.instance.spaces[position];
-
-            if (space is Property)
-            {
-                Property p = space as Property;
-
-                if (!p.isOwned && canPurchaseProperties)
-                {
-                    if (p.CanPurchase(this))
-                    {
-                        yield return GameUIManager.instance.YesNoPrompt("Would you like to buy " + p.name + " for £" + p.GetValue() + "?");
-
-                        bool reply = GameUIManager.instance.promptState.response;
-                        if (reply)
-                        {
-                            p.Purchase(this);
-                            Debug.Log(name + " has purchased " + p.name);
-                            yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
-                        }
-                        else
-                        {
-                            yield return GameUIManager.instance.StartAuction();
-                            yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
-                        }
-                    }
-                    else
-                    {
-                        yield return GameUIManager.instance.StartAuction();
-                        yield return GameUIManager.instance.OkPrompt(p.owner.name + " now owns " + p.name);
-                    }
-                }
-            }
-
-            CameraController.instance.SetTarget(spaceController.gameObject);
-        }
-        else
-        {
-            turnsInJail++;
-
-            Debug.Log(name + " has been in jail for " + turnsInJail + " turns");
-            if (turnsInJail == 2)
-            {
-                Debug.Log(name + " has done their time in jail!");
-                LeaveJail();
-            }
-        }
-    }
+    abstract public IEnumerator PlayTurn();
 
     /// <summary>
-    /// Move the counter to a specific space
+    /// Move this counter to the space specified by <paramref name="space"/>
     /// </summary>
-    /// <param name="space">The index of the space to  move to</param>
+    /// <param name="space">The index of the space to move to</param>
     public void MoveAbsolute(int space)
     {
         position = space % GameController.instance.spaces.Length;
@@ -249,10 +114,10 @@ public class CounterController : MonoBehaviour
     }
 
     /// <summary>
-    /// Takes in two integers for the dice rolled, and moves the counter the required number of spaces.
+    /// Move this counter by the sum of <paramref name="dice1"/> and <paramref name="dice2"/>
     /// </summary>
-    /// <param name="dice1"> First dice value. </param>
-    /// <param name="dice2"> Second dice value. </param>
+    /// <param name="dice1">The first value</param>
+    /// <param name="dice2">The second value</param>
     public void MoveCounter(int dice1, int dice2)
     {
         int move = dice1 + dice2;
@@ -274,13 +139,15 @@ public class CounterController : MonoBehaviour
         Move();
     }
 
-    /// <summary> Move this counter to the space specified in <see cref="position"/> </summary>
-    private void Move()
+    /// <summary>
+    /// Perform a physical movement to the space given by <paramref name="position"/>
+    /// </summary>
+    protected void Move()
     {
         float boardPosition = 0;
         transform.position = GameController.instance.spaceControllers[position].waypoints[order].position;
         boardPosition = position;
-        boardPosition = boardPosition / GameController.instance.spaces.Count();
+        boardPosition = boardPosition / GameController.instance.spaces.Length;
         if (boardPosition < 0.25)
         {
             transform.rotation = Quaternion.Euler(transform.rotation.x, 90, transform.rotation.z);
@@ -300,4 +167,9 @@ public class CounterController : MonoBehaviour
 
         GameController.instance.onCounterMove.Invoke(this);
     }
+
+    /// <summary>
+    /// Play an auction turn for this counter
+    /// </summary>
+    virtual public IEnumerator DoAuctionTurn() { yield return null; }
 }

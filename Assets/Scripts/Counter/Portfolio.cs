@@ -95,4 +95,15 @@ public class Portfolio
     {
         return properties;
     }
+
+    /// <summary>
+    /// Forefit all properties in this portfolio.
+    /// </summary>
+    public void forefit()
+    {
+        foreach (Property property in properties)
+        {
+            property.forefit();
+        }
+    }
 }

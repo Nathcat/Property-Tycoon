@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     {
         public DuplicateInstanceException() : base("Attempted to instantiate a second GameController instance") { }
     }
+    [SerializeField] public Mesh[] upgradeMeshes;
 
     /// <summary> The currently active <see cref="GameController"/> instance. </summary>
     public static GameController instance { get; private set; }
@@ -80,13 +81,19 @@ public class GameController : MonoBehaviour
     [HideInInspector] public float timeRemaining { get; private set; }
 
     /// <summary> a flag to show if the timer has expired </summary>
-    [HideInInspector] public bool timeExpired { get  { return timeRemaining <= 0; } }
+    [HideInInspector] public bool timeExpired { get  { return abridged && timeRemaining <= 0; } }
 
     /// <summary> a flag to show when the game has ended. </summary>
     [HideInInspector] public bool gameOver;
 
-    [Header("Testing")]
-    [SerializeField] private CounterController counterPrefab;
+    [SerializeField] private CounterController humanCounterPrefab;
+    [SerializeField] private CounterController aiCounterPrefab;
+
+    /// <summary> Stores the models of each counter </summary>
+    public GameObject[] counterModels;
+
+    /// <summary> Icons to represent each counter </summary>
+    public Sprite[] counterIcons;
 
     private void Awake()
     {
@@ -95,155 +102,107 @@ public class GameController : MonoBehaviour
         instance = this;
     }
 
-    private void Start()
+    /// <summary>
+    /// Starts the game by calling the first counter's turn.
+    /// </summary>
+    public void StartGame()
     {
-        SetupBoard();
-        SetupCards();
-        abridged = true;
-        timeRemaining = 60 * 10;
-        SetupTimer();
-        //SetupCounters(new CounterController[6].Select(_ => Instantiate(counterPrefab)).ToArray());
-        // this seems to break, but bring back if needed :)
-        SetupCounters(new CounterController[6].Select((c, index) =>
-        {
-            CounterController o = Instantiate(counterPrefab);
-            o.gameObject.name = "Player " + index;
-            return o;
-        }).ToArray());
-        
         turnIndex = -1;
         NextTurn();
     }
 
+    /// <summary>
+    /// Setup the gamemode for the game.
+    /// </summary>
+    /// <param name="abridged">Wether this game is abridge or not</param>
+    /// <param name="time">The total time for the game if its abridged</param>
+    public void SetupGamemode(bool abridged, float time)
+    {
+        this.abridged = abridged;
+        this.timeRemaining = time;
+    }
 
     /// <summary> Increment <see cref="turnIndex"/> and start the next turn.</summary>
     public void NextTurn()
     {
         turnIndex = (turnIndex + 1) % counters.Length;
         
-        if (turnIndex == 0 && timeExpired) EndGame();
+        if (counters.Length == 1 || (turnIndex == 0 && timeExpired)) EndGame();
         else
         {
+            Debug.Log(turnCounter);
             GameUIManager.instance.UpdateUIForNewTurn(turnCounter);
             StartCoroutine(turnCounter.PlayTurn());
             onNextTurn.Invoke(turnCounter);
         }
-        turnCounter.PlayTurn();
+
         onNextTurn.Invoke(turnCounter);
     }
 
-    /// <summary> Parse board configuration and place spaces. </summary>
+    /// <summary> Parse board configuration and place spaces - assumes board.csv in the Assets directory. </summary>
     public void SetupBoard()
+    {
+        SetupBoard(Path.Combine(Application.dataPath, "board.csv"));
+    }
+
+    /// <summary> Parse board configuration and place spaces. </summary>
+    public void SetupBoard(string dir)
     {
         // Cleanup old counter controllers
         if (spaceControllers != null)
             foreach (SpaceController space in spaceControllers)
                 Destroy(space.gameObject);
 
-        board = FileManager.ReadBoardCSV(Path.Combine(Application.dataPath, "board.csv"));
+        board = FileManager.ReadBoardCSV(dir);
         spaceControllers = BoardGenerator.GenerateBoard(transform, 2, 1, normalSpace, cornerSpace, spaces);
     }
 
-    /// <summary> Put the card information from the csv file into the relevant card decks, and shuffle both decks. </summary>
+    /// <summary> Put the card information from the csv file into the relevant card decks, and shuffle both decks - assumes cards.csv in the Assets directory. </summary>
     public void SetupCards()
     {
-        cards = FileManager.ReadCardCSV(Path.Combine(Application.dataPath, "cards.csv"));
+        SetupCards(Path.Combine(Application.dataPath, "cards.csv"));
+    }
+
+
+    /// <summary> Put the card information from the csv file into the relevant card decks, and shuffle both decks. </summary>
+    public void SetupCards(string dir)
+    {
+        cards = FileManager.ReadCardCSV(dir);
         luckDeck = cards.luck;
         opportunityDeck = cards.opportunity;
         //shuffle the pot luck cards
         ShufflePotluck();
         //shuffle the opportunity knocks cards
         ShuffleOpportunity();
-    }
-    /// <summary>
-    /// sets up the timer if the game is in 'abridged' mode.
-    /// </summary>
-    public void SetupTimer()
-    {
-        if (abridged)
-        {
-            GameUIManager.instance.SetUpTimer(timeRemaining);
-        }
-    }
-
-    /// <summary> Shuffle the given card deck using a BogoSort style method. </summary>
-    /// <param name="cards"> The card deck to be shuffled. </param>
-    public void Shuffle(Queue<Card> input)
-    {
-        int random;
-        Card temp = null;
-        Card[] cards = new Card[input.Count];
-        for (int i = 0; i < input.Count; i++)
-        {
-            cards[i] = input.Dequeue();
-        }
-
-        for (int i = 0; i < cards.Length; i++)
-        {
-            random = Random.Range(i, cards.Length);
-            temp = cards[random];
-            cards[random] = cards[i];
-            cards[i] = temp;
-        }
-
-        for (int i = 0; i < cards.Length; i++)
-        {
-            input.Enqueue(cards[i]);
-        }
 
     }
 
     /// <summary> Shuffle the opportunitydeck card deck using a BogoSort style method. </summary>
     public void ShuffleOpportunity()
     {
-        int random;
-        Card temp = null;
-        Card[] cards = new Card[opportunityDeck.Count];
-        for (int i = 0; i < opportunityDeck.Count; i++)
-        {
-            cards[i] = opportunityDeck.Dequeue();
-        }
-
-        for (int i = 0; i < cards.Length; i++)
-        {
-            random = Random.Range(i, cards.Length);
-            temp = cards[random];
-            cards[random] = cards[i];
-            cards[i] = temp;
-        }
-
-        for (int i = 0; i < cards.Length; i++)
-        {
-            opportunityDeck.Enqueue(cards[i]);
-        }
-
+        opportunityDeck = new Queue<Card>(ShuffleList<Card>(opportunityDeck.ToList<Card>()));
     }
-
 
     /// <summary> Shuffle the potluck deck card deck using a BogoSort style method. </summary>
     public void ShufflePotluck()
     {
-        int random;
-        Card temp = null;
-        Card[] cards = new Card[luckDeck.Count];
-        for (int i = 0; i < luckDeck.Count; i++)
-        {
-            cards[i] = luckDeck.Dequeue();
+        luckDeck = new Queue<Card>(ShuffleList<Card>(luckDeck.ToList<Card>()));
+    }
+
+    /// <summary>
+    /// Shuffle the provided list, returning the result. The provided list is not affected
+    /// </summary>
+    /// <typeparam name="T">The type stored by the list</typeparam>
+    /// <param name="l">The list to shuffle</param>
+    /// <returns>The shuffled list</returns>
+    public List<T> ShuffleList<T>(List<T> l) {
+        List<T> res = new List<T>();
+
+        while (res.Count != l.Count) {
+            res.Add(l[Random.Range(0, l.Count)]);
         }
 
-        for (int i = 0; i < cards.Length; i++)
-        {
-            random = Random.Range(i, cards.Length);
-            temp = cards[random];
-            cards[random] = cards[i];
-            cards[i] = temp;
-        }
-
-        for (int i = 0; i < cards.Length; i++)
-        {
-            luckDeck.Enqueue(cards[i]);
-        }
-
+        return res;
     }
 
 
@@ -256,7 +215,7 @@ public class GameController : MonoBehaviour
         if (luckDeck.Count != 0)
         {
             Card removed = luckDeck.Dequeue();
-            removed.action.Run(counterController);
+            StartCoroutine(removed.action.Run(counterController));
             DiscardLuck(removed);
             return removed;
         }
@@ -277,9 +236,7 @@ public class GameController : MonoBehaviour
         if (opportunityDeck.Count != 0)
         {
             Card removed = opportunityDeck.Dequeue();
-
-            removed.action.Run(counterController);
-
+            StartCoroutine(removed.action.Run(counterController));
             DiscardOpportunity(removed);
             return removed;
 
@@ -291,7 +248,6 @@ public class GameController : MonoBehaviour
         }
     }
 
-    ///#
     /// <summary>
     /// Peek at the next card to be drawn from the Pot Luck deck; For the purposes of testing, should not be called otherwise.
     /// 
@@ -328,29 +284,28 @@ public class GameController : MonoBehaviour
 
 
     /// <summary>
-    /// Register counters to the game.
+    /// Register 6 test counters to the game.
     /// </summary>
     public void SetupCounters()
     {
-        this.counters = new CounterController[6].Select((c, index) =>
-        {
-            CounterController o = Instantiate(counterPrefab);
-            o.gameObject.name = "Player " + index;
-            return o;
-        }).ToArray();
+        SetupCounters(new CounterConfig[6].Select((_, i) => 
+            new CounterConfig($"Player {i}", CounterType.Human)).ToArray()
+        );
     }
 
     /// <summary>
     /// Register counters to the game.
     /// </summary>
     /// <param name="counters">An array of the counters in this game.</param>
-    public void SetupCounters(CounterController[] counters)
+    public void SetupCounters(CounterConfig[] counters)
     {
-        this.counters = counters;
-        for (int i = 0; i < counters.Length; i++)
-        {
-            counters[i].PickModel(i);
-        }
+        this.counters = counters.Select((c, i) => {
+            CounterController prefab = c.type == CounterType.Human ? humanCounterPrefab : aiCounterPrefab;
+            CounterController o = Instantiate(prefab);
+            o.gameObject.name = c.name;
+            o.PickModel(i);
+            return o;
+        }).ToArray();
     }
 
     public void Update()
@@ -364,6 +319,8 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void EndGame()
     {
+        gameOver = true;
+
         int[] totals = new int[counters.Length];
         Debug.Log("number of players: " + counters.Length);
         for (int i = 0; i < counters.Length; i++)
@@ -379,7 +336,25 @@ public class GameController : MonoBehaviour
                 winner = i;
             }
         }
-        GameUIManager.instance.EndGame(counters[winner].name , totals[winner]);
 
+        GameUIManager.instance.EndGame(counters[winner].name , totals[winner]);
+    }
+
+    /// <summary>
+    /// Removes the <paramref name="counter"/> from the game.
+    /// </summary>
+    /// <param name="counter">The <see cref="CounterController"/> to remove</param>
+    public void forefit(CounterController counter)
+    {
+        bool current = turnIndex == counter.order;
+
+        counters = counters.RemoveAt(counter.order);
+        counter.portfolio.forefit();
+        counter.gameObject.SetActive(false);
+
+        Debug.Log(counters);
+
+        if (turnIndex > 0) turnIndex--;
+        if (current) NextTurn();
     }
 }
