@@ -78,7 +78,7 @@ public abstract class CounterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Move();
+        StartCoroutine(Move());
     }
 
     /// <summary>
@@ -107,10 +107,10 @@ public abstract class CounterController : MonoBehaviour
     /// Move this counter to the space specified by <paramref name="space"/>
     /// </summary>
     /// <param name="space">The index of the space to move to</param>
-    public void MoveAbsolute(int space)
+    public IEnumerator MoveAbsolute(int space)
     {
         position = space % GameController.instance.spaces.Length;
-        Move();
+        return Move();
     }
 
     /// <summary>
@@ -118,7 +118,7 @@ public abstract class CounterController : MonoBehaviour
     /// </summary>
     /// <param name="dice1">The first value</param>
     /// <param name="dice2">The second value</param>
-    public void MoveCounter(int dice1, int dice2)
+    public IEnumerator MoveCounter(int dice1, int dice2)
     {
         int move = dice1 + dice2;
         Debug.Log("for a total of " + move);
@@ -136,33 +136,45 @@ public abstract class CounterController : MonoBehaviour
             Debug.Log(name + " receives 200 for completing a lap of the board.");
         }
 
-        Move();
+        return Move();
     }
 
     /// <summary>
     /// Perform a physical movement to the space given by <paramref name="position"/>
     /// </summary>
-    protected void Move()
+    protected IEnumerator Move()
     {
-        float boardPosition = 0;
-        transform.position = GameController.instance.spaceControllers[position].waypoints[order].position;
-        boardPosition = position;
-        boardPosition = boardPosition / GameController.instance.spaces.Length;
+        float boardPosition = position / GameController.instance.spaces.Length;
+        Vector3 startPosition = transform.position;
+        Vector3 targetPosition = GameController.instance.spaceControllers[position].waypoints[order].position;
+        Quaternion startRotation = transform.rotation;
+        Quaternion targetRotation;
+
         if (boardPosition < 0.25)
         {
-            transform.rotation = Quaternion.Euler(transform.rotation.x, 90, transform.rotation.z);
+            targetRotation = Quaternion.Euler(transform.rotation.x, 90, transform.rotation.z);
         }
         else if (boardPosition < 0.50)
         {
-            transform.rotation = Quaternion.Euler(transform.rotation.x, 180, transform.rotation.z);
+            targetRotation = Quaternion.Euler(transform.rotation.x, 180, transform.rotation.z);
         }
         else if (boardPosition < 0.75)
         {
-            transform.rotation = Quaternion.Euler(transform.rotation.x, 270, transform.rotation.z);
+            targetRotation = Quaternion.Euler(transform.rotation.x, 270, transform.rotation.z);
         }
         else
         {
-            transform.rotation = Quaternion.Euler(transform.rotation.x, 0, transform.rotation.z);
+            targetRotation = Quaternion.Euler(transform.rotation.x, 0, transform.rotation.z);
+        }
+
+        float interval = 0.01f;
+        float timeToMove = 0.5f;
+        for (float t = 0; t <= timeToMove; t += interval)
+        {
+            transform.position = Vector3.Lerp(startPosition, targetPosition, t / timeToMove);
+            transform.rotation = Quaternion.Euler(Vector3.Lerp(startRotation.eulerAngles, targetRotation.eulerAngles, t / timeToMove));
+
+            yield return new WaitForSeconds(interval);
         }
 
         GameController.instance.onCounterMove.Invoke(this);

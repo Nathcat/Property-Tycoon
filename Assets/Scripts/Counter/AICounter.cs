@@ -8,7 +8,7 @@ public class AICounter : CounterController
     // Start is called before the first frame update
     override public IEnumerator GoToJail()
     {
-        MoveAbsolute(GameController.instance.jailSpace.position);
+        yield return MoveAbsolute(GameController.instance.jailSpace.position);
 
         Debug.Log(name + " has gone to jail, can they pay?");
 
@@ -60,7 +60,7 @@ public class AICounter : CounterController
             // Roll three times
             yield return GameUIManager.instance.RollDice();
 
-            MoveCounter(lastRoll.dice1, lastRoll.dice2);
+            yield return MoveCounter(lastRoll.dice1, lastRoll.dice2);
             int doubles = 0;
             while (lastRoll.doubleRoll)
             {
@@ -73,7 +73,7 @@ public class AICounter : CounterController
 
                 yield return GameUIManager.instance.RollDice();
 
-                MoveCounter(lastRoll.dice1, lastRoll.dice2);
+                yield return MoveCounter(lastRoll.dice1, lastRoll.dice2);
             }
 
             // If 3 doubles have been rolled, go to jail
