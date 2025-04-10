@@ -44,25 +44,11 @@ public class FileManager
 
             if (elements[1].ToLower() == "pot luck")
             {
-                try
-                {
-                    potLuck.Add(new Card(elements[0], new Action(elements[2])));
-                }
-                catch (Action.SyntaxError e)
-                {
-                    Debug.LogError(e.ToString());
-                }
+                potLuck.Add(new Card(elements[0], new Action(elements[2])));
             }
             else if (elements[1].ToLower() == "opportunity knocks")
             {
-                try
-                {
-                    opportunityKnocks.Add(new Card(elements[0], new Action(elements[2])));
-                }
-                catch (Action.SyntaxError e)
-                {
-                    Debug.LogError(e.ToString());
-                }
+                opportunityKnocks.Add(new Card(elements[0], new Action(elements[2])));
             }
         }
         // add two queues of cards, one for opportunity knocks, and one for pot luck.

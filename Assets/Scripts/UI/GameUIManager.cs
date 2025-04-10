@@ -655,17 +655,53 @@ public class GameUIManager : MonoBehaviour
     //----------Game Setup Menu(need to decide where we are putting this)----------
     public void SetupStart()
     {
-        GameController.instance.SetupCounters(playerTypes.Where(t => t.value != 1)
-            .Select((t, i) => new CounterConfig(
-                playerNames[i].text,
-                t.value == 0 ? CounterType.AI : CounterType.Human
-        )).ToArray());
+        try
+        {
+            GameController.instance.SetupCounters(playerTypes.Where(t => t.value != 1)
+                .Select((t, i) => new CounterConfig(
+                    playerNames[i].text,
+                    t.value == 0 ? CounterType.AI : CounterType.Human
+                )).ToArray());
+        } catch (System.Exception e)
+        {
+            setupError.text = $"Counter Error: {e.Message}";
+            Debug.LogException(e);
+            return;
+        }
 
-        int time = time = (int.Parse(hourInput.text) * 3600) + (int.Parse(minuteInput.text) * 60) + int.Parse(secongInput.text);
-        GameController.instance.SetupGamemode(gamemodeInput.value == 0, time);
+        try
+        {
+            int time = time = (int.Parse(hourInput.text) * 3600) + (int.Parse(minuteInput.text) * 60) + int.Parse(secongInput.text);
+            GameController.instance.SetupGamemode(gamemodeInput.value == 0, time);
+        }
+        catch (System.Exception e)
+        {
+            setupError.text = $"Gamemode Error: {e.Message}";
+            Debug.LogException(e);
+            return;
+        }
 
-        GameController.instance.SetupBoard();
-        GameController.instance.SetupCards();
+        try
+        {
+            GameController.instance.SetupBoard(PlayerPrefs.GetString("Board"));
+        }
+        catch (System.Exception e)
+        {
+            setupError.text = $"Board CSV Error: {e.Message}";
+            Debug.LogException(e);
+            return;
+        }
+
+        try
+        {
+            GameController.instance.SetupCards(PlayerPrefs.GetString("Card"));
+        }
+        catch (System.Exception e)
+        {
+            setupError.text = $"Card CSV Error: {e.Message}";
+            Debug.LogException(e);
+            return;
+        }
 
         gameStarted = true;
         this.setUpUI.SetActive(false);
