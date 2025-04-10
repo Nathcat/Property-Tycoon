@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     {
         public DuplicateInstanceException() : base("Attempted to instantiate a second GameController instance") { }
     }
+    [SerializeField] public Mesh[] upgradeMeshes;
 
     /// <summary> The currently active <see cref="GameController"/> instance. </summary>
     public static GameController instance { get; private set; }

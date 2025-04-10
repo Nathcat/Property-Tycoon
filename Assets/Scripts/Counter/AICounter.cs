@@ -162,6 +162,7 @@ public class AICounter : CounterController
 
     override public IEnumerator DoAuctionTurn()
     {
+        int chance;
         AuctionManager auction = GameUIManager.instance.auctionManager;
         Property p = auction.targetProperty;
         int percentage = 100;
@@ -175,47 +176,54 @@ public class AICounter : CounterController
             int offset = Random.Range(-20, 20);
             int bid = Mathf.RoundToInt(((p.GetValue() * 0.7f) + offset));
             Debug.Log("bid" + bid);
-            int chance = Random.Range(1, 100);
-            if (bid >= 100 && chance > 70)
+            chance = Random.Range(1, 100);
+            bool bidded = false;
+            if (bid >= 100 && chance > 70 && bidded == false)
             {
                 auction.Bid100();
                 yield return null;
+                bidded = true;
+                
             }
             Debug.Log("didnt bid 100");
             chance = Random.Range(1, 100);
-            if (bid >= 50 && chance > 70)
+            if (bid >= 50 && chance > 70 && bidded == false)
             {
                 auction.Bid50();
                 yield return null;
+                bidded = true;
             }
             Debug.Log("didnt bid 50");
             chance = Random.Range(1, 100);
-            if (bid >= 20 && chance > 70)
+            if (bid >= 20 && chance > 70 && bidded == false)
             {
                 auction.Bid20();
                 yield return null;
+                bidded = true;
             }
             Debug.Log("didnt bid 20");
             chance = Random.Range(1, 100);
-            if (bid >= 10 && chance > 70)
+            if (bid >= 10 && chance > 70 && bidded == false)
             {
                 auction.Bid10();
                 yield return null;
+                bidded = true;
             }
             Debug.Log("didnt bid 10");
             chance = Random.Range(1, 100);
-            if (bid >= 5 && chance > 70)
+            if (bid >= 5 && chance > 70 && bidded == false)
             {
-
+                bidded = true;
                 auction.Bid5();
                 yield return null;
 
             }
             Debug.Log("didnt bid 5");
-            if (bid >= 1)
+            if (bid >= 1 && bidded == false)
             {
                 auction.Bid1();
                 Debug.Log("bid 1");
+                bidded = true;
                 yield return null;
             }
 
@@ -226,6 +234,10 @@ public class AICounter : CounterController
             yield return null;
         }
     }
+
+    /// <summary>
+    /// devlop function will be called at the end of each turn, it will get a list of properties for 
+    /// </summary>
     public void Develop()
     {
         int chance;

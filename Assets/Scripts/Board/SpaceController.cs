@@ -6,6 +6,8 @@ public class SpaceController : MonoBehaviour
     public TextMeshProUGUI output;
     public Transform[] waypoints;
     public Space space;
+    [SerializeField] private MeshFilter model;
+
 
     /// <summary> The position of this space controller on the board. </summary>
     public int position { get {  return space.position; } }
@@ -20,6 +22,20 @@ public class SpaceController : MonoBehaviour
         {
             transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = (space as Property).propertyGroup.GetColor();
         }
+    }
+
+    private void Update()
+    {
+        if (space is Property)
+        {
+            int index = (space as Property).upgradeLevel;
+            model.mesh = GameController.instance.upgradeMeshes[index];
+        }
+        else 
+        { 
+            model.mesh = null;
+        }
+        
     }
 
 
