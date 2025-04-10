@@ -5,6 +5,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using SimpleFileBrowser;
+using System.IO;
+using UnityEngine.PlayerLoop;
 
 public class GameUIManager : MonoBehaviour
 {
@@ -138,11 +141,13 @@ public class GameUIManager : MonoBehaviour
     [SerializeField] private GameObject setUpUI;
     [SerializeField] private TMP_InputField[] playerNames;
     [SerializeField] private TMP_Dropdown[] playerTypes;
-    [SerializeField] private TMP_Dropdown gamemodeInput = null;
-    [SerializeField] private TextMeshProUGUI setupError = null;
-    [SerializeField] private TMP_InputField hourInput = null;
-    [SerializeField] private TMP_InputField minuteInput = null;
-    [SerializeField] private TMP_InputField secongInput = null;
+    [SerializeField] private TMP_Dropdown gamemodeInput;
+    [SerializeField] private TextMeshProUGUI setupError;
+    [SerializeField] private TMP_InputField hourInput;
+    [SerializeField] private TMP_InputField minuteInput;
+    [SerializeField] private TMP_InputField secongInput;
+    [SerializeField] private TextMeshProUGUI boardCSV;
+    [SerializeField] private TextMeshProUGUI cardCSV;
 
     private bool gameStarted;
 
@@ -231,6 +236,7 @@ public class GameUIManager : MonoBehaviour
         this.diceRollUI.SetActive(false);
 
         this.setupError.gameObject.SetActive(false);
+        this.UpdateCSV();
 
         foreach (TMP_InputField input in playerNames)
         {
@@ -686,5 +692,51 @@ public class GameUIManager : MonoBehaviour
     public void Endable()
     {
         endable = true;
+    }
+
+    /// <summary>
+    /// Sets the CSV path for the <paramref name="which"/>
+    /// </summary>
+    /// <param name="which">The CVS to set</param>
+    /// <param name="result">The path to set.</param>
+    private void SetCSV(string which, string result)
+    {
+        PlayerPrefs.SetString(which, result);
+        UpdateCSV();
+    }
+
+    /// <summary>
+    /// Update the CSV path display on the UI
+    /// </summary>
+    private void UpdateCSV()
+    {
+        boardCSV.text = PlayerPrefs.HasKey("Board") ? Path.GetFileName(PlayerPrefs.GetString("Board")) : "None selected";
+        cardCSV.text = PlayerPrefs.HasKey("Card") ? Path.GetFileName(PlayerPrefs.GetString("Card")) : "None selected";
+    }
+
+    /// <summary>
+    /// Open a file dialog to select the CSV for <paramref name="which"/>
+    /// </summary>
+    /// <param name="which"></param>
+    private void BrowseCSV(string which)
+    {
+        FileBrowser.SetFilters(false, ".csv");
+        FileBrowser.ShowLoadDialog(r => SetCSV(which, r[0]), null, FileBrowser.PickMode.Files, initialPath: Path.GetFullPath("."), title: $"Load {which} CSV");
+    }
+
+    /// <summary>
+    /// Open a file dialog to select the BoardCSV
+    /// </summary>
+    public void BrowseBoardCSV()
+    {
+        BrowseCSV("Board");
+    }
+
+    /// <summary>
+    /// Open a file dialog to select the CardCSV
+    /// </summary>
+    public void BrowseCardCSV()
+    {
+        BrowseCSV("Card");
     }
 }
