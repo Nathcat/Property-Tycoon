@@ -40,14 +40,14 @@ public class CameraController : MonoBehaviour
         Vector3 moveTarget;
         Vector3 lookTarget;
 
-        if (GameUIManager.instance.gameStarted && !GameController.instance.gameOver)
-        {
-            moveTarget = GetDestination();
-            lookTarget = target.transform.position;
-        } else
+        if (target == null || GameController.instance.gameOver)
         {
             moveTarget = GetOrbit();
             lookTarget = Vector3.zero;
+        } else
+        {
+            moveTarget = GetDestination();
+            lookTarget = target.transform.position;
         }
 
         transform.position = Vector3.Lerp(transform.position, moveTarget, Time.deltaTime * moveLerp);
