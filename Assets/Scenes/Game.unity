@@ -2112,6 +2112,10 @@ MonoBehaviour:
   - {fileID: 2800000, guid: b8209a3fc2a1f224790a9311beee6479, type: 3}
   - {fileID: 2800000, guid: ba04418ffa235f042b29314117198e35, type: 3}
   diceRollTimeout: 2
+  dicePrefab: {fileID: 2755804903479346440, guid: cde94f056ead0ac4cae5653dcf3b75c2,
+    type: 3}
+  dice1CameraView: {x: -0.5, y: 0, z: 2}
+  dice2CameraView: {x: 0.5, y: 0, z: 2}
   defaultNames:
   - Moggle Mog
   - Hazel
