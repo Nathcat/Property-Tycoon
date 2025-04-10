@@ -453,6 +453,7 @@ public class GameUIManager : MonoBehaviour
     public void QuitButtonClicked()
     {
         SceneManager.LoadScene("MainMenu");
+        Time.timeScale = 1;
     }
 
     /// <summary>
