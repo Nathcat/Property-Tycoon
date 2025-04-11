@@ -539,6 +539,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: AudioLibrary, Scripts
+        m_MethodName: PlayCLick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1120296453392601741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1558,6 +1570,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: AudioLibrary, Scripts
+        m_MethodName: PlayCLick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5887140759273623990
 GameObject:
   m_ObjectHideFlags: 0
@@ -1682,6 +1706,18 @@ MonoBehaviour:
       - m_Target: {fileID: 5061680387695083151}
         m_TargetAssemblyTypeName: PropertyUIController, Scripts
         m_MethodName: mortgage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: AudioLibrary, Scripts
+        m_MethodName: PlayCLick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2540,6 +2576,18 @@ MonoBehaviour:
       - m_Target: {fileID: 5061680387695083151}
         m_TargetAssemblyTypeName: PropertyUIController, Scripts
         m_MethodName: downgradeHouse
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8, type: 2}
+        m_TargetAssemblyTypeName: AudioLibrary, Scripts
+        m_MethodName: PlayCLick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
