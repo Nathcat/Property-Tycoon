@@ -176,6 +176,8 @@ public class GameUIManager : MonoBehaviour
     [SerializeField] private TMP_InputField minuteInput;
     [SerializeField] private TMP_InputField secongInput;
 
+    [HideInInspector] public bool showPropertyDetails = false;
+
     public bool gameStarted { get; private set; }
 
 
@@ -288,7 +290,10 @@ public class GameUIManager : MonoBehaviour
             this.gameTimer.SetActive(currentUIState[0] && GameController.instance.abridged);
             this.endTurnButton.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() >= 0);
             this.debtNotification.SetActive(endable && GameController.instance.turnCounter.portfolio.GetCashBalance() < 0);
+
             this.propertyDetails.SetActive(endable);
+            //this.propertyDetails.SetActive(showPropertyDetails);
+
             this.forefitButton.SetActive(endable);
 
             if (GameController.instance.abridged) UpdateTimer(GameController.instance.timeRemaining);

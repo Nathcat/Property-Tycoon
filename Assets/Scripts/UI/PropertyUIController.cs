@@ -27,12 +27,13 @@ public class PropertyUIController : MonoBehaviour
 
     public void updateCamera(CameraController camera)
     {
-        if (camera.space == null)
+        if (CameraController.instance.space == null)
         {
             root.SetActive(false);
+            //GameUIManager.instance.showPropertyDetails = false;
             return;
         }
-        else root.SetActive(true);
+        else root.SetActive(true); //GameUIManager.instance.showPropertyDetails = true;
 
         Space space = camera.space.space;
 

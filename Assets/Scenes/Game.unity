@@ -738,6 +738,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &508189461 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4350980645874587004, guid: e23469b929cc5944bbe431a77e1282a4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1295856366}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &543910402 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3045170721329600147, guid: b3e4d314438c0ee48b9c7494acd3a966,
@@ -1788,12 +1794,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e23469b929cc5944bbe431a77e1282a4, type: 3}
---- !u!1 &1295856367 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 78121678833249948, guid: e23469b929cc5944bbe431a77e1282a4,
-    type: 3}
-  m_PrefabInstance: {fileID: 1295856366}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1363227337 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5749948741315289225, guid: b3e4d314438c0ee48b9c7494acd3a966,
@@ -2332,7 +2332,7 @@ MonoBehaviour:
   gameEndScreen: {fileID: 1122920914}
   gameTimerText: {fileID: 1521783795}
   getOutOfJailFree: {fileID: 1691175716}
-  propertyDetails: {fileID: 1295856367}
+  propertyDetails: {fileID: 508189461}
   endTurnButton: {fileID: 959713368}
   forefitButton: {fileID: 958001422}
   debtNotification: {fileID: 1185521818}
@@ -2398,6 +2398,7 @@ MonoBehaviour:
   hourInput: {fileID: 3371684087761843595}
   minuteInput: {fileID: 25914645081129253}
   secongInput: {fileID: 5772276859064707821}
+  showPropertyDetails: 0
 --- !u!114 &1946495483 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8233043170432225183, guid: b3e4d314438c0ee48b9c7494acd3a966,
