@@ -300,7 +300,7 @@ public class GameController : MonoBehaviour
     public void SetupCounters()
     {
         SetupCounters(new CounterConfig[6].Select((_, i) =>
-            new CounterConfig($"Player {i}", CounterType.Human)).ToArray()
+            new CounterConfig($"Player {i}", CounterType.Human, i)).ToArray()
         );
     }
 
@@ -315,7 +315,7 @@ public class GameController : MonoBehaviour
             CounterController prefab = c.type == CounterType.Human ? humanCounterPrefab : aiCounterPrefab;
             CounterController o = Instantiate(prefab);
             o.gameObject.name = c.name;
-            o.PickModel(i);
+            o.PickModel(c.model);
             return o;
         }).ToArray();
     }

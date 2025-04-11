@@ -748,11 +748,20 @@ public class GameUIManager : MonoBehaviour
 
         try
         {
-            GameController.instance.SetupCounters(playerTypes.Where(t => t.value != 1)
-                .Select((t, i) => new CounterConfig(
+            List<CounterConfig> counters = new List<CounterConfig>();
+            for (int i = 0; i < playerTypes.Length; i++)
+            {
+                int t = playerTypes[i].value;
+                if (t == 1) continue;
+
+                counters.Add(new CounterConfig(
                     playerNames[i].text,
-                    t.value == 0 ? CounterType.AI : CounterType.Human
-                )).ToArray());
+                    t == 0 ? CounterType.AI : CounterType.Human,
+                    i
+                ));
+            }
+
+            GameController.instance.SetupCounters(counters.ToArray());
         }
         catch (System.Exception e)
         {
