@@ -32,4 +32,9 @@ public class Station : Property
     {
         return "If the player who owns this station owns only this station, rent is £25\nIf the player who owns this station owns 2 stations, rent is £50\nIf the player who owns this station owns 3 stations, rent is £100\nIf the player who owns this station owns 4 stations, rent is £200";
     }
+
+    public override bool CanUpgrade()
+    {
+        return false;
+    }
 }

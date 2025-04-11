@@ -119,7 +119,7 @@ public class Property : Space, IAsset
     /// Check whether or not this property can be upgraded
     /// </summary>
     /// <returns>True if the property can be upgraded, false otherwise</returns>
-    public bool CanUpgrade()
+    virtual public bool CanUpgrade()
     {
         if (!propertyGroup.HasCompleteGroup(owner.portfolio.GetProperties().ToArray()))
         {
