@@ -61,7 +61,7 @@ public class BoardGenerator
             if ((I % (n + 1)) == 0)
             {
                 // This is a corner space
-                o = MonoBehaviour.Instantiate(cornerSpace, PCorner(LB, LS, I / n), RCorner(I / n));
+                o = MonoBehaviour.Instantiate(cornerSpace, PCorner(LB, LS, I / (n + 1)), RCorner(I / (n + 1)));
                 o.transform.SetParent(parent, false);
                 o.name = I.ToString();
                 cornersPassed++;
