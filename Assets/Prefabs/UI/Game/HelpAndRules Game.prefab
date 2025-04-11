@@ -63,6 +63,38 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4949942611447981487, guid: 1f3f85203cd8d084e8088c7a84932b57,
+        type: 3}
+      propertyPath: m_text
+      value: 'Remember to set the time for the game if you select abridged mode.
+        The game will end after this time limit.
+
+        You can set a board csv
+        in setup, if left blank it will default to the preset csv.
+
+        Players
+        must press the end turn to go to the next player''s turn and will need to
+        confirm when a player receives a house(AI, or human).
+
+        If a player''s
+        income becomes negative they will need to sell,downgrade and mortgage properties
+        in order to end their turn.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4949942611447981487, guid: 1f3f85203cd8d084e8088c7a84932b57,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 4949942611447981487, guid: 1f3f85203cd8d084e8088c7a84932b57,
+        type: 3}
+      propertyPath: m_fontSizeMax
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 4949942611447981487, guid: 1f3f85203cd8d084e8088c7a84932b57,
+        type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5892732453201204910, guid: 1f3f85203cd8d084e8088c7a84932b57,
         type: 3}
       propertyPath: m_AnchorMax.x

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MainMenuBG : MonoBehaviour
@@ -16,7 +14,7 @@ public class MainMenuBG : MonoBehaviour
     void Update()
     {
         //moves the object down at the set speed
-        this.transform.position -= new Vector3(0,speed,0)*Time.deltaTime;
+        this.transform.position -= new Vector3(0, speed, 0) * Time.deltaTime;
 
         //called when the object is below y-15
         if (this.transform.position.y < -15)

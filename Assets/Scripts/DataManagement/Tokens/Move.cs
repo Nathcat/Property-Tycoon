@@ -5,8 +5,10 @@ public class Move : Command
 {
     public Move(string value) : base(value) { }
 
-    override public IEnumerator Execute(CounterController counterController, Argument[] args) {
-        if (args[0].value.ToLower() == "absolute") {
+    override public IEnumerator Execute(CounterController counterController, Argument[] args)
+    {
+        if (args[0].value.ToLower() == "absolute")
+        {
             yield return counterController.MoveAbsolute(int.Parse(args[1].value) - 1);
             Debug.Log(counterController.name + " moves to space number " + args[1].value);
         }

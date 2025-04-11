@@ -5,7 +5,8 @@ public class Collect : Command
 {
     public Collect(string value) : base(value) { }
 
-    override public IEnumerator Execute(CounterController counterController, Argument[] args) {
+    override public IEnumerator Execute(CounterController counterController, Argument[] args)
+    {
         Cash cost = new Cash(int.Parse(args[0].value));
         Cash total = new Cash(0);
         foreach (CounterController counter in GameController.instance.counters)

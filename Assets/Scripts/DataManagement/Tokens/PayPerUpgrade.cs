@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class PayPerUpgrade : Command
 {
-    public PayPerUpgrade(string value) : base(value) {}
-    
-    override public IEnumerator Execute(CounterController counterController, Argument[] args) {
+    public PayPerUpgrade(string value) : base(value) { }
+
+    override public IEnumerator Execute(CounterController counterController, Argument[] args)
+    {
         int houseCost = int.Parse(args[0].value);
         int hotelCost = int.Parse(args[1].value);
         int totalCost = 0;

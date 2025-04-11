@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -25,13 +24,13 @@ public class AuctionTest
         CounterController counter4 = GameController.instance.counters[3];
         CounterController counter5 = GameController.instance.counters[4];
         CounterController counter6 = GameController.instance.counters[5];
-                
+
         AuctionManager auction = GameUIManager.instance.auctionManager;
         counter1.MoveAbsolute(property.position);
         GameUIManager.instance.StartAuction();
         foreach (var item in GameController.instance.counters)
         {
-            if(item == counter1)
+            if (item == counter1)
             {
                 Debug.Log(counter1.portfolio.GetCashBalance());
                 auction.Bid1();
@@ -41,7 +40,7 @@ public class AuctionTest
                 auction.Withdraw();
             }
         }
-                Assert.AreEqual(1, counter1.portfolio.GetProperties().Count);
+        Assert.AreEqual(1, counter1.portfolio.GetProperties().Count);
 
     }
 
@@ -71,9 +70,11 @@ public class AuctionTest
         {
             if (item == counter1 || item == counter2)
             {
-                if(item == counter1){
+                if (item == counter1)
+                {
                     auction.Bid1();
-                } else
+                }
+                else
                 {
                     auction.Bid10();
                 }
@@ -82,7 +83,7 @@ public class AuctionTest
             {
                 auction.Withdraw();
             }
-            
+
         }
         auction.Withdraw();
 

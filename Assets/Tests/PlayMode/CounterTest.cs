@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEngine;
+using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
@@ -71,6 +69,6 @@ public class CounterTest
         CounterController counter = GameController.instance.turnCounter;
 
         counter.StartCoroutine(GameUIManager.instance.RollDice());
-        Assert.IsTrue(counter.lastRoll.dice1 + counter.lastRoll.dice2 >=2 && counter.lastRoll.dice1 + counter.lastRoll.dice2 <= 12);
+        Assert.IsTrue(counter.lastRoll.dice1 + counter.lastRoll.dice2 >= 2 && counter.lastRoll.dice1 + counter.lastRoll.dice2 <= 12);
     }
 }

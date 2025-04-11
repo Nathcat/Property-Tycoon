@@ -5,9 +5,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using SimpleFileBrowser;
-using System.IO;
-using UnityEngine.PlayerLoop;
 
 public class GameUIManager : MonoBehaviour
 {
@@ -62,7 +59,7 @@ public class GameUIManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject auctionMenu;
     [HideInInspector] public AuctionManager auctionManager { get { return auctionMenu.GetComponent<AuctionManager>(); } }
-    
+
     [SerializeField] private GameObject AIThinkingUI;
     [SerializeField] private TextMeshProUGUI AIThinkingText;
 
@@ -693,6 +690,7 @@ public class GameUIManager : MonoBehaviour
             yield return new WaitForSeconds(interval);
         }
 
+        SetUIState(true, false, false, true);
         diceRollUI.transform.GetChild(3).gameObject.SetActive(GameController.instance.turnCounter.isControllable);
 
         if (GameController.instance.turnCounter.isControllable) yield return new WaitForDiceRoll();

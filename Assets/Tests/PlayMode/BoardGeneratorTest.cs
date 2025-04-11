@@ -1,13 +1,8 @@
 using System.Collections;
-using System.IO;
 using UnityEngine;
-using UnityEngine.TestTools;
-using System;
-using System.Diagnostics;
-using JetBrains.Annotations;
-using UnityEditor.SearchService;
-using UnityEngine.SceneManagement;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
+using UnityEngine.TestTools;
 
 public class BoardGeneratorTest
 {
@@ -20,13 +15,14 @@ public class BoardGeneratorTest
     {
         SceneManager.LoadScene("Game");
         yield return null;
-        try 
+        try
         {
             GameController.instance.SetupBoard();
             Assert.AreEqual(1, 1);
-        } catch 
+        }
+        catch
         {
-            Assert.AreEqual(1,2);
+            Assert.AreEqual(1, 2);
         }
     }
 }

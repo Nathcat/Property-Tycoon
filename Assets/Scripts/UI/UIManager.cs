@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
     //GameSetUpFields
-    
+
 
 
     //MainMenu Fields
@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
         Scene = SceneManager.GetActiveScene();
         CurrentScene = Scene.name;
         if (Scene.name == "MainMenu")
@@ -59,7 +59,7 @@ public class UIManager : MonoBehaviour
         }
         else if (Scene.name == GameScene)
         {
-            
+
             TurnOffPlayerCards();
             //SetupScreen.SetActive(true);
             PauseButton.SetActive(true);
@@ -72,9 +72,9 @@ public class UIManager : MonoBehaviour
             {
                 d.SetActive(false);
             }
-            
+
         }
-        
+
     }
 
     // Update is called once per frame
@@ -297,6 +297,6 @@ public class UIManager : MonoBehaviour
 
 
 
-    
+
 
 }

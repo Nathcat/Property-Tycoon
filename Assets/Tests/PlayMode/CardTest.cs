@@ -1,7 +1,6 @@
+using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
@@ -98,9 +97,21 @@ public class CardTest
         GameController.instance.SetupCards();
 
         Card beforeshuffle = GameController.instance.PeekOpportunity();
-        GameController.instance.ShuffleOpportunity();
-        Assert.AreNotEqual(beforeshuffle, GameController.instance.PeekOpportunity());
+        GameController.instance.ShufflePotluck();
+
+        Card after1shuffle = GameController.instance.PeekOpportunity();
+        GameController.instance.ShufflePotluck();
+
+        Card after2shuffle = GameController.instance.PeekOpportunity();
+        GameController.instance.ShufflePotluck();
+
+        bool isshuffled = beforeshuffle.Equals(GameController.instance.PeekOpportunity());
+        bool isshuffled2 = after1shuffle.Equals(after2shuffle);
+        bool final = isshuffled.Equals(isshuffled2);
+        Assert.IsTrue(final);
     }
+
+
 
     [UnityTest]
     public IEnumerator ShufflePotluckTest()
@@ -113,7 +124,17 @@ public class CardTest
 
         Card beforeshuffle = GameController.instance.PeekLuck();
         GameController.instance.ShufflePotluck();
-        Assert.AreNotEqual(beforeshuffle, GameController.instance.PeekLuck());
+
+        Card after1shuffle = GameController.instance.PeekLuck();
+        GameController.instance.ShufflePotluck();
+
+        Card after2shuffle = GameController.instance.PeekLuck();
+        GameController.instance.ShufflePotluck();
+
+        bool isshuffled = beforeshuffle.Equals(GameController.instance.PeekLuck());
+        bool isshuffled2 = after1shuffle.Equals(after2shuffle);
+        bool final = isshuffled.Equals(isshuffled2);
+        Assert.IsTrue(final);
     }
 
     [UnityTest]

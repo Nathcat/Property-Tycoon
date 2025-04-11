@@ -1802,7 +1802,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4647334653731163672}
   m_Layer: 0
-  m_Name: HelpAndRules
+  m_Name: HelpAndRules 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,15 +1,13 @@
+using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Text.RegularExpressions;
-using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 public class StationTest
 {
-   
+
 
     [UnityTest]
     public IEnumerator StationRentChangeTest()
@@ -24,7 +22,7 @@ public class StationTest
         CounterController counter = GameController.instance.turnCounter;
         CounterController victim = GameController.instance.counters[1];
         PropertyGroup thisgroup = GameController.instance.groups[1];
-        
+
         victim.portfolio.AddAsset(new Cash(1000));
 
         int i = 0;
@@ -52,7 +50,7 @@ public class StationTest
             Debug.Log(victim.portfolio.GetCashBalance());
             //check if theres (i) less money in the victim
         }
-        Assert.AreEqual(625 + Portfolio.STARTING_CASH, victim.portfolio.GetCashBalance());  
+        Assert.AreEqual(625 + Portfolio.STARTING_CASH, victim.portfolio.GetCashBalance());
     }
 
     [UnityTest]
@@ -90,7 +88,7 @@ public class StationTest
         list.Add(property);
         property.Purchase(counter);
         victim.StartCoroutine(property.action.Run(victim));
-        
+
         Assert.AreEqual(975 + Portfolio.STARTING_CASH, victim.portfolio.GetCashBalance());
     }
 }

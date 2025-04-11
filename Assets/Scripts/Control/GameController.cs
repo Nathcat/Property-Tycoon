@@ -46,7 +46,7 @@ public class GameController : MonoBehaviour
     public Space jailSpace { get { return board.jailSpace; } }
 
     /// <summary> The index in <see cref="counters"/> of the <see cref="CounterController"/> who currently has their turn. </summary>
-    public int turnIndex { get; private set; } = -1;
+    public int turnIndex { get; private set; }
 
     /// <summary> The <see cref="CounterController"/> who currently has their turn. </summary>
     public CounterController turnCounter { get { return counters[turnIndex]; } }
@@ -158,6 +158,10 @@ public class GameController : MonoBehaviour
         board = FileManager.ReadBoardCSV(dir);
         spaceControllers = BoardGenerator.GenerateBoard(transform, 2, 1, normalSpace, cornerSpace, spaces);
 
+        float environmentScale = Camera.main.GetComponent<CameraController>().boardRadius / 4.5f;
+        environment.transform.localScale = new Vector3(environmentScale, environmentScale, environmentScale);
+        terrain.terrainData.size = new Vector3(50f * environmentScale, 600f * environmentScale, 50f * environmentScale);
+        terrain.transform.position = new Vector3((50f * environmentScale) / -2f, -4.54f * environmentScale, (50f * environmentScale) / -2f);
 
         Debug.Log(BoardGenerator.GetBoardDimensions(spaces.Count()));
     }
@@ -319,11 +323,6 @@ public class GameController : MonoBehaviour
     public void Update()
     {
         if (abridged && !timeExpired) timeRemaining -= Time.deltaTime;
-
-        float environmentScale = Camera.main.GetComponent<CameraController>().boardRadius / 4.5f;
-        environment.transform.localScale = new Vector3(environmentScale, environmentScale, environmentScale);
-        terrain.terrainData.size = new Vector3(50f * environmentScale, 600f * environmentScale, 50f * environmentScale);
-        terrain.transform.position = new Vector3((50f * environmentScale) / -2f, -4.54f * environmentScale, (50f * environmentScale) / -2f);
     }
 
     /// <summary>
