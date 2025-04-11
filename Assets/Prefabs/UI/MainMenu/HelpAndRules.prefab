@@ -313,7 +313,18 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: USE THIS SPACE TO WRITE HELP
+  m_text: 'Remember to set the time for the game if you select abridged mode. The
+    game will end after this time limit.
+
+    You can set a board csv in setup, if
+    left blank it will default to the preset csv.
+
+    Players must press the end
+    turn to go to the next player''s turn and will need to confirm when a player
+    receives a house(AI, or human).
+
+    If a player''s income becomes negative they
+    will need to sell,downgrade and mortgage properties in order to end their turn.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d8511b46261022740915424ce76153a3, type: 2}
   m_sharedMaterial: {fileID: 5045694624440438239, guid: d8511b46261022740915424ce76153a3,
@@ -344,9 +355,9 @@ MonoBehaviour:
   m_fontSize: 60
   m_fontSizeBase: 60
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 60
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
