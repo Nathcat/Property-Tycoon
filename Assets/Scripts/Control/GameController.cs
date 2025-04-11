@@ -158,7 +158,8 @@ public class GameController : MonoBehaviour
         board = FileManager.ReadBoardCSV(dir);
         spaceControllers = BoardGenerator.GenerateBoard(transform, 2, 1, normalSpace, cornerSpace, spaces);
 
-        float environmentScale = Camera.main.GetComponent<CameraController>().boardRadius / 4.5f;
+        // Adjust environment size
+        float environmentScale = ((BoardGenerator.GetBoardDimensions(GameController.instance.spaces.Count()) - 4f) / 2f) / 4.5f;
         environment.transform.localScale = new Vector3(environmentScale, environmentScale, environmentScale);
         terrain.terrainData.size = new Vector3(50f * environmentScale, 600f * environmentScale, 50f * environmentScale);
         terrain.transform.position = new Vector3((50f * environmentScale) / -2f, -4.54f * environmentScale, (50f * environmentScale) / -2f);
