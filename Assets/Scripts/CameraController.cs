@@ -38,7 +38,7 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (GameController.instance.turnIndex != -1) {
+        if (GameUIManager.instance.gameStarted) {
             boardRadius = (BoardGenerator.GetBoardDimensions(GameController.instance.spaces.Count()) - 4f) / 2f;
         }
 

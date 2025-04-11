@@ -46,7 +46,7 @@ public class GameController : MonoBehaviour
     public Space jailSpace { get { return board.jailSpace; } }
 
     /// <summary> The index in <see cref="counters"/> of the <see cref="CounterController"/> who currently has their turn. </summary>
-    public int turnIndex { get; private set; } = -1;
+    public int turnIndex { get; private set; }
 
     /// <summary> The <see cref="CounterController"/> who currently has their turn. </summary>
     public CounterController turnCounter { get { return counters[turnIndex]; } }
