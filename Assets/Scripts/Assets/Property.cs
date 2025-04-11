@@ -245,7 +245,7 @@ public class Property : Space, IAsset
             return false;
         }
 
-        if (upgradeLevel > 0 && upgradeLevel < 5)
+        if (upgradeLevel > 0 && upgradeLevel <= 5)
         {
             return true;
         }
