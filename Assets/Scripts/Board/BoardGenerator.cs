@@ -116,7 +116,8 @@ public class BoardGenerator
     private static Vector3 PSpace(double LB, double WS, int i, int n)
     {
         int I = i % n;
-        float x = (float)WS * (((1 - n) / 2) + I);
+        
+        float x = (float)WS * (((1f - n) / 2f) + I);
         double theta = (Math.PI / 2) * -((i / n) + 1);
 
         return new Vector3(
