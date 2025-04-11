@@ -9,7 +9,7 @@ public class Portfolio
     public const int STARTING_CASH = 1500;
 
     /// <param name="cashBalance"> A Cash object used to hold the current cash owned by the counter.</param> 
-    private Cash cashBalance;
+    public Cash cashBalance;
     /// <param name="properties"> A List of Property objects used to hold the properties owned by the counter.</param> 
     private List<Property> properties;
 

@@ -65,7 +65,7 @@ public class CameraController : MonoBehaviour
 
     public Vector3 GetOrbit()
     {
-        return Quaternion.Euler(0, orbitSpeed * Time.time % 360, 0) * orbitOffset;
+        return Quaternion.Euler(0, orbitSpeed * Time.time % 360, 0) * orbitOffset * boardRadius;
     }
 
     //a method to move the camera to a target gameobject

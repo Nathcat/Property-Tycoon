@@ -88,6 +88,8 @@ public class HumanCounter : CounterController
             {
                 Debug.Log(name + " has rolled 3 doubles, going to jail!");
                 yield return GoToJail();
+
+                GameUIManager.instance.Endable();
                 yield break;
             }
 

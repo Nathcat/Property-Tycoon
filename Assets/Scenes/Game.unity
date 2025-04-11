@@ -542,7 +542,7 @@ MonoBehaviour:
   lengthOffset: 2
   moveLerp: 1
   rotateLerp: 2
-  orbitOffset: {x: 11.35, y: 3.36, z: 0}
+  orbitOffset: {x: 2.56, y: 0.84, z: 0}
   orbitSpeed: 10
 --- !u!1 &265649385 stripped
 GameObject:

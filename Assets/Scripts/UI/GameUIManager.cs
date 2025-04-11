@@ -265,7 +265,7 @@ public class GameUIManager : MonoBehaviour
         this.helpAndRulesMenu.SetActive(false);
         this.diceRollUI.SetActive(false);
 
-        this.setupError.gameObject.SetActive(false);
+        this.setupError.text = "";
 
         foreach (TMP_InputField input in playerNames)
         {
@@ -745,13 +745,28 @@ public class GameUIManager : MonoBehaviour
     //----------Game Setup Menu(need to decide where we are putting this)----------
     public void SetupStart()
     {
+        if (playerTypes.All(t => t.value == 1))
+        {
+            setupError.text = "The game must be started with at least 1 player";
+            return;
+        }
+
         try
         {
-            GameController.instance.SetupCounters(playerTypes.Where(t => t.value != 1)
-                .Select((t, i) => new CounterConfig(
+            List<CounterConfig> counters = new List<CounterConfig>();
+            for (int i = 0; i < playerTypes.Length; i++)
+            {
+                int t = playerTypes[i].value;
+                if (t == 1) continue;
+
+                counters.Add(new CounterConfig(
                     playerNames[i].text,
-                    t.value == 0 ? CounterType.AI : CounterType.Human
-                )).ToArray());
+                    t == 0 ? CounterType.AI : CounterType.Human,
+                    i
+                ));
+            }
+
+            GameController.instance.SetupCounters(counters.ToArray());
         }
         catch (System.Exception e)
         {

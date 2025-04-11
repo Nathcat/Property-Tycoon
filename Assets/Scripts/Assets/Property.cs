@@ -119,9 +119,13 @@ public class Property : Space, IAsset
     /// Check whether or not this property can be upgraded
     /// </summary>
     /// <returns>True if the property can be upgraded, false otherwise</returns>
-    public bool CanUpgrade()
+    virtual public bool CanUpgrade()
     {
-        if (!propertyGroup.HasCompleteGroup(owner.portfolio.GetProperties().ToArray())) return false;
+        if (!propertyGroup.HasCompleteGroup(owner.portfolio.GetProperties().ToArray()))
+        {
+            Debug.Log("Not complete group");
+            return false;
+        }
 
         if (upgradeLevel != propertyGroup.GetMinimumUpgradeLevel())
         {
@@ -131,11 +135,13 @@ public class Property : Space, IAsset
 
         if (owner.portfolio.GetCashBalance() < (upgradeLevel == 4 ? hotelCost : upgradeCost))
         {
+            Debug.Log("Not enough cash");
             return false;
         }
 
         if (upgradeLevel >= 0 && upgradeLevel < 5)
         {
+            Debug.Log("Out of range");
             return true;
         }
 
@@ -151,6 +157,7 @@ public class Property : Space, IAsset
         {
             owner.portfolio.RemoveCash(new Cash(upgradeLevel == 4 ? hotelCost : upgradeCost));
             upgradeLevel++;
+            AudioManager.instance.library.PlayMoney();
         }
     }
 
@@ -238,7 +245,7 @@ public class Property : Space, IAsset
             return false;
         }
 
-        if (upgradeLevel > 0 && upgradeLevel < 5)
+        if (upgradeLevel > 0 && upgradeLevel <= 5)
         {
             return true;
         }
@@ -252,8 +259,11 @@ public class Property : Space, IAsset
     public void Downgrade()
     {
         if (!CanDowngrade()) return;
+
         owner.portfolio.AddAsset(new Cash(upgradeLevel == 5 ? hotelCost : upgradeCost));
         upgradeLevel--;
+        
+        AudioManager.instance.library.PlayMoney();
     }
 
     /// <summary>

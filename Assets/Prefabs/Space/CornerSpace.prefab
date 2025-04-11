@@ -59,8 +59,8 @@ Transform:
   m_GameObject: {fileID: 780203394985047374}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.3333333, y: -1.01, z: -0.3333333}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: -0.3333333, y: -5.01, z: -0.3333333}
+  m_LocalScale: {x: 2, y: 10, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6224210115154793756}
@@ -207,6 +207,7 @@ MonoBehaviour:
   jailSkin: {fileID: 21300000, guid: d04373f7d8bfd194a9d80a1f616d75f7, type: 3}
   propertySkin: {fileID: 21300000, guid: fc0d243cc0bb89f4e8edec67c59bf36b, type: 3}
   parkingSkin: {fileID: 21300000, guid: f509f81858c79e74e81e55e87b3e5f81, type: 3}
+  owner: -1
 --- !u!1 &1626656872216180231
 GameObject:
   m_ObjectHideFlags: 0

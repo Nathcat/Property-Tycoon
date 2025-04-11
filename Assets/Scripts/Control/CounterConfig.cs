@@ -1,1 +1,1 @@
-﻿public record CounterConfig(string name, CounterType type) { }
+﻿public record CounterConfig(string name, CounterType type, int model) { }

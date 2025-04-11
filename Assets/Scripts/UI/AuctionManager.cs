@@ -50,7 +50,7 @@ public class AuctionManager : MonoBehaviour
         for (int x = 0; x < bids.Length; x++)
         {
             bids[x] = new Cash();
-            withdrawn[x] = false;
+            withdrawn[x] = !GameController.instance.counters[x].canPurchaseProperties;
         }
 
         int i = 0;
