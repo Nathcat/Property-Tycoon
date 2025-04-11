@@ -537,7 +537,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fb7c0f825d323b40b96c530653f302a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardRadius: 4.5
   sideOffset: 3
   heightOffset: 3
   lengthOffset: 2
@@ -759,6 +758,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1279467258090791476, guid: 3068dcc3f902a7e43b5985a6bfca36d6,
+        type: 3}
+      propertyPath: mixer
+      value: 
+      objectReference: {fileID: 24100000, guid: d0616d54490e2174db2b738db8c6381e,
+        type: 2}
+    - target: {fileID: 1279467258090791476, guid: 3068dcc3f902a7e43b5985a6bfca36d6,
+        type: 3}
+      propertyPath: library
+      value: 
+      objectReference: {fileID: 11400000, guid: 5f1678e2a663bfe409ee36c4dc6afce8,
+        type: 2}
     - target: {fileID: 1661634153803951819, guid: 3068dcc3f902a7e43b5985a6bfca36d6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1244,7 +1255,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c954ea366e7d79e4fa2bbb8bb8152393, type: 3}
   - {fileID: 21300000, guid: aec86838e699e274aa4a585af25b09e8, type: 3}
   - {fileID: 21300000, guid: a3851f579763bdb4ea34ab84522789ef, type: 3}
-  environmentScale: 1
   terrain: {fileID: 1167521051}
   environment: {fileID: 973459038}
 --- !u!4 &1169012768

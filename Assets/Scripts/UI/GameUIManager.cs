@@ -693,6 +693,7 @@ public class GameUIManager : MonoBehaviour
             yield return new WaitForSeconds(interval);
         }
 
+        SetUIState(true, false, false, true);
         diceRollUI.transform.GetChild(3).gameObject.SetActive(GameController.instance.turnCounter.isControllable);
 
         if (GameController.instance.turnCounter.isControllable) yield return new WaitForDiceRoll();
