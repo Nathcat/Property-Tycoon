@@ -31,7 +31,8 @@ public class PropertyUIController : MonoBehaviour
         {
             root.SetActive(false);
             return;
-        } else root.SetActive(true);
+        }
+        else root.SetActive(true);
 
         Space space = camera.space.space;
 
@@ -41,7 +42,8 @@ public class PropertyUIController : MonoBehaviour
             propertyColorUI.color = Color.gray;
             propertyOwner.gameObject.SetActive(false);
             propertyDetails.SetActive(false);
-        } else updatePropertyDetails(space as Property);
+        }
+        else updatePropertyDetails(space as Property);
     }
 
     public void updatePropertyDetails(Property property)
@@ -103,7 +105,7 @@ public class PropertyUIController : MonoBehaviour
         GameUIManager.instance.OkPrompt($"A house has been removed from {property.name}");
     }
 
-    public void mortgage() 
+    public void mortgage()
     {
         if (property.isMortgaged)
         {
@@ -112,17 +114,18 @@ public class PropertyUIController : MonoBehaviour
 
             updatePropertyDetails(property);
             GameUIManager.instance.OkPrompt($"{property.name} has been unmortgaged for £{property.mortgageValue}");
-        } else
+        }
+        else
         {
             property.Mortgage();
-            
+
             updatePropertyDetails(property);
             GameUIManager.instance.OkPrompt($"{property.name} has been mortgaged for £{property.mortgageValue}");
         }
-        
+
     }
 
-    public void sell() 
+    public void sell()
     {
         if (!property.CanSell())
         {

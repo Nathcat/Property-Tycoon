@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public abstract class CounterController : MonoBehaviour
 {
@@ -59,7 +57,7 @@ public abstract class CounterController : MonoBehaviour
     /// Determines whether or not this counter is controllable by the user.
     /// i.e. for a Human counter this should always be true, otherwise this should be false
     /// </summary>
-    virtual public bool isControllable { get {return false; } }
+    virtual public bool isControllable { get { return false; } }
 
     /// <summary>
     /// This makes the counter's model the model of its index

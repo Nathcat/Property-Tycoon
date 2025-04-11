@@ -1,8 +1,5 @@
-using System.Linq;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UIElements;
 
 
 /// <summary>
@@ -98,7 +95,7 @@ public class HumanCounter : CounterController
 
             if (space.action.ContainsCommand<TakePotLuck>())
                 yield return GameUIManager.instance.ShowPotluckCard(GameController.instance.PeekLuck());
-            
+
             if (space.action.ContainsCommand<TakeOppoKnocks>())
                 yield return GameUIManager.instance.ShowOpportunityCard(GameController.instance.PeekOpportunity());
 
@@ -140,7 +137,7 @@ public class HumanCounter : CounterController
                 }
             }
 
-                CameraController.instance.SetTarget(spaceController.gameObject);
+            CameraController.instance.SetTarget(spaceController.gameObject);
         }
         else
         {

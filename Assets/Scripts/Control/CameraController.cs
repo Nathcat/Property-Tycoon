@@ -38,7 +38,8 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (GameUIManager.instance.gameStarted) {
+        if (GameUIManager.instance.gameStarted)
+        {
             boardRadius = (BoardGenerator.GetBoardDimensions(GameController.instance.spaces.Count()) - 4f) / 2f;
         }
 
@@ -49,7 +50,8 @@ public class CameraController : MonoBehaviour
         {
             moveTarget = GetOrbit();
             lookTarget = Vector3.zero;
-        } else
+        }
+        else
         {
             moveTarget = GetDestination();
             lookTarget = target.transform.position;
@@ -82,9 +84,9 @@ public class CameraController : MonoBehaviour
 
     public Vector3 GetDestination()
     {
-        
+
         //checks where the target is and then moves it based on if its in the N,S,E or W
-       
+
         if (target.transform.position.x > boardRadius)
         {
             return new Vector3(target.transform.position.x + sideOffset, target.transform.position.y + heightOffset, target.transform.position.z + lengthOffset);
@@ -102,7 +104,7 @@ public class CameraController : MonoBehaviour
             return new Vector3(target.transform.position.x - lengthOffset, target.transform.position.y + heightOffset, target.transform.position.z + sideOffset);
         }
 
-       return Vector3.zero;
+        return Vector3.zero;
     }
 
     private GameObject nextProperty(int start, int direction)
@@ -121,7 +123,8 @@ public class CameraController : MonoBehaviour
         return space.gameObject;
     }
 
-    public void nextProperty() {
+    public void nextProperty()
+    {
         SetTarget(nextProperty(space.position, 1));
     }
 

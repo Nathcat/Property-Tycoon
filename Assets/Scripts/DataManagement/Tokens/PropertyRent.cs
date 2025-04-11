@@ -5,7 +5,8 @@ public class PropertyRent : Command
 {
     public PropertyRent(string value) : base(value) { }
 
-    override public IEnumerator Execute(CounterController counterController, Argument[] args) {
+    override public IEnumerator Execute(CounterController counterController, Argument[] args)
+    {
         // countercontroller position - 1??????????
         Space space = GameController.instance.spaces[counterController.position];
 

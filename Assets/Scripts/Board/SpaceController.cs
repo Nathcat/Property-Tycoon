@@ -23,7 +23,7 @@ public class SpaceController : MonoBehaviour
 
 
     /// <summary> The position of this space controller on the board. </summary>
-    public int position { get {  return space.position; } }
+    public int position { get { return space.position; } }
 
     public void Setup(Space space)
     {
@@ -51,11 +51,11 @@ public class SpaceController : MonoBehaviour
             int index = (space as Property).upgradeLevel;
             model.mesh = GameController.instance.upgradeMeshes[index];
         }
-        else 
-        { 
+        else
+        {
             model.mesh = null;
         }
-        
+
     }
 
 

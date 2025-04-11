@@ -51,7 +51,8 @@ public class Action
     /// Execute the action specified by the action string given to this object
     /// </summary>
     /// <param name="counterController">The CounterController which initiated the action</param>
-    public IEnumerator Run(CounterController counterController) {
+    public IEnumerator Run(CounterController counterController)
+    {
         List<Token> commandState = new List<Token>();
         string processedString = "";
 

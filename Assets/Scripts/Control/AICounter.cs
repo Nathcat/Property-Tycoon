@@ -182,16 +182,16 @@ public class AICounter : CounterController
             Debug.Log("bid" + bid);
             chance = Random.Range(1, 100);
             bool bidded = false;
-            if (bid-currentbid >= 100 && chance > 70 && bidded == false)
+            if (bid - currentbid >= 100 && chance > 70 && bidded == false)
             {
                 auction.Bid100();
                 yield return null;
                 bidded = true;
-                
+
             }
             Debug.Log("didnt bid 100");
             chance = Random.Range(1, 100);
-            if (bid-currentbid >= 50 && chance > 70 && bidded == false)
+            if (bid - currentbid >= 50 && chance > 70 && bidded == false)
             {
                 auction.Bid50();
                 yield return null;
@@ -199,7 +199,7 @@ public class AICounter : CounterController
             }
             Debug.Log("didnt bid 50");
             chance = Random.Range(1, 100);
-            if (bid-currentbid >= 20 && chance > 70 && bidded == false)
+            if (bid - currentbid >= 20 && chance > 70 && bidded == false)
             {
                 auction.Bid20();
                 yield return null;
@@ -230,7 +230,7 @@ public class AICounter : CounterController
                 bidded = true;
                 yield return null;
             }
-            else if(bidded == false)
+            else if (bidded == false)
             {
                 Debug.Log("withdrew!");
                 auction.Withdraw();
@@ -286,9 +286,9 @@ public class AICounter : CounterController
             Develop();
         }
     }
-    public void EndTurn() 
+    public void EndTurn()
     {
-        while (portfolio.GetCashBalance() < 0) 
+        while (portfolio.GetCashBalance() < 0)
         {
             bool sold = false;
             List<Property> properties = portfolio.GetProperties();
@@ -315,7 +315,7 @@ public class AICounter : CounterController
                     sold = true;
                 }
             }
-            if (sold == false) 
+            if (sold == false)
             {
                 GameController.instance.forefit(this);
             }

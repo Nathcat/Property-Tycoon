@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using UnityEngine;
 
 /// <summary>
 /// Utility class which provides methods for reading the required setup files.

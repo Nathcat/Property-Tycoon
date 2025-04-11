@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 
 using UnityEngine;
@@ -76,7 +75,8 @@ public class AuctionManager : MonoBehaviour
     /// <summary>
     /// Restart the currently active auction.
     /// </summary>
-    private IEnumerator RestartAuction() {
+    private IEnumerator RestartAuction()
+    {
         yield return GameUIManager.instance.OkPrompt(currentPlayer.name + " cannot afford their bid, the auction for " + targetProperty.name + " will restart!");
         StartAuction(targetProperty);
     }
@@ -106,13 +106,15 @@ public class AuctionManager : MonoBehaviour
             // This is the only remaining player, hence they have won
             Debug.Log(currentPlayer.name + " wins " + targetProperty.name + " for " + bids[currentTurn].GetValue());
 
-            if (currentPlayer.portfolio.GetCashBalance() >= bids[currentTurn].GetValue()) {
+            if (currentPlayer.portfolio.GetCashBalance() >= bids[currentTurn].GetValue())
+            {
                 targetProperty.AuctionPurchase(currentPlayer, bids[currentTurn]);
                 Debug.Log(currentPlayer.name + " obtains " + targetProperty.name);
                 GameUIManager.instance.FinishAuction();
                 AudioManager.instance.library.PlayMoney();
             }
-            else {
+            else
+            {
                 Debug.Log(currentPlayer.name + " cannot afford their bid!");
                 StartCoroutine(RestartAuction());
             }

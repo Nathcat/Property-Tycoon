@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PoliceCarLights : MonoBehaviour
@@ -12,7 +10,8 @@ public class PoliceCarLights : MonoBehaviour
         InvokeRepeating("kmn", 0, 1f);
     }
 
-    public void kmn() {
+    public void kmn()
+    {
         if (isBlueLightNext) light.color = Color.blue;
         else light.color = Color.red;
 

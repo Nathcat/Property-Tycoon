@@ -1,4 +1,3 @@
-using System.Xml.Serialization;
 using UnityEngine;
 
 /// <summary>
@@ -87,7 +86,8 @@ public class Property : Space, IAsset
     /// Determine whether or not you can unmortgage this property.
     /// </summary>
     /// <returns>True if the owner of this property can afford to unmortgage it, false otherwise</returns>
-    public bool CanUnMortgage() {
+    public bool CanUnMortgage()
+    {
         return isMortgaged && owner != null && owner.portfolio.GetCashBalance() >= (mortgageValue);
     }
 
@@ -98,7 +98,8 @@ public class Property : Space, IAsset
     {
         if (!CanUnMortgage()) return;
 
-        if (owner.portfolio.GetCashBalance() >= mortgageValue) {
+        if (owner.portfolio.GetCashBalance() >= mortgageValue)
+        {
             owner.portfolio.RemoveCash(new Cash(mortgageValue));
             isMortgaged = false;
         }
